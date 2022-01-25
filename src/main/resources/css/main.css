@@ -1,0 +1,181 @@
+/*** Color palette ***/
+* {
+
+    /*** Main colors ***/
+    -color-main-foreground: #efefef;
+    -color-main-background: #dfdfdf;
+    -color-text-primary: #151515;
+
+    /*** Timeline colors ***/
+    -color-timeline-event-rect: #aeccfc; // the color of event rectangles in the timeline
+    -color-timeline-line: #252525; // the color of all lines (and borders) in the timeline
+
+    /*** Character chart colors ***/
+    -color-characterchart-background: #fefefe;
+
+    /*** Miscellaneous ***/
+    -color-tooltip-background: #dcdcdc;
+    -effect-dropshadow: dropshadow(gaussian, #00000077, 7, 0.2, 4, 5 );
+
+    /*** List headline ***/
+    -color-list-headline: #404040;
+
+    /*** List cell colors ***/
+    -color-list-background: #f4f4f4;
+    -color-main-blue: #aeccfc;
+    -color-secondary-blue: #7baeff;
+
+}
+/********************/
+
+.root {
+    -fx-background-color: -color-main-foreground;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: -color-main-foreground;
+}
+
+.label {
+    -fx-text-fill: -color-text-primary;
+}
+
+/*** Timeline ***/
+.timeline-line {
+    -fx-stroke: -color-timeline-line;
+    -fx-stroke-width: 1;
+}
+
+.timeline-event-rect {
+    -fx-fill: -color-timeline-event-rect;
+    -fx-stroke: -color-timeline-line;
+    -fx-stroke-width: 1;
+    -fx-stroke-line-cap: round;
+    -fx-effect: -effect-dropshadow;
+}
+
+.timeline-event-rect:hover {
+    -fx-fill: derive(-color-timeline-event-rect, 25%); // Adds <value>% brightness
+    -fx-stroke: derive(-color-timeline-event-rect, -25%);
+}
+
+.timeline-tooltip {
+    -fx-background-color: -color-tooltip-background;
+    -fx-background-radius: 0 0 0 0;
+    -fx-text-fill: -color-text-primary;
+    -fx-effect: -effect-dropshadow;
+}
+
+/************************/
+
+/*** Character/Event list ***/
+.outerPane {
+    -fx-background-color: -color-list-background;
+}
+
+.innerPane {
+    -fx-foreground-color: -color-list-background;
+}
+
+.list-headline {
+    -fx-font-size: 13;
+    -fx-font-color: -color-list-background;
+}
+
+/*** Icon buttons ***/
+.button {
+    -fx-background-color: -color-list-background; /* Creates the transparent look */
+}
+
+.button:hover {
+    -fx-background-color: -color-main-background;
+
+/* Scales the icon up or down on hover*/
+/*    -fx-scale-y: 1.1;
+    -fx-scale-x: 1.1;*/
+}
+/*.button:button:pressed {
+    -fx-scale-y: 0.9;
+    -fx-scale-x: 0.9;
+}*/
+
+/*** List view ***/
+.list-view {
+    -fx-background-color: -color-list-background;
+    -fx-padding: 0;
+    -fx-background-insets: 0, 0, 0, 0
+}
+
+.list-view:focused {
+    -fx-background-insets: 0, 0, 0, 0;
+}
+
+/*** List cells ***/
+.list-cell {
+    -fx-font-size: 14;
+
+}
+
+.list-cell:filled:hover {
+  -fx-background-color: -color-main-blue;
+  -fx-text-fill: white;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+  -fx-background-color: -color-main-blue;
+  -fx-text-fill: white;
+}
+
+.list-cell:odd, .list-cell:even {
+  -fx-background-color: -color-list-background;
+}
+
+/*** Character Chart ***/
+.characterchart-scrollpane > .viewport {
+    -fx-background-color: -color-characterchart-background;
+}
+
+.characterchart-rect {
+    -fx-fill: -color-timeline-event-rect;
+    -fx-stroke: -color-timeline-line;
+    -fx-stroke-width: 1;
+    -fx-stroke-line-cap: round;
+    -fx-effect: -effect-dropshadow;
+}
+
+.characterchart-rect:hover {
+    -fx-fill: derive(-color-timeline-event-rect, 25%); // Adds <value>% brightness
+    -fx-stroke: derive(-color-timeline-event-rect, -25%);
+}
+
+.characterchart-tooltip {
+    -fx-background-color: -color-tooltip-background;
+    -fx-background-radius: 0 0 0 0;
+    -fx-text-fill: -color-text-primary;
+    -fx-effect: -effect-dropshadow;
+}
+
+.characterchart-assocline {
+    -fx-stroke: -color-timeline-line;
+    -fx-stroke-width: 1;
+}
+
+.characterchart-assoclabel {
+    -fx-text-fill: -color-text-primary;
+    -fx-font-size: 9pt;
+}
+
+.characterchart-assoclabel:hover {
+    -fx-text-fill: -color-text-primary;
+    -fx-font-size: 10pt;
+}
+
+.characterchart-line-control {
+    -fx-fill: #7cfc0000;
+}
+
+.characterchart-line-control:hover {
+    -fx-fill: #7cfc0099;
+}
+
+/***************
