@@ -1,4 +1,4 @@
-# Writer's Studio
+ # Writer's Studio  V2
 
 > *This is a project by students at Malmö University, developed as part of a course in System Development*
 
@@ -10,5 +10,5 @@
   <li>Run</li>
 </ol>
 
-**By: Team 34**
+**By: Team 2**
 https://github.com/Repsakras/WritersStudio
