@@ -1,5 +1,6 @@
 package com.team34.controller;
 
+import com.team34.model.event.EventListObject;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -44,6 +45,7 @@ public class MainController {
     private final EventHandler<ActionEvent> evtMenuBarAction;
     private final EventHandler<DragEvent> evtDragDropped;
     private final EventHandler<MouseEvent> evtMouseCharacterList;
+    private EventListObject eventListObject;
 
     /**
      * Constructs the controller. Initializes member variables
@@ -146,6 +148,15 @@ public class MainController {
                 model.eventManager.getEvents(),
                 model.eventManager.getEventOrder(view.getEventOrderList())
         );
+    }
+
+    private boolean eventsExist(){
+        Object[][] event = model.eventManager.getEvents();
+        if (event == null){
+            return false;
+        }else {
+            return true;
+        }
     }
 
     /**
@@ -267,27 +278,43 @@ public class MainController {
      * {@link com.team34.model.character.CharacterManager} creates a new character with the user input.
      *
      * @author Jim Andersson
+     *
+     * edit
+     * @Alexander Olsson
      */
     private void createNewCharacter(double x, double y) {
-        if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
+
+
+        if(!eventsExist()){
+
+            view.warningDialog("Måste skapa event först!", "Character");
+        }
+        else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);
 
-            long newCharacterUID = model.characterManager.newCharacter(
-                    view.getEditCharacterPanel().getCharacterName(),
-                    view.getEditCharacterPanel().getCharacterDescription(),
-                    x, y
-            );
-            view.updateCharacterList(
-                    model.characterManager.getCharacterList(),
-                    model.characterManager.getAssociationData()
-            );
+            if (view.getEditCharacterPanel().getCharacterEvent() == null) {
+                view.warningDialog("Måste välja ett event", "Character");
 
-            if (newCharacterUID == -1L) {
-                // TODO Popup warning dialog, stating that either name or description has unsupported format
+            } else {
+
+                long newCharacterUID = model.characterManager.newCharacter(
+                        view.getEditCharacterPanel().getCharacterName(),
+                        view.getEditCharacterPanel().getCharacterDescription(),
+                        view.getEditCharacterPanel().getCharacterEvent(),
+                        x, y
+                );
+                view.updateCharacterList(
+                        model.characterManager.getCharacterList(),
+                        model.characterManager.getAssociationData()
+                );
+
+                if (newCharacterUID == -1L) {
+                    // TODO Popup warning dialog, stating that either name or description has unsupported format
+                }
+
+                refreshTitleBar();
             }
-
-            refreshTitleBar();
         }
     }
 
@@ -302,12 +329,14 @@ public class MainController {
     private void editCharacter(long uid) {
         Object[] characterData = model.characterManager.getCharacterData(uid);
 
+
         if (view.getEditCharacterPanel().showEditCharacter((String) characterData[0], (String) characterData[1])
                 == EditCharacterDialog.WindowResult.OK
         ) {
             boolean success = model.characterManager.editCharacter(uid,
                     view.getEditCharacterPanel().getCharacterName(),
-                    view.getEditCharacterPanel().getCharacterDescription()
+                    view.getEditCharacterPanel().getCharacterDescription(),
+                    view.getEditCharacterPanel().getCharacterEvent()
             );
 
             if (!success) {

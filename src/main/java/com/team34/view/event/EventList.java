@@ -22,6 +22,8 @@ public class EventList extends StackPane {
     private Button add, edit, delete;
     private Label title;
 
+
+
     // Panes
     BorderPane outerPane;
     BorderPane innerPane;
@@ -177,5 +179,13 @@ public class EventList extends StackPane {
         }
 
         return -1;
+    }
+
+    public ListView<EventListObject> getList() {
+        return list;
+    }
+
+    public void setList(ListView<EventListObject> list) {
+        this.list = list;
     }
 }

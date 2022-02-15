@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 
 /**
  * @author Jim Andersson
+ *
+ * edit
+ * @Alexander Olsson
  */
 
 public class EditEventDialog extends Stage {
@@ -43,6 +46,7 @@ public class EditEventDialog extends Stage {
         //Drop down
         cbEventGroup = new ComboBox<>();
         cbEventGroup.setPromptText("Choose event group");
+
 
         //Button
         Button btnAdd = new Button("Ok");

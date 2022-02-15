@@ -311,6 +311,7 @@ public class Project {
         String name = null;
         double chartX = 0.0;
         double chartY = 0.0;
+        EventListObject eventListObject = null;
 
         while (reader.hasNext()) {
             event = reader.nextEvent();
@@ -329,6 +330,7 @@ public class Project {
                             case "name":
                                 name = attr.getValue();
                                 break;
+
                             case "chartX":
                                 chartX = Double.parseDouble(attr.getValue());
                                 break;
@@ -341,9 +343,9 @@ public class Project {
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            characterManager.addCharacter(uid, name, event.asCharacters().getData(), chartX, chartY);
+                            characterManager.addCharacter(uid, name,"",eventListObject, chartX, chartY);
                         else
-                            characterManager.addCharacter(uid, name, "", chartX, chartY);
+                            characterManager.addCharacter(uid, name, "",eventListObject, chartX, chartY);
 
                     }
                 }

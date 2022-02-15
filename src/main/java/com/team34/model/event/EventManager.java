@@ -1,10 +1,10 @@
 package com.team34.model.event;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 import com.team34.model.UIDManager;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * This class manages all events and event order lists.
@@ -169,6 +169,31 @@ public class EventManager {
             eventArray[i][2] = eventRef.getDescription();
         }
         return eventArray;
+    }
+
+    public ObservableList<String> getEvents2() {
+        if (events.size() < 1)
+            return null;
+
+        Long[] uidOrder = events.keySet().toArray(new Long[events.size()]);
+
+        for (int i = 0; i < uidOrder.length; i++) {
+            long uid = uidOrder[i];
+            Event eventRef = events.get(uid);
+        }
+        return null;
+
+    }
+
+    public ArrayList EventListChar(){
+
+        ObservableList<Object> list = FXCollections.observableList(Collections.singletonList(eventOrderLists));
+
+
+        ArrayList<Event> events = new ArrayList<>();
+
+        return events;
+
     }
 
     /**

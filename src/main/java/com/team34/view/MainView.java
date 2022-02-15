@@ -378,6 +378,7 @@ public class MainView {
         timeline.recalculateLayout();
 
         leftPane.updateListView(events, eventOrder);
+        editCharacterPanel.updateListView(events, eventOrder);
     }
 
     /**
@@ -429,6 +430,35 @@ public class MainView {
         return rightPane.getCharacterUID();
     }
 
+
+    /**
+     * Warning dialog
+     *
+     * @Alexander Olsson
+     */
+
+    public void warningDialog(String text, String title){
+        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK);
+        alert.setTitle(title);
+        alert.showAndWait();
+
+    }
+
+    public Boolean warningDialogOptions(String text, String title){
+        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK, ButtonType.CANCEL);
+        alert.setTitle(title);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.OK) {
+            return true;
+        }
+
+        alert.getResult();
+
+        return false;
+
+    }
+
     public long getSelectedEventUID() {
         return leftPane.getEventUID();
     }
@@ -478,5 +508,10 @@ public class MainView {
     public ShowCharacterDialog getShowCharacterDialog() {
         return showCharacterDialog;
     }
+
+
+
+
+
 
 }
