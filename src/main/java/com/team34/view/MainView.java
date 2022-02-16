@@ -1,5 +1,6 @@
 package com.team34.view;
 
+import com.team34.view.chapter.ChapterList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -36,7 +37,7 @@ import com.team34.view.character.ShowCharacterDialog;
  */
 public class MainView {
 
-    private static final double MIN_WINDOW_WIDTH = 800.0;
+    private static final double MIN_WINDOW_WIDTH = 1000.0;
     private static final double MIN_WINDOW_HEIGHT = 600.0;
     private static final double MAX_WINDOW_WIDTH = 3840.0; // 4K Ultra HD
     private static final double MAX_WINDOW_HEIGHT = 2160.0; // 4K Ultra HD
@@ -78,6 +79,7 @@ public class MainView {
     private final StackPane bottomPane;
     private final SplitPane firstLayerSplit;
     private final EventList leftPane;
+    private final ChapterList leftChapterPane;
     private final StackPane centerPane;
     private final CharacterList rightPane;
     private final SplitPane secondLayerSplit;
@@ -149,17 +151,21 @@ public class MainView {
 
         // Create the second-layer panes, contained by centerPane. These are separated vertically
         leftPane = new EventList(); // Contains event list
+        leftChapterPane = new ChapterList();
         centerPane = new StackPane(); // Contains character chart
         rightPane = new CharacterList(); // Contains character list
         secondLayerSplit = new SplitPane();
 
         leftPane.setMinSize(250.0, 200.0);
+        leftChapterPane.setMinSize(250.0, 200.0);
         rightPane.setMinSize(250.0, 200.0);
+        centerPane.setMinSize(650,200);
 
         secondLayerSplit.setOrientation(Orientation.HORIZONTAL); // layed-out horizontally, but splitted vertically
-        secondLayerSplit.getItems().addAll(leftPane, centerPane, rightPane);
+        secondLayerSplit.getItems().addAll(leftChapterPane, leftPane, centerPane, rightPane);
         secondLayerSplit.setDividerPosition(0, 0.25);
-        secondLayerSplit.setDividerPosition(1, 0.99);
+        secondLayerSplit.setDividerPosition(1, 0.25);
+        secondLayerSplit.setDividerPosition(2, 0.99);
         topPane.getChildren().add(secondLayerSplit);
 
         // Add split the first layer split pane to the contentBorderPane
