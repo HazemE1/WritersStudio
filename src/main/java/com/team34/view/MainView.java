@@ -1,6 +1,7 @@
 package com.team34.view;
 
 import com.team34.view.chapter.ChapterList;
+import com.team34.view.dialogs.EditChapterDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -50,6 +51,9 @@ public class MainView {
     public static final String ID_BTN_EVENT_ADD = "BTN_EVENT_ADD";
     public static final String ID_BTN_EVENT_EDIT = "BTN_EVENT_EDIT";
     public static final String ID_BTN_EVENT_DELETE = "BTN_EVENT_DELETE";
+    public static final String ID_BTN_CHAPTER_ADD = "BTN_CHAPTER_ADD";
+    public static final String ID_BTN_CHAPTER_EDIT = "BTN_CHAPTER_EDIT";
+    public static final String ID_BTN_CHAPTER_DELETE = "BTN_CHAPTER_DELETE";
 
     public static final String ID_TIMELINE_NEW_EVENT = "TIMELINE_NEW_EVENT";
     public static final String ID_TIMELINE_REMOVE_EVENT = "TIMELINE_REMOVE_EVENT";
@@ -97,8 +101,10 @@ public class MainView {
     private EditEventDialog editEventDialog;
     private EditCharacterDialog editCharacterPanel;
     private EditAssociationDialog editAssociationDialog;
+    private EditChapterDialog editChapterDialog;
     private ShowCharacterDialog showCharacterDialog;
     private int eventOrderList; // index to specify which order list to use
+    private int chapterOrderList;
     private double lastChartMouseClickX;
     private double lastChartMouseClickY;
 
@@ -118,6 +124,7 @@ public class MainView {
      */
     public MainView(Stage mainStage, double screenW, double screenH, boolean maximized) {
         eventOrderList = 0;
+        chapterOrderList =0;
         this.mainStage = mainStage;
         lastChartMouseClickX = 0.0;
         lastChartMouseClickY = 0.0;
@@ -210,6 +217,13 @@ public class MainView {
 
         // Create association dialog
         editAssociationDialog = new EditAssociationDialog(mainStage);
+
+
+        /**
+         * ALex
+         */
+        editChapterDialog = new EditChapterDialog(mainStage);
+        // NY Chapter dialog
     }
 
     /**
@@ -229,6 +243,10 @@ public class MainView {
      */
     public int getEventOrderList() {
         return eventOrderList;
+    }
+
+    public int getChapterOrderList() {
+        return chapterOrderList;
     }
 
     /**
@@ -259,6 +277,10 @@ public class MainView {
      */
     public EditEventDialog getEditEventDialog() {
         return editEventDialog;
+    }
+
+    public EditChapterDialog getEditChapterDialog() {
+        return editChapterDialog;
     }
 
     /**
@@ -322,6 +344,7 @@ public class MainView {
     public void registerButtonEvents(EventHandler<ActionEvent> buttonEventHandler) {
         rightPane.registerButtonEvents(buttonEventHandler);
         leftPane.registerButtonEvents(buttonEventHandler);
+        leftChapterPane.registerButtonEvents(buttonEventHandler);
     }
 
     public void registerMouseEvents(EventHandler<MouseEvent> listEventHandler) {
@@ -386,6 +409,16 @@ public class MainView {
         leftPane.updateListView(events, eventOrder);
         editCharacterPanel.updateListView(events, eventOrder);
     }
+
+
+
+    public void updateChapters(Object[][] chapters, Long[] chapterOrder) {
+        leftChapterPane.updateListView(chapters, chapterOrder);
+        //editCharacterPanel.updateListView(chapters, chapterOrder);
+    }
+
+
+
 
     /**
      * Fires a close request event on the main stage.
@@ -469,6 +502,16 @@ public class MainView {
         return leftPane.getEventUID();
     }
 
+    /**
+     *
+     * ALEX
+     * @return
+     */
+
+    public long getSelectedChapterUID(){
+        return leftChapterPane.getChapterUID();
+    }
+
     public Object[] onCharacterReleased(MouseEvent e) {
         return characterChart.onCharacterReleased(e);
     }
@@ -514,10 +557,6 @@ public class MainView {
     public ShowCharacterDialog getShowCharacterDialog() {
         return showCharacterDialog;
     }
-
-
-
-
 
 
 }

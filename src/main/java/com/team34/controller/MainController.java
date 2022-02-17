@@ -1,6 +1,7 @@
 package com.team34.controller;
 
 import com.team34.model.event.EventListObject;
+import com.team34.view.dialogs.EditChapterDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -45,7 +46,6 @@ public class MainController {
     private final EventHandler<ActionEvent> evtMenuBarAction;
     private final EventHandler<DragEvent> evtDragDropped;
     private final EventHandler<MouseEvent> evtMouseCharacterList;
-    private EventListObject eventListObject;
 
     /**
      * Constructs the controller. Initializes member variables
@@ -140,6 +140,61 @@ public class MainController {
         refreshTitleBar();
     }
 
+
+    /**
+     *
+     * @Alexander
+     */
+
+    private void createNewChapter() {
+        if (view.getEditChapterDialog().showCreateChapter() == EditChapterDialog.WindowResult.OK) {
+            long newChapterUID = model.chapterManager.newChapter(
+                    view.getEditChapterDialog().getChapterName(),
+                    view.getEditChapterDialog().getChapterDescription()
+            );
+
+            if (newChapterUID == -1L) {
+                // TODO Popup warning dialog, stating that either name or description has unsupported format
+            }
+        }
+        refreshTitleBar();
+    }
+
+    /**
+     *
+     * @Alexander
+     */
+
+
+    private void editChapter(long uid) {
+        Object[] eventData = model.eventManager.getEventData(uid);
+
+        if (view.getEditEventDialog().showEditEvent((String) eventData[0], (String) eventData[1])
+                == EditEventDialog.WindowResult.OK
+        ) {
+            boolean success = model.eventManager.editEvent(uid,
+                    view.getEditEventDialog().getEventName(),
+                    view.getEditEventDialog().getEventDescription()
+            );
+
+            if (!success) {
+                // TODO Popup warning dialog, stating that either name or description has unsupported format
+            }
+        }
+        refreshTitleBar();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Instructs the view to update the view of events with the current state of the model.
      */
@@ -147,6 +202,17 @@ public class MainController {
         view.updateEvents(
                 model.eventManager.getEvents(),
                 model.eventManager.getEventOrder(view.getEventOrderList())
+        );
+    }
+
+
+    /**
+     * Alex
+     */
+    private void refreshViewChapters() {
+        view.updateChapters(
+                model.chapterManager.getChapters(),
+                model.chapterManager.getChapterOrder(view.getChapterOrderList())
         );
     }
 
@@ -457,9 +523,12 @@ public class MainController {
             Node source = (Node) e.getSource();
             String sourceID = source.getId();
             long eventUID = view.getSelectedEventUID();
+            long chapterUID = view.getSelectedChapterUID();
 
             switch (sourceID) {
                 case MainView.ID_BTN_EVENT_ADD:
+                    System.out.println("Test2");
+
                     createNewEvent();
                     refreshViewEvents();
                     break;
@@ -473,6 +542,23 @@ public class MainController {
                 case MainView.ID_BTN_EVENT_EDIT:
                     editEvent(eventUID);
                     refreshViewEvents();
+                    break;
+
+                case MainView.ID_BTN_CHAPTER_ADD:
+                    System.out.println("Test");
+                    createNewChapter();
+                    refreshViewChapters();
+                    break;
+
+                case MainView.ID_BTN_CHAPTER_DELETE:
+                    model.chapterManager.removeChapter(chapterUID);
+                    refreshViewChapters();
+                    refreshTitleBar();
+                    break;
+
+                case MainView.ID_BTN_CHAPTER_EDIT:
+                    editChapter(chapterUID);
+                    refreshViewChapters();
                     break;
 
                 case MainView.ID_BTN_CHARACTERLIST_ADD:
@@ -500,6 +586,8 @@ public class MainController {
 
         }
     }
+
+
 
 
     ////////////////////////////////////////////////////////////////////////////

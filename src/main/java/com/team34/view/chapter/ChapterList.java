@@ -131,34 +131,34 @@ public class ChapterList extends StackPane {
      * {@link com.team34.controller.MainController} class for event handling.
      */
     public void installButtonIds() {
-        add.setId(MainView.ID_BTN_EVENT_ADD);
-        edit.setId(MainView.ID_BTN_EVENT_EDIT);
-        delete.setId(MainView.ID_BTN_EVENT_DELETE);
+        add.setId(MainView.ID_BTN_CHAPTER_ADD);
+        edit.setId(MainView.ID_BTN_CHAPTER_EDIT);
+        delete.setId(MainView.ID_BTN_CHAPTER_DELETE);
     }
 
-    /*
-    public void updateListView(Object[][] events, Long[] order) {
-        if (events == null || events.length < 1) {
+
+    public void updateListView(Object[][] chapters, Long[] order) {
+        if (chapters == null || chapters.length < 1) {
             list.getItems().clear();
             return;
         }
 
-        ObservableList<EventListObject> ol = FXCollections.observableArrayList();
-        Object[] event = null;
+        ObservableList<ChapterListObject> ol = FXCollections.observableArrayList();
+        Object[] objects = null;
         for (int i = 0; i < order.length; i++) {
-            for (int j = 0; j < events.length; j++) {
-                if (((Long) events[j][0]).equals(order[i]))
-                    event = events[j];
+            for (int j = 0; j < chapters.length; j++) {
+                if (((Long) chapters[j][0]).equals(order[i]))
+                    objects = chapters[j];
             }
 
-            ol.add(new EventListObject((String) event[1], (Long) event[0]));
-            event = null;
+            ol.add(new ChapterListObject((String) objects[1], (Long) objects[0]));
+            objects = null;
         }
 
         list.setItems(ol);
     }
 
-     */
+
 
     /**
      * Registers the Add-, Edit- and Delete buttons to the event handler in the
@@ -170,6 +170,14 @@ public class ChapterList extends StackPane {
         add.setOnAction(buttonEventHandler);
         edit.setOnAction(buttonEventHandler);
         delete.setOnAction(buttonEventHandler);
+    }
+
+    public long getChapterUID() {
+        if (list.getSelectionModel().getSelectedItem() != null) {
+            return list.getSelectionModel().getSelectedItem().getUid();
+        }
+
+        return -1;
     }
 
     /**

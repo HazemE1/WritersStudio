@@ -15,6 +15,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import com.team34.model.chapter.ChapterManager;
 import com.team34.model.event.*;
 import com.team34.model.character.*;
 
@@ -37,6 +38,7 @@ public class Project {
 
     public final EventManager eventManager;
     public final CharacterManager characterManager;
+    public final ChapterManager chapterManager;
 
     private String workingDir;
     private Path workingPath;
@@ -52,6 +54,7 @@ public class Project {
     public Project() {
         eventManager = new EventManager();
         characterManager = new CharacterManager();
+        chapterManager = new ChapterManager();
         userPrefs = new UserPreferences();
 
         workingDir = System.getProperty("user.dir");

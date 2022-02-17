@@ -14,15 +14,9 @@ public class ChapterListObject {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public long getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
-        this.uid = uid;
-    }
 }
