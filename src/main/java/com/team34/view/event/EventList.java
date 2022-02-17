@@ -1,5 +1,6 @@
 package com.team34.view.event;
 
+import com.team34.view.characterchart.CharacterChart;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import com.team34.model.event.EventListObject;
@@ -18,9 +20,10 @@ import com.team34.view.MainView;
 
 public class EventList extends StackPane {
 
-    private ListView<EventListObject> list;
+    private static ListView<EventListObject> list;
     private Button add, edit, delete;
     private Label title;
+    private MainView view;
 
 
 
@@ -40,7 +43,7 @@ public class EventList extends StackPane {
     /**
      * Initializes StackPane.
      */
-    public EventList() {
+    public EventList(MainView view) {
 //        window = new Stage();
 
         //Panes
@@ -67,9 +70,11 @@ public class EventList extends StackPane {
         title = new Label("Events");
         title.setPadding(new Insets(20, 0, 0, 0));
         title.getStyleClass().add("list-headline");
+        title.getStyleClass().add("");
 
         //Event List
         list = new ListView<>();
+
 
         //Construct
         aedBox.getChildren().addAll(add, edit, delete);
@@ -89,6 +94,11 @@ public class EventList extends StackPane {
         //CSS
         cssEventlist = com.team34.App.class.getResource("/css/characterlist.css").toExternalForm();
     }
+
+    public static EventListObject list(){
+        return list.getSelectionModel().getSelectedItem();
+    }
+
 
     public void setStyleSheets() {
         outerPane.getStyleClass().add("outerPane");
@@ -166,6 +176,10 @@ public class EventList extends StackPane {
         add.setOnAction(buttonEventHandler);
         edit.setOnAction(buttonEventHandler);
         delete.setOnAction(buttonEventHandler);
+    }
+
+    public void registerMouseEvents(EventHandler<MouseEvent> listEventHandler) {
+        list.setOnMouseClicked(listEventHandler);
     }
 
     /**
