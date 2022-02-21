@@ -12,6 +12,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
 
+import java.awt.MouseInfo;
+
 import javax.xml.stream.XMLStreamException;
 
 import java.io.File;
@@ -43,6 +45,7 @@ public class MainController {
     private final EventHandler<WindowEvent> evtCloseRequest;
     private final EventHandler<ActionEvent> evtMenuBarAction;
     private final EventHandler<DragEvent> evtDragDropped;
+    private final EventHandler<DragEvent> evtDragComplete;
     private final EventHandler<MouseEvent> evtMouseCharacterList;
 
     /**
@@ -61,6 +64,7 @@ public class MainController {
         this.evtCloseRequest = new EventCloseRequest();
         this.evtMenuBarAction = new EventMenuBarAction();
         this.evtDragDropped = new EventDragDropped();
+        this.evtDragComplete = new EventDragComplete();
         this.evtMouseCharacterList = new CharacterListMouseEvent();
 
         registerEventsOnView();
@@ -75,7 +79,8 @@ public class MainController {
         view.registerContextMenuEvents(evtContextMenuAction);
         view.registerCloseRequestEvent(evtCloseRequest);
         view.registerMenuBarActionEvents(evtMenuBarAction);
-        view.registerDragEvent(evtDragDropped);
+        view.registerDragEventDragDrop(evtDragDropped);
+        view.registerDragEventDragComplete(evtDragComplete);
         view.registerMouseEvents(evtMouseCharacterList);
         view.registerCharacterChartEvents(
                 new EventCharacterRectReleased(),
@@ -146,6 +151,18 @@ public class MainController {
                 model.eventManager.getEvents(),
                 model.eventManager.getEventOrder(view.getEventOrderList())
         );
+    }
+
+    private void moveEventToMouseTimeline(int idEvent, int xMouse) {
+        view.moveEventToMouseTimeline(
+                model.eventManager.getEvents(),
+                model.eventManager.getEventOrder(view.getEventOrderList()),
+                idEvent,
+                xMouse);
+    }
+
+    private void swapEventPositionsTimeline(int dragged, int target) {
+        view.swapEventPositionsTimeline(dragged, target);
     }
 
     /**
@@ -715,12 +732,30 @@ public class MainController {
             int dragged = model.eventManager.getEventIndex(view.getEventOrderList(), uidDragged);
             int target = model.eventManager.getEventIndex(view.getEventOrderList(), uidTarget);
 
-            if (dragged != -1 && target != -1) {
+            if ((dragged != -1 && target != -1) && (dragged != target)) {
                 model.eventManager.moveEvent(view.getEventOrderList(), dragged, target);
+                swapEventPositionsTimeline(dragged, target);
                 refreshViewEvents();
             }
         }
+    }
 
+    private class EventDragComplete implements EventHandler<DragEvent> {
+
+        @Override
+        public void handle(DragEvent dragEvent) {
+            Rectangle rect = (Rectangle) dragEvent.getSource();
+
+            long uidDragged = Long.parseLong(dragEvent.getDragboard().getString());
+            long uidTarget = view.getEventUidByRectangle(rect);
+
+            int dragged = model.eventManager.getEventIndex(view.getEventOrderList(), uidDragged);
+            int target = model.eventManager.getEventIndex(view.getEventOrderList(), uidTarget);
+
+            if ((dragged != -1 && target != -1) && (dragged == target)) {
+                moveEventToMouseTimeline(dragged, MouseInfo.getPointerInfo().getLocation().x);
+            }
+        }
     }
 
     private class CharacterListMouseEvent implements EventHandler<MouseEvent> {

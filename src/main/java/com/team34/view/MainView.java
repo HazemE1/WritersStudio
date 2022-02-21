@@ -354,8 +354,12 @@ public class MainView {
      * @param dragEventHandler
      * @author Jim Andersson
      */
-    public void registerDragEvent(EventHandler<DragEvent> dragEventHandler) {
-        timeline.registerEventHandlers(dragEventHandler);
+    public void registerDragEventDragDrop(EventHandler<DragEvent> dragEventHandler) {
+        timeline.registerEventHandlersDragDrop(dragEventHandler);
+    }
+
+    public void registerDragEventDragComplete(EventHandler<DragEvent> dragEventHandler) {
+        timeline.registerEventHandlersDragComplete(dragEventHandler);
     }
 
     /**
@@ -378,6 +382,25 @@ public class MainView {
         timeline.recalculateLayout();
 
         leftPane.updateListView(events, eventOrder);
+    }
+
+    public void moveEventToMouseTimeline(Object[][] events, Long[] eventOrder, int idEvent, int xMouse) {
+        timeline.clear();
+        if (events != null) {
+            for (int i = 0; i < events.length; i++) {
+                timeline.addEvent((Long) events[i][0], (String) events[i][1]);
+            }
+        }
+        if (eventOrder != null)
+            timeline.setEventOrder(eventOrder);
+
+        timeline.moveEventToMouseTimeline(idEvent, xMouse);
+
+        leftPane.updateListView(events, eventOrder);
+    }
+
+    public void swapEventPositionsTimeline(int dragged, int target) {
+        timeline.swapEventPositionsTimeline(dragged, target);
     }
 
     /**
