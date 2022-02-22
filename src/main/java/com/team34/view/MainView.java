@@ -414,7 +414,7 @@ public class MainView {
 
     public void updateChapters(Object[][] chapters, Long[] chapterOrder) {
         leftChapterPane.updateListView(chapters, chapterOrder);
-        //editCharacterPanel.updateListView(chapters, chapterOrder);
+        editEventDialog.updateListView(chapters, chapterOrder);
     }
 
 

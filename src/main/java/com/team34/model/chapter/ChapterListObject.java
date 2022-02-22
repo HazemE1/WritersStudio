@@ -19,4 +19,9 @@ public class ChapterListObject {
         return uid;
     }
 
+    @Override
+    public String toString() {
+        return title;
+    }
+
 }

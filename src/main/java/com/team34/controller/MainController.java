@@ -101,7 +101,8 @@ public class MainController {
         if (view.getEditEventDialog().showCreateEvent() == EditEventDialog.WindowResult.OK) {
             long newEventUID = model.eventManager.newEvent(
                     view.getEditEventDialog().getEventName(),
-                    view.getEditEventDialog().getEventDescription()
+                    view.getEditEventDialog().getEventDescription(),
+                    view.getEditEventDialog().getChapterList()
             );
 
             if (newEventUID == -1L) {
@@ -130,7 +131,8 @@ public class MainController {
         ) {
             boolean success = model.eventManager.editEvent(uid,
                     view.getEditEventDialog().getEventName(),
-                    view.getEditEventDialog().getEventDescription()
+                    view.getEditEventDialog().getEventDescription(),
+                    view.getEditEventDialog().getChapterList()
             );
 
             if (!success) {
@@ -174,7 +176,8 @@ public class MainController {
         ) {
             boolean success = model.eventManager.editEvent(uid,
                     view.getEditEventDialog().getEventName(),
-                    view.getEditEventDialog().getEventDescription()
+                    view.getEditEventDialog().getEventDescription(),
+                    view.getEditEventDialog().getChapterList()
             );
 
             if (!success) {

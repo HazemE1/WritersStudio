@@ -5,6 +5,7 @@ import com.team34.model.event.Event;
 import com.team34.model.event.EventManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -72,6 +73,7 @@ public class ChapterManager {
 
         Long[] uidOrder = chapters.keySet().toArray(new Long[chapters.size()]);
         Object[][] eventArray = new Object[uidOrder.length][3];
+
 
         for (int i = 0; i < uidOrder.length; i++) {
             long uid = uidOrder[i];

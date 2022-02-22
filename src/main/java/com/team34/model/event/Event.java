@@ -1,5 +1,7 @@
 package com.team34.model.event;
 
+import com.team34.model.chapter.ChapterListObject;
+
 /**
  * Class for event objects that contains the event information.
  *
@@ -10,6 +12,7 @@ public class Event {
 
     private String name = "";
     private String description = "";
+    private ChapterListObject chapterListObject;
 
     /**
      * Instantiates event object with name and description.
@@ -17,9 +20,10 @@ public class Event {
      * @param name        Event name
      * @param description Event description
      */
-    public Event(String name, String description) {
+    public Event(String name, String description, ChapterListObject chapterListObject) {
         this.name = name;
         this.description = description;
+        this.chapterListObject = chapterListObject;
     }
 
     public String getName() {
@@ -38,4 +42,7 @@ public class Event {
         this.description = description;
     }
 
+    public ChapterListObject getChapterListObject() {
+        return chapterListObject;
+    }
 }

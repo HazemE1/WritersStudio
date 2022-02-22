@@ -15,6 +15,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import com.team34.model.chapter.ChapterListObject;
 import com.team34.model.chapter.ChapterManager;
 import com.team34.model.event.*;
 import com.team34.model.character.*;
@@ -219,6 +220,8 @@ public class Project {
             throws XMLStreamException {
         long uid = -1L;
         String name = null;
+        ChapterListObject chapterListObject = null;
+
 
         while (reader.hasNext()) {
             event = reader.nextEvent();
@@ -243,9 +246,9 @@ public class Project {
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            eventManager.addEvent(uid, name, event.asCharacters().getData());
+                            eventManager.addEvent(uid, name, event.asCharacters().getData(), chapterListObject);
                         else
-                            eventManager.addEvent(uid, name, "");
+                            eventManager.addEvent(uid, name, "", chapterListObject);
 
                     }
                 }

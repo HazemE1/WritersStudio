@@ -1,5 +1,9 @@
 package com.team34.view.dialogs;
 
+import com.team34.model.chapter.ChapterListObject;
+import com.team34.model.event.EventListObject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,9 +25,15 @@ public class EditEventDialog extends Stage {
 
     private TextField tfEventName;
     private TextArea taEventDescription;
-    private ComboBox<String> cbEventGroup;
+    private ComboBox<ChapterListObject> cbChapterObject;
+    private ListView<ChapterListObject> list;
+
+
 
     public EditEventDialog(Stage ownerStage) {
+
+        list = new ListView<>();
+
         setTitle("Edit Event");
         setOnCloseRequest(e -> windowResult = WindowResult.CANCEL);
 
@@ -44,8 +54,8 @@ public class EditEventDialog extends Stage {
         taEventDescription.setPromptText("Enter event description here");
 
         //Drop down
-        cbEventGroup = new ComboBox<>();
-        cbEventGroup.setPromptText("Choose event group");
+        cbChapterObject = new ComboBox<>();
+        cbChapterObject.setPromptText("Choose Chapter");
 
 
         //Button
@@ -73,7 +83,7 @@ public class EditEventDialog extends Stage {
         //EventGroup layout
         HBox eventGroupLayout = new HBox();
         eventGroupLayout.setSpacing(10);
-        eventGroupLayout.getChildren().addAll(lblEventGroup, cbEventGroup);
+        eventGroupLayout.getChildren().addAll(lblEventGroup, cbChapterObject);
 
         //Add-Cancel Layout
         HBox buttonLayout = new HBox();
@@ -172,5 +182,35 @@ public class EditEventDialog extends Stage {
         OK,
         CANCEL
     }
+
+
+    public ChapterListObject getChapterList() { return cbChapterObject.getValue();
+    }
+
+    public void updateListView(Object[][] chapters, Long[] order) {
+        if (chapters == null || chapters.length < 1) {
+            list.getItems().clear();
+            return;
+        }
+
+        ObservableList<ChapterListObject> ol = FXCollections.observableArrayList();
+        Object[] objects = null;
+        for (int i = 0; i < order.length; i++) {
+            for (int j = 0; j < chapters.length; j++) {
+                if (((Long) chapters[j][0]).equals(order[i]))
+                    objects = chapters[j];
+            }
+
+            ChapterListObject as;
+            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0]));
+
+            objects = null;
+        }
+
+        cbChapterObject.setItems(ol);
+    }
+
+
+
 
 }

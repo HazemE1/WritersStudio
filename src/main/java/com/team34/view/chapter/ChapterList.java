@@ -151,7 +151,9 @@ public class ChapterList extends StackPane {
                     objects = chapters[j];
             }
 
-            ol.add(new ChapterListObject((String) objects[1], (Long) objects[0]));
+            ChapterListObject as;
+            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0]));
+
             objects = null;
         }
 
@@ -180,28 +182,14 @@ public class ChapterList extends StackPane {
         return -1;
     }
 
-    /**
-     * If a character is selected in the list view, returns the character's UID. Else, returns -1.
-     *
-     * @return long
-     */
 
-    /*
-    public long getEventUID() {
-        if (list.getSelectionModel().getSelectedItem() != null) {
-            return list.getSelectionModel().getSelectedItem().getUid();
-        }
-
-        return -1;
-    }
-
-    public ListView<EventListObject> getList() {
+    public ListView<ChapterListObject> getList() {
         return list;
     }
 
-    public void setList(ListView<EventListObject> list) {
+    public void setList(ListView<ChapterListObject> list) {
         this.list = list;
     }
 
-     */
+
 }
