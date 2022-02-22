@@ -384,6 +384,14 @@ public class MainView {
         leftPane.updateListView(events, eventOrder);
     }
 
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * Uses updateEvents function as a template with some modifications
+     * Much of the original code is left untouched, might need some adjustment or refactoring to fix future bugs
+     * idEvent is the specific event rectangle on the timeline that the user wishes to move
+     * xMouse is the absolute x position of the mouse relative to the screen
+     * @author Erik Hedåker
+     */
     public void moveEventToMouseTimeline(Object[][] events, Long[] eventOrder, int idEvent, int xMouse) {
         timeline.clear();
         if (events != null) {
@@ -399,6 +407,10 @@ public class MainView {
         leftPane.updateListView(events, eventOrder);
     }
 
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * @author Erik Hedåker
+     */
     public void swapEventPositionsTimeline(int dragged, int target) {
         timeline.swapEventPositionsTimeline(dragged, target);
     }

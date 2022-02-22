@@ -153,6 +153,13 @@ public class MainController {
         );
     }
 
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * Uses refreshViewEvents function as a template with some modifications
+     * idEvent is the specific event rectangle on the timeline that the user wishes to move
+     * xMouse is the absolute x position of the mouse relative to the screen
+     * @author Erik Hedåker
+     */
     private void moveEventToMouseTimeline(int idEvent, int xMouse) {
         view.moveEventToMouseTimeline(
                 model.eventManager.getEvents(),
@@ -161,6 +168,10 @@ public class MainController {
                 xMouse);
     }
 
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * @author Erik Hedåker
+     */
     private void swapEventPositionsTimeline(int dragged, int target) {
         view.swapEventPositionsTimeline(dragged, target);
     }
@@ -732,6 +743,7 @@ public class MainController {
             int dragged = model.eventManager.getEventIndex(view.getEventOrderList(), uidDragged);
             int target = model.eventManager.getEventIndex(view.getEventOrderList(), uidTarget);
 
+            // Modification added in order to make task F.Tid.1.4 work
             if ((dragged != -1 && target != -1) && (dragged != target)) {
                 model.eventManager.moveEvent(view.getEventOrderList(), dragged, target);
                 swapEventPositionsTimeline(dragged, target);
@@ -740,6 +752,12 @@ public class MainController {
         }
     }
 
+    /**
+     * EventHandler class used in the implementation of task F.Tid.1.4
+     * Uses EventDragDropped class as a template with some modifications
+     * The event if-expression should only evaluates true if EventDragDropped if-expression evaluates false
+     * @author Erik Hedåker
+     */
     private class EventDragComplete implements EventHandler<DragEvent> {
 
         @Override

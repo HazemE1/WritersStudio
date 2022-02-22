@@ -271,6 +271,7 @@ public class Timeline {
                 if (rect == null)
                     continue;
 
+                // Modification added in order to make task F.Tid.1.4 work
                 if (eventPosition.containsKey(eventUIDOrder[i])) {
                     rect.setX(eventPosition.get(eventUIDOrder[i]));
                 }
@@ -312,6 +313,14 @@ public class Timeline {
         recalculateLayout(eventUIDOrder);
     }
 
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * Uses recalculateLayout function as a template with some modifications
+     * Much of the original code is left untouched, might need some adjustment or refactoring to fix future bugs
+     * idEvent is the specific event rectangle on the timeline that the user wishes to move
+     * xMouse is the absolute x position of the mouse relative to the screen
+     * @author Erik Hedåker
+     */
     public void moveEventToMouseTimeline(int idEvent, int xMouse) {
         if (eventUIDOrder != null)
             setEventOrder(eventUIDOrder);
@@ -370,6 +379,11 @@ public class Timeline {
         line.recalculate(posX, posY, width);
     }
 
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * Swaps the position values of a dragged and target event rectangle
+     * @author Erik Hedåker
+     */
     public void swapEventPositionsTimeline(int dragged, int target) {
         double temp = eventPosition.get(eventUIDOrder[dragged]);
         eventPosition.put(eventUIDOrder[dragged], eventPosition.get(eventUIDOrder[target]));
