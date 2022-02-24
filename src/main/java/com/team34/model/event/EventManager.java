@@ -162,7 +162,6 @@ public class EventManager {
         Long[] uidOrder = events.keySet().toArray(new Long[events.size()]);
         Object[][] eventArray = new Object[uidOrder.length][3];
 
-
         for (int i = 0; i < uidOrder.length; i++) {
             long uid = uidOrder[i];
             Event eventRef = events.get(uid);
@@ -184,18 +183,14 @@ public class EventManager {
             Event eventRef = events.get(uid);
         }
         return null;
-
     }
 
     public ArrayList EventListChar(){
-
         ObservableList<Object> list = FXCollections.observableList(Collections.singletonList(eventOrderLists));
-
 
         ArrayList<Event> events = new ArrayList<>();
 
         return events;
-
     }
 
     /**
@@ -269,7 +264,6 @@ public class EventManager {
 
         Long[] order = getEventOrder(orderList);
 
-
         // When the event is moved in the right direction on the timeline,
         // the events inside the scope of the loop are shifted to the left.
         if (fromIndex < toIndex) {
@@ -330,5 +324,4 @@ public class EventManager {
     public void resetChanges() {
         hasChanged = false;
     }
-
 }

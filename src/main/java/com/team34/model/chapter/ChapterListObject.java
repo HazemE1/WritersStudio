@@ -14,7 +14,6 @@ public class ChapterListObject {
         return title;
     }
 
-
     public long getUid() {
         return uid;
     }
@@ -23,5 +22,4 @@ public class ChapterListObject {
     public String toString() {
         return title;
     }
-
 }

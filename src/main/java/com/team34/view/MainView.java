@@ -2,7 +2,6 @@ package com.team34.view;
 
 import com.team34.view.chapter.ChapterList;
 import com.team34.view.dialogs.EditChapterDialog;
-import com.team34.controller.MainController;
 import com.team34.model.event.EventListObject;
 
 import javafx.event.ActionEvent;
@@ -224,23 +223,16 @@ public class MainView {
 
 
         /**
-         * ALex
+         * @ALex
          */
         editChapterDialog = new EditChapterDialog(mainStage);
         // NY Chapter dialog
     }
 
     public void newCharChart(EventListObject eventListObject){
-        System.out.println("hejsan");
         characterChart = new CharacterChart(centerPane.getWidth(), centerPane.getHeight(),eventListObject);
 
         characterChart.addToPane(centerPane);
-
-
-
-
-
-
     }
 
     /**
@@ -431,15 +423,10 @@ public class MainView {
         editCharacterPanel.updateListView(events, eventOrder);
     }
 
-
-
     public void updateChapters(Object[][] chapters, Long[] chapterOrder) {
         leftChapterPane.updateListView(chapters, chapterOrder);
         editEventDialog.updateListView(chapters, chapterOrder);
     }
-
-
-
 
     /**
      * Fires a close request event on the main stage.
@@ -481,11 +468,8 @@ public class MainView {
         characterChart.updateCharacters(characters, associations, eventListObject);
     }
 
-
-
     public EventListObject returns(){
         return EventList.list();
-
     }
 
     /**
@@ -509,7 +493,6 @@ public class MainView {
         Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK);
         alert.setTitle(title);
         alert.showAndWait();
-
     }
 
     public Boolean warningDialogOptions(String text, String title){
@@ -524,7 +507,6 @@ public class MainView {
         alert.getResult();
 
         return false;
-
     }
 
     public long getSelectedEventUID() {
@@ -586,6 +568,4 @@ public class MainView {
     public ShowCharacterDialog getShowCharacterDialog() {
         return showCharacterDialog;
     }
-
-
 }

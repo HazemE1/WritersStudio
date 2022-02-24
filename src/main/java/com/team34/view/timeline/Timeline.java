@@ -212,7 +212,6 @@ public class Timeline {
                 return pair.getKey();
             }
         }
-
         return -1L;
     }
 
@@ -382,6 +381,4 @@ public class Timeline {
             e.consume();
         }
     }
-
-
 }

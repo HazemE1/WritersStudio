@@ -66,7 +66,5 @@ class TimelineLine {
 
         arrow.setLayoutX(posX + length);
         arrow.setLayoutY(posY);
-
     }
-
 }
