@@ -9,7 +9,6 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-
         com.team34.model.Project model =
                 new com.team34.model.Project();
 
@@ -20,7 +19,6 @@ public class App extends Application {
 
         com.team34.controller.MainController controller =
                 new com.team34.controller.MainController(view, model);
-
     }
 
     public static void main(String[] args) {

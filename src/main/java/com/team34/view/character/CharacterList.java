@@ -5,7 +5,6 @@ import com.team34.model.event.EventListObject;
 import com.team34.view.event.EventList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,7 +22,6 @@ import java.util.Comparator;
 
 import com.team34.view.MainView;
 
-
 /**
  * StackPane for the {@link MainView} that contains add-, edit-, and create character buttons,
  * and a list of all characters.
@@ -38,7 +36,6 @@ public class CharacterList extends StackPane {
     private ListView<CharacterListObject> list;
     private Button add, edit, delete;
     private Label title;
-
 
     // Panes
     private BorderPane outerPane;
@@ -57,8 +54,6 @@ public class CharacterList extends StackPane {
      * Initializes StackPane.
      */
     public CharacterList(EventList eventList) {
-//        window = new Stage();
-
         this.eventList = eventList;
         //Panes
         outerPane = new BorderPane();
@@ -198,7 +193,6 @@ public class CharacterList extends StackPane {
         if (list.getSelectionModel().getSelectedItem() != null) {
             return list.getSelectionModel().getSelectedItem().getUid();
         }
-
         return -1;
     }
 

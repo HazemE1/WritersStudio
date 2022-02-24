@@ -25,8 +25,6 @@ public class EventList extends StackPane {
     private Label title;
     private MainView view;
 
-
-
     // Panes
     BorderPane outerPane;
     BorderPane innerPane;
@@ -99,7 +97,6 @@ public class EventList extends StackPane {
         return list.getSelectionModel().getSelectedItem();
     }
 
-
     public void setStyleSheets() {
         outerPane.getStyleClass().add("outerPane");
     }
@@ -133,7 +130,6 @@ public class EventList extends StackPane {
         edit.setGraphic(imageViewEditEvent);
         delete.setGraphic(imageViewDeleteEvent);
     }
-
 
     /**
      * Sets button IDs for the Add-, Edit- and Delete buttons. The IDs are used in the

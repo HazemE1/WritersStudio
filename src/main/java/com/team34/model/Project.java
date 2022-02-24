@@ -48,7 +48,6 @@ public class Project {
     private String currProjectName;
     private File currProjectFile;
 
-
     /**
      * Constructs the project, sets up the working directory, and loads the preferences file.
      */
@@ -345,7 +344,6 @@ public class Project {
                                 break;
                         }
                     }
-
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())

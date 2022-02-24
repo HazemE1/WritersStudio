@@ -34,6 +34,7 @@ public class ChapterManager {
 
         return uid;
     }
+
     public boolean editChapter(long uid, String name, String description) {
         if (chapters.containsKey(uid)) {
             chapters.replace(uid, new Chapter(name, description));
@@ -74,7 +75,6 @@ public class ChapterManager {
         Long[] uidOrder = chapters.keySet().toArray(new Long[chapters.size()]);
         Object[][] eventArray = new Object[uidOrder.length][3];
 
-
         for (int i = 0; i < uidOrder.length; i++) {
             long uid = uidOrder[i];
             Chapter chapterRef = chapters.get(uid);
@@ -106,8 +106,6 @@ public class ChapterManager {
         return -1;
     }
 
-
-
     public void addOrderList(LinkedList<Long> orderList) {
         chapterOrderLists.add(orderList);
     }
@@ -136,8 +134,4 @@ public class ChapterManager {
     public void resetChanges() {
         hasChanged = false;
     }
-
-
-
-
 }

@@ -70,7 +70,6 @@ public class MenuBar extends javafx.scene.control.MenuBar {
         menuEdit.getItems().add(editSubMenu);
         editSubMenu.getItems().add(editAddCharacter);
         editSubMenu.getItems().add(editAddEvent);
-
     }
 
     /**
@@ -87,5 +86,4 @@ public class MenuBar extends javafx.scene.control.MenuBar {
         editAddCharacter.setOnAction(menuActionHandler);
         editAddEvent.setOnAction(menuActionHandler);
     }
-
 }

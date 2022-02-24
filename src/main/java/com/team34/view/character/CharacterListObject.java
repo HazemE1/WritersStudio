@@ -12,13 +12,11 @@ public class CharacterListObject {
     private long uid;
     private EventListObject eventListObject;
 
-
     public CharacterListObject(String name,long uid, EventListObject eventListObject) {
         this.name = name;
         this.uid = uid;
         this.eventListObject = eventListObject;
     }
-
 
     public EventListObject getEventListObject() {
         return eventListObject;

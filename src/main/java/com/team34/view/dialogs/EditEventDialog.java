@@ -28,8 +28,6 @@ public class EditEventDialog extends Stage {
     private ComboBox<ChapterListObject> cbChapterObject;
     private ListView<ChapterListObject> list;
 
-
-
     public EditEventDialog(Stage ownerStage) {
 
         list = new ListView<>();
@@ -111,7 +109,6 @@ public class EditEventDialog extends Stage {
         // --- Set ownership and modality --- //
         initModality(Modality.WINDOW_MODAL);
         initOwner(ownerStage);
-
     }
 
     /**
@@ -206,11 +203,6 @@ public class EditEventDialog extends Stage {
 
             objects = null;
         }
-
         cbChapterObject.setItems(ol);
     }
-
-
-
-
 }

@@ -51,5 +51,4 @@ class CharacterRectangle extends LabeledRectangle {
 
         return assocUIDs.toArray(new Long[assocUIDs.size()]);
     }
-
 }

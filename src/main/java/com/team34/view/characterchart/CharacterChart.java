@@ -1,9 +1,7 @@
 package com.team34.view.characterchart;
 
-import com.team34.model.event.Event;
 import com.team34.model.event.EventListObject;
 import com.team34.view.MainView;
-import com.team34.view.character.CharacterListObject;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
@@ -36,7 +34,9 @@ public class CharacterChart {
 
     private HashMap<Long, CharacterRectangle> rectMap; // Stores references to CharacterRectangles by their UID.
 
-    //Alex
+    /**
+     * @Alex
+     */
     private HashMap<Long, EventListObject> evtMap;
 
     private HashMap<Long, AssociationPoint> assocPoints;
@@ -74,7 +74,6 @@ public class CharacterChart {
 
     }
 
-
     public CharacterChart(double width, double height, EventListObject eventListObject) {
         rectMap = new HashMap<>();
         assocPoints = new HashMap<>();
@@ -95,8 +94,6 @@ public class CharacterChart {
         scrollPane.setContent(pane);
         scrollPane.getStyleClass().add("characterchart-scrollpane");
         scrollPane.getStylesheets().add(com.team34.App.class.getResource("/css/main.css").toExternalForm());
-
-
     }
 
     /**
@@ -120,7 +117,6 @@ public class CharacterChart {
             rect.getRect().setOnContextMenuRequested(null);
             Tooltip.uninstall(rect.getRect(), rect.getTooltip());
         });
-
         rectMap.clear();
         assocPoints.clear();
         associations.clear();
@@ -159,7 +155,6 @@ public class CharacterChart {
         rect.getRect().setOnMouseDragExited(evtRectMouseDragExited);
         rect.getRect().setOnMouseDragReleased(evtRectReleased);
         rect.getRect().setOnContextMenuRequested(evtContextRequest);
-
     }
 
     private Map.Entry<Long, CharacterRectangle> getCharacterByRectangle(Rectangle rect) {
@@ -173,7 +168,6 @@ public class CharacterChart {
                 return pair;
             }
         }
-
         return null;
     }
 
@@ -188,7 +182,6 @@ public class CharacterChart {
                 return pair;
             }
         }
-
         return null;
     }
 
@@ -273,7 +266,6 @@ public class CharacterChart {
 
         if (endCharUID != -1L)
             rectMap.get(endCharUID).addAssociationPoint(endPtUID, assocUID);
-
     }
 
     public void setAssociationPositions(long assocUID, double sX, double sY, double eX, double eY) {
@@ -332,7 +324,6 @@ public class CharacterChart {
             pt.y += dy;
             updateAssociationLinePoint(pt);
         }
-
     }
 
     private void updateAssociationLinePoint(AssociationPoint point) {
@@ -406,7 +397,6 @@ public class CharacterChart {
                 x = centerX;
                 y = rectY + rectH;
             }
-
         }
 
         return new Double[]{x, y};
@@ -425,18 +415,16 @@ public class CharacterChart {
         clear();
 
 
-        if(eventListObject != null){
-
+        if (eventListObject != null) {
 
 
             if (characters != null) {
                 for (int i = 0; i < characters.size(); i++) { // Update characters
                     Object[] characterData = characters.get(i);
 
-
                     System.out.println("Test:");
-                    System.out.println(characterData[5] +" "+ eventListObject.getTitle());
-                    if(Objects.equals(characterData[5].toString(), eventListObject.getTitle())){
+                    System.out.println(characterData[5] + " " + eventListObject.getTitle());
+                    if (Objects.equals(characterData[5].toString(), eventListObject.getTitle())) {
                         addCharacter((Long) characterData[1], (String) characterData[0]);
                         setCharacterPosition(
                                 (Long) characterData[1],
@@ -444,9 +432,6 @@ public class CharacterChart {
                                 (Double) characterData[3]
                         );
                     }
-
-
-
                 }
             }
 
@@ -561,7 +546,6 @@ public class CharacterChart {
             assocPt.rectUID = -1L;
             currAction.reset();
         }
-
         return result;
     }
 
@@ -885,7 +869,6 @@ public class CharacterChart {
             contextMenuItem[CONTEXT_MENU_ITEM_CENTER_LABEL].setVisible(false);
             e.consume();
         }
-
     };
 
     /********************** EVENT CLASSES ***********************/
@@ -940,8 +923,6 @@ public class CharacterChart {
         LABEL_EDIT_MOVE
     }
 
-    ;
-
     private static class ChartAction {
         ChartActionType type;
         boolean success;
@@ -986,6 +967,5 @@ public class CharacterChart {
             end = isEndPoint;
         }
     }
-
 }
 

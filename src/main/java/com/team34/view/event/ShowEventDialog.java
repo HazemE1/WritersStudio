@@ -91,5 +91,4 @@ public class ShowEventDialog extends Stage {
         lblEventTitle.setText(title);
         txtEventDescription.setText(description);
     }
-
 }

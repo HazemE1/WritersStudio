@@ -19,7 +19,6 @@ import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 import com.team34.view.dialogs.EditCharacterDialog;
 import com.team34.view.dialogs.EditEventDialog;
@@ -47,7 +46,7 @@ public class MainController {
     private final EventHandler<ActionEvent> evtMenuBarAction;
     private final EventHandler<DragEvent> evtDragDropped;
 
-    private final EventHandler<MouseEvent> evtMouseCharacterList, mouseEventEventHandler ;
+    private final EventHandler<MouseEvent> evtMouseCharacterList, mouseEventEventHandler;
     private EventListObject eventListObject;
 
     /**
@@ -68,8 +67,6 @@ public class MainController {
         this.evtDragDropped = new EventDragDropped();
         this.evtMouseCharacterList = new CharacterListMouseEvent();
         this.mouseEventEventHandler = new EventListMouseEvent();
-
-
         registerEventsOnView();
     }
 
@@ -131,7 +128,6 @@ public class MainController {
      */
     private void editEvent(long uid) {
         Object[] eventData = model.eventManager.getEventData(uid);
-        //System.out.println(Arrays.toString(model.eventManager.getEventData(uid)));
 
         if (view.getEditEventDialog().showEditEvent((String) eventData[0], (String) eventData[1])
                 == EditEventDialog.WindowResult.OK
@@ -149,9 +145,7 @@ public class MainController {
         refreshTitleBar();
     }
 
-
     /**
-     *
      * @Alexander
      */
 
@@ -170,10 +164,8 @@ public class MainController {
     }
 
     /**
-     *
      * @Alexander
      */
-
 
     private void editChapter(long uid) {
         Object[] eventData = model.eventManager.getEventData(uid);
@@ -194,17 +186,6 @@ public class MainController {
         refreshTitleBar();
     }
 
-
-
-
-
-
-
-
-
-
-
-
     /**
      * Instructs the view to update the view of events with the current state of the model.
      */
@@ -214,7 +195,6 @@ public class MainController {
                 model.eventManager.getEventOrder(view.getEventOrderList())
         );
     }
-
 
     /**
      * Alex
@@ -226,8 +206,7 @@ public class MainController {
         );
     }
 
-  
-    private void refreshViewCharChart(){
+    private void refreshViewCharChart() {
 
         view.updateCharacterList(
                 model.characterManager.getCharacterList(),
@@ -236,17 +215,15 @@ public class MainController {
         );
     }
 
-
-    private void selectchar(){
+    private void selectchar() {
 
     }
 
-
-  private boolean eventsExist(){
+    private boolean eventsExist() {
         Object[][] event = model.eventManager.getEvents();
-        if (event == null){
+        if (event == null) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }
@@ -287,7 +264,6 @@ public class MainController {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -356,7 +332,6 @@ public class MainController {
                 model.setProjectName(file.getName());
             }
         }
-
         try {
             model.saveProject();
             refreshTitleBar();
@@ -370,18 +345,15 @@ public class MainController {
      * {@link com.team34.model.character.CharacterManager} creates a new character with the user input.
      *
      * @author Jim Andersson
-     *
+     * <p>
      * edit
      * @Alexander Olsson
      */
     private void createNewCharacter(double x, double y) {
-
-
-        if(!eventsExist()){
+        if (!eventsExist()) {
 
             view.warningDialog("Måste skapa event först!", "Character");
-        }
-        else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
+        } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);
 
@@ -557,8 +529,6 @@ public class MainController {
 
             switch (sourceID) {
                 case MainView.ID_BTN_EVENT_ADD:
-                    System.out.println("Test2");
-
                     createNewEvent();
                     refreshViewEvents();
                     break;
@@ -575,7 +545,6 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_CHAPTER_ADD:
-                    System.out.println("Test");
                     createNewChapter();
                     refreshViewChapters();
                     break;
@@ -616,10 +585,6 @@ public class MainController {
 
         }
     }
-
-
-
-
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -710,7 +675,6 @@ public class MainController {
                     System.out.println("Unrecognized ID: " + sourceID);
                     break;
             }
-
         }
     }
 
@@ -788,7 +752,6 @@ public class MainController {
                     System.out.println("Unrecognized ID: " + sourceID);
                     break;
             }
-
         }
     }
 
@@ -818,7 +781,6 @@ public class MainController {
             } else { // An association was attached to the character block
                 updateModelAssociationWithView((Long) result[0]);
             }
-
             refreshTitleBar();
         }
     }
@@ -867,7 +829,6 @@ public class MainController {
                 refreshViewEvents();
             }
         }
-
     }
 
     private class CharacterListMouseEvent implements EventHandler<MouseEvent> {
@@ -878,17 +839,14 @@ public class MainController {
                     && view.characterListItemSelected()) {
                 showCharacter(view.getCharacterUID());
             }
-
         }
     }
-    private class EventListMouseEvent implements EventHandler<MouseEvent>{
 
+    private class EventListMouseEvent implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent mouseEvent) {
-            System.out.println("Klickade med musen");
-            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), view.returns());
 
+            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), view.returns());
         }
     }
-
 }
