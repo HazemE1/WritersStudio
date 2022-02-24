@@ -52,8 +52,6 @@ public class ShowCharacterDialog extends Stage {
         lblEvent = new Label("Event: ");
         lblEvent.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        lblCharacterName = new Label();
-
         charEventGroup = new ComboBox<>();
         charEventGroup.setPromptText("Choose event group");
         //charEventGroup.setItems(eventManager.EventListChar());
@@ -63,13 +61,13 @@ public class ShowCharacterDialog extends Stage {
 
         //Textfield
         lblCharacterName = new Label();
-        lblCharacterName.setMaxWidth(150);
+        lblCharacterName.setMaxWidth(200);
 
         lblCharacterAge = new Label();
-        lblCharacterAge.setMaxWidth(150);
+        lblCharacterAge.setMaxWidth(200);
 
         lblEventName = new Label();
-        lblEventName.setMaxWidth(150);
+        lblEventName.setMaxWidth(200);
 
         //TextArea
         txtDescription = new Text();
@@ -100,7 +98,7 @@ public class ShowCharacterDialog extends Stage {
 
         //Age layout
         HBox ageLayout = new HBox();
-        ageLayout.setMinHeight(30);
+        ageLayout.setMinHeight(6);
         ageLayout.setSpacing(10);
         ageLayout.setAlignment(Pos.CENTER_LEFT);
         ageLayout.getChildren().addAll(lblAge, lblCharacterAge);
@@ -137,7 +135,8 @@ public class ShowCharacterDialog extends Stage {
         layout.add(lblDescription, 0, 1);
         layout.add(txtDescription, 0, 2);
         layout.add(lblAge, 0, 4);
-        layout.add(buttonLayout, 0, 5);
+        layout.add(lblCharacterAge, 0, 5);
+        layout.add(buttonLayout, 0, 6);
 
         // --- Set Scene --- //
         Scene scene = new Scene(layout);
@@ -164,7 +163,6 @@ public class ShowCharacterDialog extends Stage {
         description = (String) data[1];
         event = (String) data[2];
         age = (String) data[3];
-        System.out.println(age);
 
         lblCharacterName.setText(name);
         txtDescription.setText(description);
