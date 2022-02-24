@@ -1,7 +1,10 @@
 package com.team34.view;
 
+import com.team34.view.chapter.ChapterList;
+import com.team34.view.dialogs.EditChapterDialog;
 import com.team34.controller.MainController;
 import com.team34.model.event.EventListObject;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -38,7 +41,7 @@ import com.team34.view.character.ShowCharacterDialog;
  */
 public class MainView {
 
-    private static final double MIN_WINDOW_WIDTH = 800.0;
+    private static final double MIN_WINDOW_WIDTH = 1000.0;
     private static final double MIN_WINDOW_HEIGHT = 600.0;
     private static final double MAX_WINDOW_WIDTH = 3840.0; // 4K Ultra HD
     private static final double MAX_WINDOW_HEIGHT = 2160.0; // 4K Ultra HD
@@ -51,6 +54,9 @@ public class MainView {
     public static final String ID_BTN_EVENT_ADD = "BTN_EVENT_ADD";
     public static final String ID_BTN_EVENT_EDIT = "BTN_EVENT_EDIT";
     public static final String ID_BTN_EVENT_DELETE = "BTN_EVENT_DELETE";
+    public static final String ID_BTN_CHAPTER_ADD = "BTN_CHAPTER_ADD";
+    public static final String ID_BTN_CHAPTER_EDIT = "BTN_CHAPTER_EDIT";
+    public static final String ID_BTN_CHAPTER_DELETE = "BTN_CHAPTER_DELETE";
 
     public static final String ID_TIMELINE_NEW_EVENT = "TIMELINE_NEW_EVENT";
     public static final String ID_TIMELINE_REMOVE_EVENT = "TIMELINE_REMOVE_EVENT";
@@ -80,6 +86,7 @@ public class MainView {
     private final StackPane bottomPane;
     private final SplitPane firstLayerSplit;
     private final EventList leftPane;
+    private final ChapterList leftChapterPane;
     private final StackPane centerPane;
     private final CharacterList rightPane;
     private final SplitPane secondLayerSplit;
@@ -97,8 +104,10 @@ public class MainView {
     private EditEventDialog editEventDialog;
     private EditCharacterDialog editCharacterPanel;
     private EditAssociationDialog editAssociationDialog;
+    private EditChapterDialog editChapterDialog;
     private ShowCharacterDialog showCharacterDialog;
     private int eventOrderList; // index to specify which order list to use
+    private int chapterOrderList;
     private double lastChartMouseClickX;
     private double lastChartMouseClickY;
 
@@ -118,6 +127,7 @@ public class MainView {
      */
     public MainView(Stage mainStage, double screenW, double screenH, boolean maximized) {
         eventOrderList = 0;
+        chapterOrderList =0;
         this.mainStage = mainStage;
         lastChartMouseClickX = 0.0;
         lastChartMouseClickY = 0.0;
@@ -150,18 +160,23 @@ public class MainView {
         firstLayerSplit.setDividerPosition(0, 0.99);
 
         // Create the second-layer panes, contained by centerPane. These are separated vertically
-        leftPane = new EventList(this); // Contains event list
+        leftPane = new EventList(); // Contains event list
+        leftChapterPane = new ChapterList();
+
         centerPane = new StackPane(); // Contains character chart
         rightPane = new CharacterList(leftPane); // Contains character list
         secondLayerSplit = new SplitPane();
 
         leftPane.setMinSize(250.0, 200.0);
+        leftChapterPane.setMinSize(250.0, 200.0);
         rightPane.setMinSize(250.0, 200.0);
+        centerPane.setMinSize(650,200);
 
         secondLayerSplit.setOrientation(Orientation.HORIZONTAL); // layed-out horizontally, but splitted vertically
-        secondLayerSplit.getItems().addAll(leftPane, centerPane, rightPane);
+        secondLayerSplit.getItems().addAll(leftChapterPane, leftPane, centerPane, rightPane);
         secondLayerSplit.setDividerPosition(0, 0.25);
-        secondLayerSplit.setDividerPosition(1, 0.99);
+        secondLayerSplit.setDividerPosition(1, 0.25);
+        secondLayerSplit.setDividerPosition(2, 0.99);
         topPane.getChildren().add(secondLayerSplit);
 
         // Add split the first layer split pane to the contentBorderPane
@@ -206,6 +221,13 @@ public class MainView {
 
         // Create association dialog
         editAssociationDialog = new EditAssociationDialog(mainStage);
+
+
+        /**
+         * ALex
+         */
+        editChapterDialog = new EditChapterDialog(mainStage);
+        // NY Chapter dialog
     }
 
     public void newCharChart(EventListObject eventListObject){
@@ -240,6 +262,10 @@ public class MainView {
         return eventOrderList;
     }
 
+    public int getChapterOrderList() {
+        return chapterOrderList;
+    }
+
     /**
      * Sets the index of which event order list to use.
      * '0' is the default order list.
@@ -268,6 +294,10 @@ public class MainView {
      */
     public EditEventDialog getEditEventDialog() {
         return editEventDialog;
+    }
+
+    public EditChapterDialog getEditChapterDialog() {
+        return editChapterDialog;
     }
 
     /**
@@ -331,6 +361,7 @@ public class MainView {
     public void registerButtonEvents(EventHandler<ActionEvent> buttonEventHandler) {
         rightPane.registerButtonEvents(buttonEventHandler);
         leftPane.registerButtonEvents(buttonEventHandler);
+        leftChapterPane.registerButtonEvents(buttonEventHandler);
     }
 
     public void registerMouseEvents(EventHandler<MouseEvent> listEventHandler) {
@@ -399,6 +430,16 @@ public class MainView {
         leftPane.updateListView(events, eventOrder);
         editCharacterPanel.updateListView(events, eventOrder);
     }
+
+
+
+    public void updateChapters(Object[][] chapters, Long[] chapterOrder) {
+        leftChapterPane.updateListView(chapters, chapterOrder);
+        editEventDialog.updateListView(chapters, chapterOrder);
+    }
+
+
+
 
     /**
      * Fires a close request event on the main stage.
@@ -490,6 +531,16 @@ public class MainView {
         return leftPane.getEventUID();
     }
 
+    /**
+     *
+     * ALEX
+     * @return
+     */
+
+    public long getSelectedChapterUID(){
+        return leftChapterPane.getChapterUID();
+    }
+
     public Object[] onCharacterReleased(MouseEvent e) {
         return characterChart.onCharacterReleased(e);
     }
@@ -535,10 +586,6 @@ public class MainView {
     public ShowCharacterDialog getShowCharacterDialog() {
         return showCharacterDialog;
     }
-
-
-
-
 
 
 }

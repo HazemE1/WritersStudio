@@ -28,8 +28,6 @@ public class EditCharacterDialog extends Stage {
     private TextArea taCharacterDescription;
     private WindowResult windowResult;
     private ComboBox<EventListObject> cbEventGroup;
-    private EventList eventList;
-    private EventManager eventManager;
     private ListView<EventListObject> list;
 
 
@@ -52,7 +50,7 @@ public class EditCharacterDialog extends Stage {
 
         cbEventGroup = new ComboBox<>();
         //cbEventGroup.setItems(eventManager.getEvents());
-        cbEventGroup.setPromptText("Choose event group2");
+        cbEventGroup.setPromptText("Choose event");
 
 
         //TextArea

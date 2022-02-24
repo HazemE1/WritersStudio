@@ -1,7 +1,6 @@
 package com.team34.view.dialogs;
 
 import com.team34.model.chapter.ChapterListObject;
-import com.team34.model.event.EventListObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -19,30 +18,22 @@ import javafx.stage.Stage;
  * @Alexander Olsson
  */
 
-public class EditEventDialog extends Stage {
+public class EditChapterDialog extends Stage {
 
     private WindowResult windowResult;
 
     private TextField tfEventName;
     private TextArea taEventDescription;
-    private ComboBox<ChapterListObject> cbChapterObject;
-    private ListView<ChapterListObject> list;
 
-
-
-    public EditEventDialog(Stage ownerStage) {
-
-        list = new ListView<>();
-
+    public EditChapterDialog(Stage ownerStage) {
         setTitle("Edit Event");
         setOnCloseRequest(e -> windowResult = WindowResult.CANCEL);
 
         // --- GUI elements --- //
 
         //Label
-        Label lblEventName = new Label("Event name:");
-        Label lblEventGroup = new Label("Event group:");
-        Label lblEventDescription = new Label("Event description:");
+        Label lblEventName = new Label("Chapter name:");
+        Label lblEventDescription = new Label("Chapter description:");
 
         //Textfield
         tfEventName = new TextField();
@@ -54,8 +45,7 @@ public class EditEventDialog extends Stage {
         taEventDescription.setPromptText("Enter event description here");
 
         //Drop down
-        cbChapterObject = new ComboBox<>();
-        cbChapterObject.setPromptText("Choose Chapter");
+
 
 
         //Button
@@ -81,9 +71,7 @@ public class EditEventDialog extends Stage {
 //        nameLayout.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 
         //EventGroup layout
-        HBox eventGroupLayout = new HBox();
-        eventGroupLayout.setSpacing(10);
-        eventGroupLayout.getChildren().addAll(lblEventGroup, cbChapterObject);
+
 
         //Add-Cancel Layout
         HBox buttonLayout = new HBox();
@@ -99,7 +87,6 @@ public class EditEventDialog extends Stage {
         layout.setPadding(new Insets(10, 10, 10, 10));
 
         layout.add(nameLayout, 0, 0);
-        layout.add(eventGroupLayout, 0, 1);
         layout.add(lblEventDescription, 0, 2);
         layout.add(taEventDescription, 0, 3);
         layout.add(buttonLayout, 0, 4);
@@ -120,8 +107,8 @@ public class EditEventDialog extends Stage {
      * @return how the user closed the window
      * @author Kasper S. Skott
      */
-    public WindowResult showCreateEvent() {
-        setTitle("New Event");
+    public WindowResult showCreateChapter() {
+        setTitle("New Chapter");
 
         tfEventName.setText("");
         taEventDescription.setText("");
@@ -140,8 +127,8 @@ public class EditEventDialog extends Stage {
      * @return how the user closed the window
      * @author Kasper S. Skott
      */
-    public WindowResult showEditEvent(String name, String description) {
-        setTitle("Edit Event");
+    public WindowResult showEditChapter(String name, String description) {
+        setTitle("Edit Chapter");
 
         tfEventName.setText(name);
         taEventDescription.setText(description);
@@ -152,23 +139,15 @@ public class EditEventDialog extends Stage {
         return windowResult;
     }
 
-    /**
-     * Returns the text currently inputted in {@link EditEventDialog#tfEventName}
-     *
-     * @return the name
-     * @author Kasper S. Skott
-     */
-    public String getEventName() {
+    
+
+
+    public String getChapterName() {
         return tfEventName.getText();
     }
 
-    /**
-     * Returns the text currently inputted in {@link EditEventDialog#taEventDescription}
-     *
-     * @return the description
-     * @author Kasper S. Skott
-     */
-    public String getEventDescription() {
+
+    public String getChapterDescription() {
         return taEventDescription.getText();
     }
 
@@ -182,35 +161,5 @@ public class EditEventDialog extends Stage {
         OK,
         CANCEL
     }
-
-
-    public ChapterListObject getChapterList() { return cbChapterObject.getValue();
-    }
-
-    public void updateListView(Object[][] chapters, Long[] order) {
-        if (chapters == null || chapters.length < 1) {
-            list.getItems().clear();
-            return;
-        }
-
-        ObservableList<ChapterListObject> ol = FXCollections.observableArrayList();
-        Object[] objects = null;
-        for (int i = 0; i < order.length; i++) {
-            for (int j = 0; j < chapters.length; j++) {
-                if (((Long) chapters[j][0]).equals(order[i]))
-                    objects = chapters[j];
-            }
-
-            ChapterListObject as;
-            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0]));
-
-            objects = null;
-        }
-
-        cbChapterObject.setItems(ol);
-    }
-
-
-
 
 }

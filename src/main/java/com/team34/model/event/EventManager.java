@@ -3,6 +3,7 @@ package com.team34.model.event;
 import java.util.*;
 
 import com.team34.model.UIDManager;
+import com.team34.model.chapter.ChapterListObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -41,9 +42,9 @@ public class EventManager {
      * @param description the description of the event
      * @return the UID of the new event
      */
-    public long newEvent(String name, String description) {
+    public long newEvent(String name, String description, ChapterListObject chapterListObject) {
         long uid = UIDManager.nextUID();
-        addEvent(uid, name, description);
+        addEvent(uid, name, description, chapterListObject);
 
         if (eventOrderLists.size() < 1)
             eventOrderLists.add(new LinkedList<>());
@@ -63,9 +64,9 @@ public class EventManager {
      * @param description the new description
      * @return true if the event was successfully edited; false if the edit failed.
      */
-    public boolean editEvent(long uid, String name, String description) {
+    public boolean editEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
         if (events.containsKey(uid)) {
-            events.replace(uid, new Event(name, description));
+            events.replace(uid, new Event(name, description, chapterListObject));
             hasChanged = true;
             return true;
         }
@@ -100,8 +101,8 @@ public class EventManager {
      * @param name        the name of the event
      * @param description the description of the event
      */
-    public void addEvent(long uid, String name, String description) {
-        events.put(uid, new Event(name, description));
+    public void addEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
+        events.put(uid, new Event(name, description, chapterListObject));
         hasChanged = true;
     }
 
@@ -160,6 +161,7 @@ public class EventManager {
 
         Long[] uidOrder = events.keySet().toArray(new Long[events.size()]);
         Object[][] eventArray = new Object[uidOrder.length][3];
+
 
         for (int i = 0; i < uidOrder.length; i++) {
             long uid = uidOrder[i];
