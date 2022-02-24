@@ -42,8 +42,11 @@ public class CharacterManager {
         return newCharacter(name, description, age, event, 0.0, 0.0);
     }
 
+    /*
+    Edit by
+    @Frida Jacobsson
+     */
     public long newCharacter(String name, String description, int age, EventListObject event, double posX, double posY) {
-
             long uid = UIDManager.nextUID();
             addCharacter(uid, name, description, age, event, posX, posY);
             return uid;

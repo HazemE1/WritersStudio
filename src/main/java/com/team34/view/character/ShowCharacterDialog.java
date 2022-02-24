@@ -46,7 +46,7 @@ public class ShowCharacterDialog extends Stage {
         lblName = new Label("Name: ");
         lblName.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        lblAge = new Label("Age");
+        lblAge = new Label("Age:");
         lblAge.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
         lblEvent = new Label("Event: ");
@@ -84,7 +84,6 @@ public class ShowCharacterDialog extends Stage {
             edit = true;
             close();
         });
-
 
         // --- Layouts --- //
 
