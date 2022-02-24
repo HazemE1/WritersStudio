@@ -38,21 +38,21 @@ public class CharacterManager {
      * @param description Character description.
      * @return UID of character.
      */
-    public long newCharacter(String name, String description, EventListObject event) {
-        return newCharacter(name, description, event, 0.0, 0.0);
+    public long newCharacter(String name, String description, int age, EventListObject event) {
+        return newCharacter(name, description, age, event, 0.0, 0.0);
     }
 
-    public long newCharacter(String name, String description, EventListObject event, double posX, double posY) {
+    public long newCharacter(String name, String description, int age, EventListObject event, double posX, double posY) {
 
             long uid = UIDManager.nextUID();
-            addCharacter(uid, name, description, event, posX, posY);
+            addCharacter(uid, name, description, age, event, posX, posY);
             return uid;
 
 
     }
 
-    public void addCharacter(long uid, String name, String description, EventListObject event, double posX, double posY) {
-        characterMap.put(uid, new Character(name, description, event,  posX, posY));
+    public void addCharacter(long uid, String name, String description, int age, EventListObject event, double posX, double posY) {
+        characterMap.put(uid, new Character(name, description, age, event,  posX, posY));
         hasChanged = true;
     }
 
@@ -64,11 +64,11 @@ public class CharacterManager {
      * @param description Character description.
      * @return True if character exists, else returns False.
      */
-    public boolean editCharacter(long uid, String name, String description, EventListObject event) {
+    public boolean editCharacter(long uid, String name, int age, String description, EventListObject event) {
         if (characterMap.containsKey(uid)) {
             Character existing = characterMap.get(uid);
             characterMap.replace(uid,
-                    new Character(name, description, event, existing.getChartPositionX(), existing.getChartPositionY())
+                    new Character(name, description, age, event, existing.getChartPositionX(), existing.getChartPositionY())
             );
             hasChanged = true;
             return true;
@@ -81,7 +81,7 @@ public class CharacterManager {
         if (characterMap.containsKey(uid)) {
             Character existing = characterMap.get(uid);
             characterMap.replace(uid,
-                    new Character(existing.getName(), existing.getDescription(), existing.getEvent(), chartPosX, chartPosY)
+                    new Character(existing.getName(), existing.getDescription(), existing.getAge(), existing.getEvent(), chartPosX, chartPosY)
             );
             hasChanged = true;
             return true;

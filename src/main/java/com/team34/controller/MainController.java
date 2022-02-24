@@ -393,6 +393,7 @@ public class MainController {
                 long newCharacterUID = model.characterManager.newCharacter(
                         view.getEditCharacterPanel().getCharacterName(),
                         view.getEditCharacterPanel().getCharacterDescription(),
+                        view.getEditCharacterPanel().getCharacterAge(),
                         view.getEditCharacterPanel().getCharacterEvent(),
                         x, y
                 );
@@ -428,6 +429,7 @@ public class MainController {
         ) {
             boolean success = model.characterManager.editCharacter(uid,
                     view.getEditCharacterPanel().getCharacterName(),
+                    view.getEditCharacterPanel().getCharacterAge(),
                     view.getEditCharacterPanel().getCharacterDescription(),
                     view.getEditCharacterPanel().getCharacterEvent()
             );

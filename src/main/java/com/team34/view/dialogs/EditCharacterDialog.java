@@ -24,7 +24,7 @@ public class EditCharacterDialog extends Stage {
 
     private Button btnSave;
     private Button btnCancel;
-    private TextField tfCharacterName;
+    private TextField tfCharacterName, tfCharacterAge;
     private TextArea taCharacterDescription;
     private WindowResult windowResult;
     private ComboBox<EventListObject> cbEventGroup;
@@ -40,6 +40,7 @@ public class EditCharacterDialog extends Stage {
 
         //Label
         Label lblCharacterName = new Label("Character name:");
+        Label lblCharacterAge = new Label("Character age:");
         Label lblEventGroup = new Label("Event group:");
         Label lblCharacterDescription = new Label("Character description:");
 
@@ -48,10 +49,13 @@ public class EditCharacterDialog extends Stage {
         tfCharacterName.setPromptText("Enter character name here");
         tfCharacterName.setMaxWidth(150);
 
+        tfCharacterAge = new TextField();
+        tfCharacterAge.setPromptText("Enter character age here");
+        tfCharacterAge.setMaxWidth(150);
+
         cbEventGroup = new ComboBox<>();
         //cbEventGroup.setItems(eventManager.getEvents());
         cbEventGroup.setPromptText("Choose event");
-
 
         //TextArea
         taCharacterDescription = new TextArea();
@@ -98,11 +102,15 @@ public class EditCharacterDialog extends Stage {
         layout.setPadding(new Insets(10, 10, 10, 10));
 
         layout.add(nameLayout, 0, 0);
-        layout.add(eventGroupLayout, 0, 2);
 
-        layout.add(lblCharacterDescription, 0, 3);
-        layout.add(taCharacterDescription, 0, 4);
-        layout.add(buttonLayout, 0, 5);
+        layout.add(lblCharacterAge, 0, 2);
+        layout.add(tfCharacterAge, 0, 3);
+
+        layout.add(eventGroupLayout, 0, 4);
+
+        layout.add(lblCharacterDescription, 0, 5);
+        layout.add(taCharacterDescription, 0, 6);
+        layout.add(buttonLayout, 0, 7);
 
         // --- Set Scene --- //
         Scene scene = new Scene(layout);
@@ -123,6 +131,7 @@ public class EditCharacterDialog extends Stage {
         setTitle("New Character");
 
         tfCharacterName.setText("");
+        tfCharacterAge.setText("");
         taCharacterDescription.setText("");
 
         tfCharacterName.requestFocus();
@@ -160,6 +169,14 @@ public class EditCharacterDialog extends Stage {
     }
 
     public EventListObject getCharacterEvent() { return cbEventGroup.getValue();
+    }
+
+    public int getCharacterAge() {
+        try{
+            return Integer.parseInt(tfCharacterAge.getText());
+        }catch(NumberFormatException numberFormatException){
+            return 0;
+        }
     }
 
     /**

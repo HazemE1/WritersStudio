@@ -11,15 +11,17 @@ public class Character {
 
     private String name = "";
     private String description = "";
+    private int age = 0;
     private double chartPositionX = 0.0;
     private double chartPositionY = 0.0;
     private EventListObject event;
 
 
-    public Character(String name, String description, EventListObject event, double posX, double posY) {
+    public Character(String name, String description, int age, EventListObject event, double posX, double posY) {
         this.name = name;
         this.description = description;
         this.event = event;
+        this.age = age;
         //this.event = event;
         chartPositionX = posX;
         chartPositionY = posY;
@@ -63,5 +65,9 @@ public class Character {
 
     public void setChartPositionY(double chartPositionY) {
         this.chartPositionY = chartPositionY;
+    }
+
+    public int getAge() {
+        return age;
     }
 }

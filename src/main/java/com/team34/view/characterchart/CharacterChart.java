@@ -36,10 +36,8 @@ public class CharacterChart {
 
     private HashMap<Long, CharacterRectangle> rectMap; // Stores references to CharacterRectangles by their UID.
 
-
     //Alex
     private HashMap<Long, EventListObject> evtMap;
-
 
     private HashMap<Long, AssociationPoint> assocPoints;
     private HashMap<Long, AssociationLine> associations;
