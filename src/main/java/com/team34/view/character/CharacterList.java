@@ -1,5 +1,8 @@
 package com.team34.view.character;
 
+import com.team34.model.event.EventListObject;
+
+import com.team34.view.event.EventList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
@@ -36,6 +39,7 @@ public class CharacterList extends StackPane {
     private Button add, edit, delete;
     private Label title;
 
+
     // Panes
     private BorderPane outerPane;
     private BorderPane innerPane;
@@ -47,13 +51,15 @@ public class CharacterList extends StackPane {
     private String addCharacter;
     private String editCharacter;
     private String deleteCharacter;
+    private EventList eventList;
 
     /**
      * Initializes StackPane.
      */
-    public CharacterList() {
+    public CharacterList(EventList eventList) {
 //        window = new Stage();
 
+        this.eventList = eventList;
         //Panes
         outerPane = new BorderPane();
         innerPane = new BorderPane();
@@ -153,7 +159,7 @@ public class CharacterList extends StackPane {
     public void updateListView(ArrayList<Object[]> characters) {
         chListObjArray.clear();
         for (Object[] ch : characters) {
-            CharacterListObject chObj = new CharacterListObject((String) ch[0], (long) ch[1]);
+            CharacterListObject chObj = new CharacterListObject((String) ch[0], (long) ch[1], (EventListObject) ch[5]);
             chListObjArray.add(chObj);
         }
         ObservableList<CharacterListObject> ol = FXCollections.observableArrayList(chListObjArray);

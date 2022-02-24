@@ -1,5 +1,7 @@
 package com.team34.view;
 
+import com.team34.controller.MainController;
+import com.team34.model.event.EventListObject;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -100,7 +102,7 @@ public class MainView {
     private double lastChartMouseClickX;
     private double lastChartMouseClickY;
 
-    public final CharacterChart characterChart;
+    public CharacterChart characterChart;
 
 ////////////////////////////////////////////////////
 
@@ -148,9 +150,9 @@ public class MainView {
         firstLayerSplit.setDividerPosition(0, 0.99);
 
         // Create the second-layer panes, contained by centerPane. These are separated vertically
-        leftPane = new EventList(); // Contains event list
+        leftPane = new EventList(this); // Contains event list
         centerPane = new StackPane(); // Contains character chart
-        rightPane = new CharacterList(); // Contains character list
+        rightPane = new CharacterList(leftPane); // Contains character list
         secondLayerSplit = new SplitPane();
 
         leftPane.setMinSize(250.0, 200.0);
@@ -204,6 +206,19 @@ public class MainView {
 
         // Create association dialog
         editAssociationDialog = new EditAssociationDialog(mainStage);
+    }
+
+    public void newCharChart(EventListObject eventListObject){
+        System.out.println("hejsan");
+        characterChart = new CharacterChart(centerPane.getWidth(), centerPane.getHeight(),eventListObject);
+
+        characterChart.addToPane(centerPane);
+
+
+
+
+
+
     }
 
     /**
@@ -322,6 +337,10 @@ public class MainView {
         rightPane.registerMouseEvents(listEventHandler);
     }
 
+    public void registerMouseEventsList(EventHandler<MouseEvent> listEventHandler) {
+        leftPane.registerMouseEvents(listEventHandler);
+    }
+
     /**
      * Installs the timeline context menu, and hooks it up to the given event.
      *
@@ -415,9 +434,17 @@ public class MainView {
      *
      * @param characters ArrayList of Object[]
      */
-    public void updateCharacterList(ArrayList<Object[]> characters, Object[][] associations) {
+    public void updateCharacterList(ArrayList<Object[]> characters, Object[][] associations, EventListObject eventListObject) {
         rightPane.updateListView(characters);
-        characterChart.updateCharacters(characters, associations);
+
+        characterChart.updateCharacters(characters, associations, eventListObject);
+    }
+
+
+
+    public EventListObject returns(){
+        return EventList.list();
+
     }
 
     /**

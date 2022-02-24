@@ -18,6 +18,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import com.team34.view.dialogs.EditCharacterDialog;
 import com.team34.view.dialogs.EditEventDialog;
@@ -44,7 +45,7 @@ public class MainController {
     private final EventHandler<WindowEvent> evtCloseRequest;
     private final EventHandler<ActionEvent> evtMenuBarAction;
     private final EventHandler<DragEvent> evtDragDropped;
-    private final EventHandler<MouseEvent> evtMouseCharacterList;
+    private final EventHandler<MouseEvent> evtMouseCharacterList, mouseEventEventHandler ;
     private EventListObject eventListObject;
 
     /**
@@ -64,6 +65,8 @@ public class MainController {
         this.evtMenuBarAction = new EventMenuBarAction();
         this.evtDragDropped = new EventDragDropped();
         this.evtMouseCharacterList = new CharacterListMouseEvent();
+        this.mouseEventEventHandler = new EventListMouseEvent();
+
 
         registerEventsOnView();
     }
@@ -79,6 +82,7 @@ public class MainController {
         view.registerMenuBarActionEvents(evtMenuBarAction);
         view.registerDragEvent(evtDragDropped);
         view.registerMouseEvents(evtMouseCharacterList);
+        view.registerMouseEventsList(mouseEventEventHandler);
         view.registerCharacterChartEvents(
                 new EventCharacterRectReleased(),
                 new EventChartClick(),
@@ -124,6 +128,7 @@ public class MainController {
      */
     private void editEvent(long uid) {
         Object[] eventData = model.eventManager.getEventData(uid);
+        //System.out.println(Arrays.toString(model.eventManager.getEventData(uid)));
 
         if (view.getEditEventDialog().showEditEvent((String) eventData[0], (String) eventData[1])
                 == EditEventDialog.WindowResult.OK
@@ -148,6 +153,20 @@ public class MainController {
                 model.eventManager.getEvents(),
                 model.eventManager.getEventOrder(view.getEventOrderList())
         );
+    }
+
+    private void refreshViewCharChart(){
+
+        view.updateCharacterList(
+                model.characterManager.getCharacterList(),
+                model.characterManager.getAssociationData(),
+                view.returns()
+        );
+    }
+
+
+    private void selectchar(){
+
     }
 
     private boolean eventsExist(){
@@ -306,7 +325,8 @@ public class MainController {
                 );
                 view.updateCharacterList(
                         model.characterManager.getCharacterList(),
-                        model.characterManager.getAssociationData()
+                        model.characterManager.getAssociationData(),
+                        view.returns()
                 );
 
                 if (newCharacterUID == -1L) {
@@ -393,7 +413,7 @@ public class MainController {
                     view.getEditAssociationDialog().getAssociationLabel(), startX, startY
             );
 
-            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData());
+            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), view.returns());
             view.startCharacterAssociationDrag(assocUID, false);
             refreshTitleBar();
         }
@@ -432,7 +452,8 @@ public class MainController {
     private void refreshCharacterList() {
         view.updateCharacterList(
                 model.characterManager.getCharacterList(),
-                model.characterManager.getAssociationData()
+                model.characterManager.getAssociationData(),
+                view.returns()
         );
 
     }
@@ -760,6 +781,16 @@ public class MainController {
                     && view.characterListItemSelected()) {
                 showCharacter(view.getCharacterUID());
             }
+
+        }
+    }
+    private class EventListMouseEvent implements EventHandler<MouseEvent>{
+
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            System.out.println("Klickade med musen");
+            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), view.returns());
+
         }
     }
 

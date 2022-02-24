@@ -160,12 +160,13 @@ public class CharacterManager {
 
         for (Map.Entry character : characterMap.entrySet()) {
             Character ch = (Character) character.getValue();
-            Object[] chListObj = new Object[5];
+            Object[] chListObj = new Object[6];
             chListObj[0] = ch.getName();
             chListObj[1] = character.getKey();
             chListObj[2] = ch.getChartPositionX();
             chListObj[3] = ch.getChartPositionY();
             chListObj[4] = ch.getDescription();
+            chListObj[5] = ch.getEvent();
             characterArrayList.add(chListObj);
         }
         return characterArrayList;
