@@ -47,8 +47,6 @@ public class CharacterManager {
             long uid = UIDManager.nextUID();
             addCharacter(uid, name, description, event, posX, posY);
             return uid;
-
-
     }
 
     public void addCharacter(long uid, String name, String description, EventListObject event, double posX, double posY) {
@@ -86,7 +84,6 @@ public class CharacterManager {
             hasChanged = true;
             return true;
         }
-
         return false;
     }
 
@@ -140,7 +137,6 @@ public class CharacterManager {
             hasChanged = true;
             return true;
         }
-
         return false;
     }
 
@@ -257,5 +253,4 @@ public class CharacterManager {
     public void resetChanges() {
         hasChanged = false;
     }
-
 }

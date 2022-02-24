@@ -46,8 +46,6 @@ public class EditChapterDialog extends Stage {
 
         //Drop down
 
-
-
         //Button
         Button btnAdd = new Button("Ok");
         btnAdd.setOnAction(e -> {
@@ -71,7 +69,6 @@ public class EditChapterDialog extends Stage {
 //        nameLayout.setBackground(new Background(new BackgroundFill(Color.GRAY, CornerRadii.EMPTY, Insets.EMPTY)));
 
         //EventGroup layout
-
 
         //Add-Cancel Layout
         HBox buttonLayout = new HBox();
@@ -98,7 +95,6 @@ public class EditChapterDialog extends Stage {
         // --- Set ownership and modality --- //
         initModality(Modality.WINDOW_MODAL);
         initOwner(ownerStage);
-
     }
 
     /**
@@ -139,13 +135,9 @@ public class EditChapterDialog extends Stage {
         return windowResult;
     }
 
-    
-
-
     public String getChapterName() {
         return tfEventName.getText();
     }
-
 
     public String getChapterDescription() {
         return taEventDescription.getText();
@@ -161,5 +153,4 @@ public class EditChapterDialog extends Stage {
         OK,
         CANCEL
     }
-
 }

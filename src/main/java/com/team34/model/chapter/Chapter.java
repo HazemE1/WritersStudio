@@ -5,7 +5,6 @@ public class Chapter {
     private String name = "";
     private String description = "";
 
-
     public Chapter(String name, String description) {
         this.name = name;
         this.description = description;

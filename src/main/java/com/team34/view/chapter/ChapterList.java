@@ -23,8 +23,6 @@ public class ChapterList extends StackPane {
     private Button add, edit, delete;
     private Label title;
 
-
-
     // Panes
     BorderPane outerPane;
     BorderPane innerPane;
@@ -125,7 +123,6 @@ public class ChapterList extends StackPane {
         delete.setGraphic(imageViewDeleteEvent);
     }
 
-
     /**
      * Sets button IDs for the Add-, Edit- and Delete buttons. The IDs are used in the
      * {@link com.team34.controller.MainController} class for event handling.
@@ -135,7 +132,6 @@ public class ChapterList extends StackPane {
         edit.setId(MainView.ID_BTN_CHAPTER_EDIT);
         delete.setId(MainView.ID_BTN_CHAPTER_DELETE);
     }
-
 
     public void updateListView(Object[][] chapters, Long[] order) {
         if (chapters == null || chapters.length < 1) {
@@ -160,8 +156,6 @@ public class ChapterList extends StackPane {
         list.setItems(ol);
     }
 
-
-
     /**
      * Registers the Add-, Edit- and Delete buttons to the event handler in the
      * {@link com.team34.controller.MainController} class.
@@ -178,10 +172,8 @@ public class ChapterList extends StackPane {
         if (list.getSelectionModel().getSelectedItem() != null) {
             return list.getSelectionModel().getSelectedItem().getUid();
         }
-
         return -1;
     }
-
 
     public ListView<ChapterListObject> getList() {
         return list;
@@ -190,6 +182,4 @@ public class ChapterList extends StackPane {
     public void setList(ListView<ChapterListObject> list) {
         this.list = list;
     }
-
-
 }

@@ -48,7 +48,6 @@ public class Project {
     private String currProjectName;
     private File currProjectFile;
 
-
     /**
      * Constructs the project, sets up the working directory, and loads the preferences file.
      */
@@ -222,7 +221,6 @@ public class Project {
         String name = null;
         ChapterListObject chapterListObject = null;
 
-
         while (reader.hasNext()) {
             event = reader.nextEvent();
 
@@ -242,7 +240,6 @@ public class Project {
                                 break;
                         }
                     }
-
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
@@ -252,7 +249,6 @@ public class Project {
 
                     }
                 }
-
             } else if (event.isEndElement()) {
                 if (event.asEndElement().getName().getLocalPart() == "events")
                     return;
@@ -298,9 +294,7 @@ public class Project {
                         }
                     }
                 }
-
             }
-
         }
     }
 
@@ -345,17 +339,14 @@ public class Project {
                                 break;
                         }
                     }
-
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
                             characterManager.addCharacter(uid, name,"",eventListObject, chartX, chartY);
                         else
                             characterManager.addCharacter(uid, name, "",eventListObject, chartX, chartY);
-
                     }
                 }
-
             } else if (event.isEndElement()) {
                 if (event.asEndElement().getName().getLocalPart() == "characters")
                     return;
@@ -423,17 +414,14 @@ public class Project {
                                 break;
                         }
                     }
-
                     event = reader.nextEvent();
                     if (uid != -1L && label != null) {
                         if (event.isCharacters())
                             characterManager.addAssociation(uid, startUID, endUID, sX, sY, eX, eY, event.asCharacters().getData(), lblX, lblY);
                         else
                             characterManager.addAssociation(uid, startUID, endUID, sX, sY, eX, eY, "", lblX, lblY);
-
                     }
                 }
-
             } else if (event.isEndElement()) {
                 if (event.asEndElement().getName().getLocalPart() == "associations")
                     return;
@@ -571,7 +559,6 @@ public class Project {
         Object[] data;
         for (int i = 0; i < assocs.length; i++) {
             data = assocs[i];
-
             writer.add(factory.createCharacters("\t\t"));
             writer.add(factory.createStartElement("", "", "association"));
             writer.add(factory.createAttribute("uid", Long.toString((Long) data[0])));
@@ -682,7 +669,6 @@ public class Project {
             eventManager.resetChanges();
             characterManager.resetChanges();
         }
-
     }
 
     /**
@@ -825,5 +811,4 @@ public class Project {
             windowHeight = ref.windowHeight;
         }
     }
-
 }

@@ -15,7 +15,6 @@ public class Character {
     private double chartPositionY = 0.0;
     private EventListObject event;
 
-
     public Character(String name, String description, EventListObject event, double posX, double posY) {
         this.name = name;
         this.description = description;

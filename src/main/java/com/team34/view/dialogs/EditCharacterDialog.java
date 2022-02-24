@@ -30,7 +30,6 @@ public class EditCharacterDialog extends Stage {
     private ComboBox<EventListObject> cbEventGroup;
     private ListView<EventListObject> list;
 
-
     public EditCharacterDialog(Stage ownerStage) {
         list = new ListView<>();
         setTitle("Edit Character");
@@ -70,7 +69,6 @@ public class EditCharacterDialog extends Stage {
             close();
         });
 
-
         // --- Layouts --- //
 
         //Name Layout
@@ -83,7 +81,6 @@ public class EditCharacterDialog extends Stage {
         HBox buttonLayout = new HBox();
         buttonLayout.setSpacing(10);
         buttonLayout.getChildren().addAll(btnSave, btnCancel);
-
 
         HBox eventGroupLayout = new HBox();
         eventGroupLayout.setSpacing(10);
@@ -173,7 +170,6 @@ public class EditCharacterDialog extends Stage {
         CANCEL
     }
 
-
     public void updateListView(Object[][] events, Long[] order) {
         if (events == null || events.length < 1) {
             list.getItems().clear();
@@ -191,9 +187,6 @@ public class EditCharacterDialog extends Stage {
             ol.add(new EventListObject((String) event[1], (Long) event[0]));
             event = null;
         }
-
         cbEventGroup.setItems(ol);
     }
-
-
 }
