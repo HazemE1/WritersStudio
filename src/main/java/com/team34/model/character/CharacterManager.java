@@ -179,10 +179,11 @@ public class CharacterManager {
      * @return String[]
      */
     public String[] getCharacterData(long uid) {
-        String[] data = new String[3];
+        String[] data = new String[4];
         data[0] = characterMap.get(uid).getName();
         data[1] = characterMap.get(uid).getDescription();
         data[2] = characterMap.get(uid).getEvent().getTitle();
+        data[3] = String.valueOf(characterMap.get(uid).getAge());
 
         return data;
     }
