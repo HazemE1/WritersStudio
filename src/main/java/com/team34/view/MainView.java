@@ -160,7 +160,7 @@ public class MainView {
         firstLayerSplit.setDividerPosition(0, 0.99);
 
         // Create the second-layer panes, contained by centerPane. These are separated vertically
-        leftPane = new EventList(); // Contains event list
+        leftPane = new EventList(this); // Contains event list
         leftChapterPane = new ChapterList();
 
         centerPane = new StackPane(); // Contains character chart
