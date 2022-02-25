@@ -1,5 +1,6 @@
 package com.team34.view.dialogs;
 
+import com.team34.controller.Validator;
 import com.team34.model.event.Event;
 import com.team34.model.event.EventListObject;
 import com.team34.model.event.EventManager;
@@ -45,12 +46,12 @@ public class EditCharacterDialog extends Stage {
 
         //Textfield
         tfCharacterName = new TextField();
-        tfCharacterName.setPromptText("Enter character name here");
+        tfCharacterName.setPromptText("");
         tfCharacterName.setMaxWidth(150);
 
         tfCharacterAge = new TextField();
-        tfCharacterAge.setPromptText("Enter character age here");
-        tfCharacterAge.setMaxWidth(150);
+        tfCharacterAge.setPromptText("");
+        tfCharacterAge.setMaxWidth(60);
 
         cbEventGroup = new ComboBox<>();
         //cbEventGroup.setItems(eventManager.getEvents());
@@ -58,7 +59,7 @@ public class EditCharacterDialog extends Stage {
 
         //TextArea
         taCharacterDescription = new TextArea();
-        taCharacterDescription.setPromptText("Enter character description here");
+        taCharacterDescription.setPromptText("");
 
         //Buttons
         btnSave = new Button("Save");
@@ -169,6 +170,7 @@ public class EditCharacterDialog extends Stage {
     }
 
     public int getCharacterAge() {
+        boolean ok = Validator.validateValidAge(tfCharacterAge.getText());
         try{
             return Integer.parseInt(tfCharacterAge.getText());
         }catch(NumberFormatException numberFormatException){
