@@ -238,9 +238,11 @@ public class Project {
                             case "name":
                                 name = attr.getValue();
                                 break;
+
                         }
                     }
                     event = reader.nextEvent();
+                    System.out.println(event);
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
                             eventManager.addEvent(uid, name, event.asCharacters().getData(), chapterListObject);
@@ -311,7 +313,8 @@ public class Project {
         String name = null;
         double chartX = 0.0;
         double chartY = 0.0;
-        EventListObject eventListObject = null;
+        long eventUID = -1L;
+        String eventName = null;
 
         while (reader.hasNext()) {
             event = reader.nextEvent();
@@ -337,14 +340,19 @@ public class Project {
                             case "chartY":
                                 chartY = Double.parseDouble(attr.getValue());
                                 break;
+                            case "eventName":
+                                eventName = attr.getValue();
+                            case "eventUID":
+                                eventUID = Long.parseLong(attr.getValue());
+
                         }
                     }
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            characterManager.addCharacter(uid, name,"",eventListObject, chartX, chartY);
+                            characterManager.addCharacter(uid, name,"",new EventListObject(eventName, eventUID), chartX, chartY);
                         else
-                            characterManager.addCharacter(uid, name, "",eventListObject, chartX, chartY);
+                            characterManager.addCharacter(uid, name, "",new EventListObject(eventName,eventUID ), chartX, chartY);
                     }
                 }
             } else if (event.isEndElement()) {
@@ -469,6 +477,7 @@ public class Project {
             writer.add(factory.createStartElement("", "", "event"));
             writer.add(factory.createAttribute("name", (String) event[i][1]));
             writer.add(factory.createAttribute("uid", Long.toString((Long) event[i][0])));
+           // writer.add(factory.createAttribute("eventList", String.valueOf((EventListObject) event[i][3])));
 
             writer.add(factory.createCharacters((String) event[i][2]));
 
@@ -535,8 +544,11 @@ public class Project {
             writer.add(factory.createAttribute("uid", Long.toString((Long) data[1])));
             writer.add(factory.createAttribute("chartX", Double.toString((Double) data[2])));
             writer.add(factory.createAttribute("chartY", Double.toString((Double) data[3])));
-
+            writer.add(factory.createAttribute("eventName", (String) data[6]));
+            writer.add(factory.createAttribute("eventUID", Long.toString((Long) data[7])));
             writer.add(factory.createCharacters((String) data[4]));
+       
+
 
             writer.add(factory.createEndElement("", "", "character"));
             writer.add(factory.createCharacters(System.lineSeparator()));

@@ -102,6 +102,7 @@ public class EventManager {
      * @param description the description of the event
      */
     public void addEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
+        System.out.println(uid + " " + " " + name + " "+ description );
         events.put(uid, new Event(name, description, chapterListObject));
         hasChanged = true;
     }
@@ -168,6 +169,7 @@ public class EventManager {
             eventArray[i][0] = uid;
             eventArray[i][1] = eventRef.getName();
             eventArray[i][2] = eventRef.getDescription();
+            eventArray[i][2] = eventRef.getChapterListObject();
         }
         return eventArray;
     }
