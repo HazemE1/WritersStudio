@@ -6,12 +6,10 @@ public class Chapter {
 
     private String name = "";
     private String description = "";
-    private String color = "";
 
     public Chapter(String name, String description) {
         this.name = name;
         this.description = description;
-        this.color = ColorGenerator.getNewColor();
     }
 
     public String getName() {
@@ -28,9 +26,5 @@ public class Chapter {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getColor(){
-        return color;
     }
 }
