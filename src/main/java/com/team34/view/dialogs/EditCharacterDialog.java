@@ -170,11 +170,13 @@ public class EditCharacterDialog extends Stage {
     }
 
     public int getCharacterAge() {
-        boolean ok = Validator.validateValidAge(tfCharacterAge.getText());
-        try{
-            return Integer.parseInt(tfCharacterAge.getText());
-        }catch(NumberFormatException numberFormatException){
-            return 0;
+        int age = Validator.returnStringAsInt(tfCharacterAge.getText());
+        if(age!=-1){
+            return age;
+        }
+        else{
+            //FELHANTERING
+            return -1;
         }
     }
 
