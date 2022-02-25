@@ -352,7 +352,7 @@ public class MainController {
     private void createNewCharacter(double x, double y) {
         if (!eventsExist()) {
 
-            view.warningDialog("Måste skapa event först!", "Character");
+            view.warningDialog("Måste skapa event först", "Character");
         } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);

@@ -4,6 +4,7 @@ import com.team34.controller.Validator;
 import com.team34.model.event.Event;
 import com.team34.model.event.EventListObject;
 import com.team34.model.event.EventManager;
+import com.team34.view.MainView;
 import com.team34.view.event.EventList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -175,6 +176,7 @@ public class EditCharacterDialog extends Stage {
             return age;
         }
         else{
+            WarningDialogs.warningDialog("Ogiltig ålder", "Oups");
             return -1;
         }
     }
