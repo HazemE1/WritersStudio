@@ -27,6 +27,7 @@ public class Event {
         this.description = description;
         this.chapterListObject = chapterListObject;
         if(chapterListObject == null) return;
+        System.out.println(chapterListObject.getColor());
         this.color = chapterListObject.getColor();
     }
 

@@ -149,7 +149,6 @@ public class ChapterList extends StackPane {
             }
             ChapterListObject as;
             ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0], ColorGenerator.getNewColor()));
-
             objects = null;
         }
         list.setItems(ol);

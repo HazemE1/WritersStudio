@@ -151,7 +151,8 @@ public class MainController {
         if (view.getEditChapterDialog().showCreateChapter() == EditChapterDialog.WindowResult.OK) {
             long newChapterUID = model.chapterManager.newChapter(
                     view.getEditChapterDialog().getChapterName(),
-                    view.getEditChapterDialog().getChapterDescription()
+                    view.getEditChapterDialog().getChapterDescription(),
+                    ColorGenerator.getNewColor()
             );
             if (newChapterUID == -1L) {
                 // TODO Popup warning dialog, stating that either name or description has unsupported format

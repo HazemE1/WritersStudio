@@ -16,13 +16,11 @@ public class Character {
     private double chartPositionY = 0.0;
     private EventListObject event;
 
-
     public Character(String name, String description, int age, EventListObject event, double posX, double posY) {
         this.name = name;
         this.description = description;
         this.event = event;
         this.age = age;
-        //this.event = event;
         chartPositionX = posX;
         chartPositionY = posY;
     }
