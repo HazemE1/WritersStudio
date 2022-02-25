@@ -13,9 +13,7 @@ import javafx.stage.Stage;
 
 /**
  * @author Jim Andersson
- *
- * edit
- * @Alexander Olsson
+ * @updated Alexander Olsson
  */
 
 public class EditChapterDialog extends Stage {

@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 /**
  * @author Morgan Karlsson
+ * @updated Frida Jacobsson 2022-02-25
  */
 
 public class EditCharacterDialog extends Stage {
@@ -164,13 +165,18 @@ public class EditCharacterDialog extends Stage {
     public EventListObject getCharacterEvent() { return cbEventGroup.getValue();
     }
 
+    /**
+     * Method that returns a characters age only if the age is a valid int. Otherwise display warning.
+     * @author Frida Jacobsson
+     * @return
+     */
     public int getCharacterAge() {
         int age = Validator.returnStringAsInt(tfCharacterAge.getText());
         if(Validator.validateValidAge(age)){
             return age;
         }
         else{
-            WarningDialogs.displayWarning("Character's age needs to be a positive digit", "Invalid age");
+            WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
             return -1;
         }
     }

@@ -1,10 +1,10 @@
 package com.team34.model.character;
 
-import com.team34.model.event.Event;
 import com.team34.model.event.EventListObject;
 
 /**
  * @author Morgan Karlsson
+ * @updated Frida Jacobsson 2022-02-24
  */
 
 public class Character {
@@ -55,16 +55,8 @@ public class Character {
         return chartPositionX;
     }
 
-    public void setChartPositionX(double chartPositionX) {
-        this.chartPositionX = chartPositionX;
-    }
-
     public double getChartPositionY() {
         return chartPositionY;
-    }
-
-    public void setChartPositionY(double chartPositionY) {
-        this.chartPositionY = chartPositionY;
     }
 
     public int getAge() {

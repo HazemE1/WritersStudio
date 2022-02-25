@@ -35,7 +35,7 @@ public class CharacterChart {
     private HashMap<Long, CharacterRectangle> rectMap; // Stores references to CharacterRectangles by their UID.
 
     /**
-     * @Alex
+     * @author Alexander Olssson
      */
     private HashMap<Long, EventListObject> evtMap;
 

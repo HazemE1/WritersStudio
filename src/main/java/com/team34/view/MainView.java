@@ -126,7 +126,7 @@ public class MainView {
      */
     public MainView(Stage mainStage, double screenW, double screenH, boolean maximized) {
         eventOrderList = 0;
-        chapterOrderList =0;
+        chapterOrderList = 0;
         this.mainStage = mainStage;
         lastChartMouseClickX = 0.0;
         lastChartMouseClickY = 0.0;
@@ -169,7 +169,7 @@ public class MainView {
         leftPane.setMinSize(250.0, 200.0);
         leftChapterPane.setMinSize(250.0, 200.0);
         rightPane.setMinSize(250.0, 200.0);
-        centerPane.setMinSize(650,200);
+        centerPane.setMinSize(650, 200);
 
         secondLayerSplit.setOrientation(Orientation.HORIZONTAL); // layed-out horizontally, but splitted vertically
         secondLayerSplit.getItems().addAll(leftChapterPane, leftPane, centerPane, rightPane);
@@ -223,14 +223,14 @@ public class MainView {
 
 
         /**
-         * @ALex
+         * New chaper dialog
+         * @author Alexander Olsson
          */
         editChapterDialog = new EditChapterDialog(mainStage);
-        // NY Chapter dialog
     }
 
-    public void newCharChart(EventListObject eventListObject){
-        characterChart = new CharacterChart(centerPane.getWidth(), centerPane.getHeight(),eventListObject);
+    public void newCharChart(EventListObject eventListObject) {
+        characterChart = new CharacterChart(centerPane.getWidth(), centerPane.getHeight(), eventListObject);
 
         characterChart.addToPane(centerPane);
     }
@@ -468,7 +468,7 @@ public class MainView {
         characterChart.updateCharacters(characters, associations, eventListObject);
     }
 
-    public EventListObject returns(){
+    public EventListObject returns() {
         return EventList.list();
     }
 
@@ -482,38 +482,11 @@ public class MainView {
         return rightPane.getCharacterUID();
     }
 
-
-    /**
-     * Warning dialog
-     *
-     * @Alexander Olsson
-     */
-
-    public Boolean warningDialogOptions(String text, String title){
-        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK, ButtonType.CANCEL);
-        alert.setTitle(title);
-        alert.showAndWait();
-
-        if (alert.getResult() == ButtonType.OK) {
-            return true;
-        }
-
-        alert.getResult();
-
-        return false;
-    }
-
     public long getSelectedEventUID() {
         return leftPane.getEventUID();
     }
 
-    /**
-     *
-     * ALEX
-     * @return
-     */
-
-    public long getSelectedChapterUID(){
+    public long getSelectedChapterUID() {
         return leftChapterPane.getChapterUID();
     }
 

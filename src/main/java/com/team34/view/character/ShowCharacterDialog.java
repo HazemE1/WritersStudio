@@ -153,8 +153,8 @@ public class ShowCharacterDialog extends Stage {
      *
      *
      * edit
-     * @Alexander Olsson
-     * @Frida Jacobsson 2022-02-24
+     * @updated Alexander Olsson
+     * @eupdated Frida Jacobsson 2022-02-24
      */
     public boolean showCharacter(Object[] data) {
         String name, description, event, age;

@@ -32,6 +32,7 @@ import com.team34.view.MainView;
  * it makes it easier to implement changes in a safe manner, lowering the risk of errors.
  *
  * @author Kasper S. Skott
+ * @updated Frida Jacobsson 2022-02-25
  */
 public class MainController {
 
@@ -143,7 +144,7 @@ public class MainController {
     }
 
     /**
-     * @Alexander
+     * @auhtor Alexander Olsson
      */
 
     private void createNewChapter() {
@@ -349,13 +350,13 @@ public class MainController {
     private void createNewCharacter(double x, double y) {
         if (!eventsExist()) {
 
-            WarningDialogs.displayWarning("You need to create an event before you can create a character", "Error");
+            WarningDialog.displayWarning("You need to create an event before you can create a character", "Error");
         } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);
 
             if (view.getEditCharacterPanel().getCharacterEvent() == null) {
-                WarningDialogs.displayWarning("You neeed to pick an event for your character", "Error");
+                WarningDialog.displayWarning("You neeed to pick an event for your character", "Error");
 
             } else {
 
