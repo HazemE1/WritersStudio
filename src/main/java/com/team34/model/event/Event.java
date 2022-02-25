@@ -26,6 +26,7 @@ public class Event {
         this.name = name;
         this.description = description;
         this.chapterListObject = chapterListObject;
+        if(chapterListObject == null) return;
         this.color = chapterListObject.getColor();
     }
 
