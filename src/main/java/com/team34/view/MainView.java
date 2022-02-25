@@ -489,12 +489,6 @@ public class MainView {
      * @Alexander Olsson
      */
 
-    public void warningDialog(String text, String title){
-        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK);
-        alert.setTitle(title);
-        alert.showAndWait();
-    }
-
     public Boolean warningDialogOptions(String text, String title){
         Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK, ButtonType.CANCEL);
         alert.setTitle(title);
