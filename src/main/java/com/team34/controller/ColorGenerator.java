@@ -4,11 +4,11 @@ import java.util.Random;
 
 public class ColorGenerator {
 
-    static Random rand = new Random();
+    static int n = 0;
 
     public static String getNewColor() {
 
-        switch (rand.nextInt(4)-1) {
+        switch ((n++)%6) {
             case 1:
                 return "#21AFBF";
             case 2:
@@ -24,11 +24,5 @@ public class ColorGenerator {
             default:
                 return "#F282A7";
         }
-    }
-    public static int getNewValue(){
-        for(int i = 1; i < 6; i++){
-            return i;
-        }
-        return 1;
     }
 }
