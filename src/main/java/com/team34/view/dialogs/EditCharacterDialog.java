@@ -1,11 +1,7 @@
 package com.team34.view.dialogs;
 
 import com.team34.controller.Validator;
-import com.team34.model.event.Event;
 import com.team34.model.event.EventListObject;
-import com.team34.model.event.EventManager;
-import com.team34.view.MainView;
-import com.team34.view.event.EventList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -15,8 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import java.util.List;
 
 /**
  * @author Morgan Karlsson
@@ -176,7 +170,7 @@ public class EditCharacterDialog extends Stage {
             return age;
         }
         else{
-            WarningDialogs.warningDialog("Ogiltig ålder", "Oups");
+            WarningDialogs.displayWarning("Character's age needs to be a positive digit", "Invalid age");
             return -1;
         }
     }

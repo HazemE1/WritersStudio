@@ -1,7 +1,7 @@
 package com.team34.controller;
 
 import com.team34.model.event.EventListObject;
-import com.team34.view.dialogs.EditChapterDialog;
+import com.team34.view.dialogs.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -20,9 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import com.team34.view.dialogs.EditCharacterDialog;
-import com.team34.view.dialogs.EditEventDialog;
-import com.team34.view.dialogs.EditAssociationDialog;
 import com.team34.model.Project;
 import com.team34.view.MainView;
 
@@ -352,13 +349,13 @@ public class MainController {
     private void createNewCharacter(double x, double y) {
         if (!eventsExist()) {
 
-            view.warningDialog("Måste skapa event först", "Character");
+            WarningDialogs.displayWarning("You need to create an event before you can create a character", "Error");
         } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);
 
             if (view.getEditCharacterPanel().getCharacterEvent() == null) {
-                view.warningDialog("Måste välja ett event", "Character");
+                WarningDialogs.displayWarning("You neeed to pick an event for your character", "Error");
 
             } else {
 
