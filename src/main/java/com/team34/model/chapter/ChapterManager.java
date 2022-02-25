@@ -22,9 +22,9 @@ public class ChapterManager {
         chapterOrderLists.add(new LinkedList<Long>());
     }
 
-    public long newChapter(String name, String description, String color) {
+    public long newChapter(String name, String description) {
         long uid = UIDManager.nextUID();
-        addChapter(uid, name, description, color);
+        addChapter(uid, name, description);
 
         if (chapterOrderLists.size() < 1)
             chapterOrderLists.add(new LinkedList<>());
@@ -35,9 +35,9 @@ public class ChapterManager {
         return uid;
     }
 
-    public boolean editChapter(long uid, String name, String description, String color) {
+    public boolean editChapter(long uid, String name, String description) {
         if (chapters.containsKey(uid)) {
-            chapters.replace(uid, new Chapter(name, description, color));
+            chapters.replace(uid, new Chapter(name, description));
             hasChanged = true;
             return true;
         }
@@ -54,8 +54,8 @@ public class ChapterManager {
         hasChanged = true;
     }
 
-    public void addChapter(long uid, String name, String description, String color) {
-        chapters.put(uid, new Chapter(name, description, color));
+    public void addChapter(long uid, String name, String description) {
+        chapters.put(uid, new Chapter(name, description));
         hasChanged = true;
     }
 

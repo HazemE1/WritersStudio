@@ -1,15 +1,17 @@
 package com.team34.model.chapter;
 
+import com.team34.controller.ColorGenerator;
+
 public class Chapter {
 
     private String name = "";
     private String description = "";
     private String color = "";
 
-    public Chapter(String name, String description, String color) {
+    public Chapter(String name, String description) {
         this.name = name;
         this.description = description;
-        this.color = color;
+        this.color = ColorGenerator.getNewColor();
     }
 
     public String getName() {

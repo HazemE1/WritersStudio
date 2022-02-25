@@ -26,7 +26,7 @@ public class Event {
         this.name = name;
         this.description = description;
         this.chapterListObject = chapterListObject;
-        this.color = ColorGenerator.getNewColor();
+        this.color = chapterListObject.getColor();
     }
 
     public String getName() {

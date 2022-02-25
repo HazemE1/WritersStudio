@@ -1,5 +1,6 @@
 package com.team34.view.chapter;
 
+import com.team34.controller.ColorGenerator;
 import com.team34.model.chapter.ChapterListObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -148,11 +149,10 @@ public class ChapterList extends StackPane {
             }
 
             ChapterListObject as;
-            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0]));
+            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0], ColorGenerator.getNewColor()));
 
             objects = null;
         }
-
         list.setItems(ol);
     }
 

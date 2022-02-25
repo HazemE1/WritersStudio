@@ -3,6 +3,7 @@ package com.team34.model.event;
 public class EventListObject {
     private String title;
     private long uid;
+    private String color;
 
     /**
      * @param title Event title.
