@@ -1,6 +1,7 @@
 package com.team34.view.event;
 
-import com.team34.view.characterchart.CharacterChart;
+import com.team34.model.event.EventListObject;
+import com.team34.view.MainView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,30 +14,27 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-
-import com.team34.model.event.EventListObject;
-import com.team34.view.MainView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class EventList extends StackPane {
 
     private static ListView<EventListObject> list;
-    private Button add, edit, delete;
-    private Label title;
-    private MainView view;
-
+    private final int ICON_SIZE = 30;
     // Panes
     BorderPane outerPane;
     BorderPane innerPane;
-
+    private Button add, edit, delete;
+    private Label title;
+    private MainView view;
     //CSS
     private String cssEventlist;
-
     //Icons
     private String addEvent;
     private String editEvent;
     private String deleteEvent;
-    private final int ICON_SIZE = 30;
 
     /**
      * Initializes StackPane.
@@ -93,7 +91,7 @@ public class EventList extends StackPane {
         cssEventlist = com.team34.App.class.getResource("/css/characterlist.css").toExternalForm();
     }
 
-    public static EventListObject list(){
+    public static EventListObject list() {
         return list.getSelectionModel().getSelectedItem();
     }
 
