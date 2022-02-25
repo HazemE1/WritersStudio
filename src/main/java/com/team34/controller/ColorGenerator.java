@@ -8,7 +8,7 @@ public class ColorGenerator {
 
     public static String getNewColor() {
 
-        switch (rand.nextInt(4)+1) {
+        switch (rand.nextInt(5)-1) {
             case 1:
                 return "#21AFBF";
             case 2:
@@ -24,5 +24,11 @@ public class ColorGenerator {
             default:
                 return "#F282A7";
         }
+    }
+    public static int getNewValue(){
+        for(int i = 1; i < 6; i++){
+            return i;
+        }
+        return 1;
     }
 }

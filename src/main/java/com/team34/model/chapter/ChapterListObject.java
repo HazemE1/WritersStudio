@@ -12,7 +12,6 @@ public class ChapterListObject {
         this.title = title;
         this.uid = uid;
         this.color = color;
-
     }
 
     public String getTitle() {
