@@ -2,7 +2,7 @@
 
 Writer's Studio is a project by students at Malmö University, developed as part of a course in System Development II.
 
-The application will help you with your writing by structering your novel on a timeline where you can add characters, events and chapters. 
+The application will help you with your writing by structuring your novel on a timeline where you can add characters, events and chapters. 
 
 ## Instructions on building and running Writer's Studio with IntelliJ**
 
