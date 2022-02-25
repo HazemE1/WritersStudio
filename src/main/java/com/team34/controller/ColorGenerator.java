@@ -10,15 +10,15 @@ public class ColorGenerator {
 
         switch ((n++)%6) {
             case 1:
-                return "#21AFBF";
+                return "#9EC0E6";
             case 2:
-                return "#A0D9D9";
+                return "#9EE6BD";
             case 3:
-                return "#F2D9BB";
+                return "#CBB6D9";
             case 4:
-                return "#F2C3A7";
+                return "#DE866D";
             case 5:
-                return "#F2E0D0";
+                return "#6D9DA6";
             case 6:
                 return "#2179BF";
             default:
