@@ -2,19 +2,19 @@
 * {
 
     /*** Main colors ***/
-    -color-main-foreground: #efefef;
-    -color-main-background: #dfdfdf;
+    -color-main-foreground: #fbfbfb;
+    -color-main-background: #f6f6f6;
     -color-text-primary: #151515;
 
     /*** Timeline colors ***/
-    -color-timeline-event-rect: #aeccfc; // the color of event rectangles in the timeline
+    -color-timeline-event-rect: #075b06; // the color of event rectangles in the timeline
     -color-timeline-line: #252525; // the color of all lines (and borders) in the timeline
 
     /*** Character chart colors ***/
-    -color-characterchart-background: #fefefe;
+    -color-characterchart-background: #f6f6f6;
 
     /*** Miscellaneous ***/
-    -color-tooltip-background: #dcdcdc;
+    -color-tooltip-background: #f6f6f6;
     -effect-dropshadow: dropshadow(gaussian, #00000077, 7, 0.2, 4, 5 );
 
     /*** List headline ***/
@@ -22,7 +22,7 @@
 
     /*** List cell colors ***/
     -color-list-background: #f4f4f4;
-    -color-main-blue: #aeccfc;
+    -color-main-blue: #6294e4;
     -color-secondary-blue: #7baeff;
 
 }

@@ -1,8 +1,10 @@
 package com.team34.view;
 
+import com.team34.controller.ColorGenerator;
 import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
 import javafx.scene.control.Tooltip;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.shape.Rectangle;
@@ -23,6 +25,7 @@ public class LabeledRectangle {
     private final Rectangle clipRect;
     private double textOffsetX;
     private double textOffsetY;
+    private String color;
     protected final Text text;
     protected final Rectangle rect;
     protected final Tooltip tooltip;
@@ -36,11 +39,12 @@ public class LabeledRectangle {
      * @param width  the width of the rectangle. Set to 0.0 to use default
      * @param height the height of the rectangle. Set to 0.0 to use default
      */
-    public LabeledRectangle(String label, double width, double height) {
+    public LabeledRectangle(String label, double width, double height, String color) {
         double w = width < 1.0 ? DEFAULT_WIDTH : width;
         double h = height < 1.0 ? DEFAULT_HEIGHT : height;
 
         rect = new Rectangle(w, h);
+        rect.setStyle("-fx-fill: "+ color);
 
         clipRect = new Rectangle(w, h);
         clipRect.xProperty().bind(rect.xProperty());
@@ -82,6 +86,10 @@ public class LabeledRectangle {
      */
     public Rectangle getRect() {
         return rect;
+    }
+
+    public void setColor(String color){
+        this.color = color;
     }
 
     /**

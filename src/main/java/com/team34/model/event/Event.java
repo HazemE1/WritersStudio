@@ -1,5 +1,6 @@
 package com.team34.model.event;
 
+import com.team34.controller.ColorGenerator;
 import com.team34.model.chapter.ChapterListObject;
 
 /**
@@ -13,6 +14,7 @@ public class Event {
     private String name = "";
     private String description = "";
     private ChapterListObject chapterListObject;
+    private String color = "";
 
     /**
      * Instantiates event object with name and description.
@@ -24,6 +26,7 @@ public class Event {
         this.name = name;
         this.description = description;
         this.chapterListObject = chapterListObject;
+        this.color = ColorGenerator.getNewColor();
     }
 
     public String getName() {
@@ -44,5 +47,9 @@ public class Event {
 
     public ChapterListObject getChapterListObject() {
         return chapterListObject;
+    }
+
+    public Object getColor() {
+        return color;
     }
 }

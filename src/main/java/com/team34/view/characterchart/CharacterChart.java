@@ -36,6 +36,7 @@ public class CharacterChart {
 
     /**
      * @author Alexander Olssson
+     * @updated Frida Jacobsson
      */
     private HashMap<Long, EventListObject> evtMap;
 
@@ -139,7 +140,7 @@ public class CharacterChart {
             Tooltip.uninstall(existingRect.getRect(), existingRect.getTooltip());
         }
 
-        CharacterRectangle rect = new CharacterRectangle(name, 0.0, 0.0);
+        CharacterRectangle rect = new CharacterRectangle(name, 0.0, 0.0, "#F2E0D0");
         rect.setStylesheetClasses("characterchart-rect", "characterchart-text", "characterchart-tooltip");
         rectMap.put(uid, rect);
 

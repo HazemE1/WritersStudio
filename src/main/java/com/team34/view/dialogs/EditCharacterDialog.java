@@ -50,7 +50,6 @@ public class EditCharacterDialog extends Stage {
         tfCharacterAge.setMaxWidth(60);
 
         cbEventGroup = new ComboBox<>();
-        //cbEventGroup.setItems(eventManager.getEvents());
         cbEventGroup.setPromptText("Choose event");
 
         //TextArea
@@ -166,9 +165,9 @@ public class EditCharacterDialog extends Stage {
     }
 
     /**
-     * Method that returns a characters age only if the age is a valid int. Otherwise display warning.
+     *
      * @author Frida Jacobsson
-     * @return
+     * @return Characters age only if the age is a valid int, otherwise display warning.
      */
     public int getCharacterAge() {
         int age = Validator.returnStringAsInt(tfCharacterAge.getText());

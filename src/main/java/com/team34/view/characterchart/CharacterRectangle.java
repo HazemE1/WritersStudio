@@ -8,6 +8,7 @@ class CharacterRectangle extends LabeledRectangle {
 
     private ArrayList<Long> assocPointUIDs; // UIDs to association points that are attached.
     private ArrayList<Long> assocUIDs; // UIDs to associations that are attached.
+    private String CSS;
 
     /**
      * Creates a new instance of CharacterRectangle with the given text label and width.
@@ -18,10 +19,11 @@ class CharacterRectangle extends LabeledRectangle {
      * @param width  the width of the rectangle. Set to 0.0 to use default
      * @param height the height of the rectangle. Set to 0.0 to use default
      */
-    CharacterRectangle(String label, double width, double height) {
+    CharacterRectangle(String label, double width, double height, String color) {
         super(label,
                 width < 1.0 ? 90 : width,
-                height < 1.0 ? 60 : height
+                height < 1.0 ? 60 : height,
+                color
         );
 
         assocPointUIDs = new ArrayList<>();

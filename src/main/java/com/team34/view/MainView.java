@@ -411,7 +411,8 @@ public class MainView {
         timeline.clear();
         if (events != null) {
             for (int i = 0; i < events.length; i++) {
-                timeline.addEvent((Long) events[i][0], (String) events[i][1]);
+                System.out.println(events[i][3]);
+                timeline.addEvent((Long) events[i][0], (String) events[i][1], (String) events[i][3]);
             }
         }
         if (eventOrder != null)
@@ -464,7 +465,6 @@ public class MainView {
      */
     public void updateCharacterList(ArrayList<Object[]> characters, Object[][] associations, EventListObject eventListObject) {
         rightPane.updateListView(characters);
-
         characterChart.updateCharacters(characters, associations, eventListObject);
     }
 
