@@ -80,6 +80,8 @@
 .list-headline {
     -fx-font-size: 13;
     -fx-font-color: -color-list-background;
+    -letter-spacing: normal;
+
 }
 
 /*** Icon buttons ***/

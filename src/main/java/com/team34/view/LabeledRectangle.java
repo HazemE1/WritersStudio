@@ -154,5 +154,4 @@ public class LabeledRectangle {
         if (labelClass != null) text.getStyleClass().add(labelClass);
         if (tooltipClass != null) tooltip.getStyleClass().add(tooltipClass);
     }
-
 }

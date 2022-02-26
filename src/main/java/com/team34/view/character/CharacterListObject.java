@@ -1,5 +1,7 @@
 package com.team34.view.character;
 
+import com.team34.model.event.EventListObject;
+
 /**
  * The CharacterListObject class is used to create objects containing character names and UIDs. The objects are used
  * in the {@link com.team34.view.character.CharacterList} class for displaying the characters in the list view, and for
@@ -8,14 +10,16 @@ package com.team34.view.character;
 public class CharacterListObject {
     private String name;
     private long uid;
+    private EventListObject eventListObject;
 
-    /**
-     * @param name Character name.
-     * @param uid  Character UID.
-     */
-    public CharacterListObject(String name, long uid) {
+    public CharacterListObject(String name,long uid, EventListObject eventListObject) {
         this.name = name;
         this.uid = uid;
+        this.eventListObject = eventListObject;
+    }
+
+    public EventListObject getEventListObject() {
+        return eventListObject;
     }
 
     public String getName() {

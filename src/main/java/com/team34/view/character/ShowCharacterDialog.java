@@ -1,9 +1,12 @@
 package com.team34.view.character;
 
+import com.team34.model.event.EventManager;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -22,10 +25,12 @@ public class ShowCharacterDialog extends Stage {
     private Button btnEdit;
     private Button btnBack;
     private boolean edit;
-    private Label lblName;
-    private Label lblCharacterName;
+    private Label lblName,lblEvent;
+    private Label lblCharacterName, lblEventName;
     private Label lblDescription;
     private Text txtDescription;
+    private ComboBox<Object> charEventGroup;
+    private EventManager eventManager;
 
     /**
      * Initializes dialog window.
@@ -41,7 +46,14 @@ public class ShowCharacterDialog extends Stage {
         lblName = new Label("Name: ");
         lblName.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
+        lblEvent = new Label("Event: ");
+
         lblCharacterName = new Label();
+
+        charEventGroup = new ComboBox<>();
+        charEventGroup.setPromptText("Choose event group");
+        //charEventGroup.setItems(eventManager.EventListChar());
+
 
         lblDescription = new Label("Description:");
         lblDescription.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -49,6 +61,9 @@ public class ShowCharacterDialog extends Stage {
         //Textfield
         lblCharacterName = new Label();
         lblCharacterName.setMaxWidth(150);
+
+        lblEventName = new Label();
+        lblEventName.setMaxWidth(150);
 
         //TextArea
         txtDescription = new Text();
@@ -78,6 +93,14 @@ public class ShowCharacterDialog extends Stage {
         nameLayout.getChildren().addAll(lblName, lblCharacterName);
         nameLayout.getStyleClass().add("name");
 
+        HBox eventLayout = new HBox();
+        eventLayout.setMinHeight(30);
+        eventLayout.setSpacing(10);
+        eventLayout.setAlignment(Pos.CENTER_LEFT);
+        eventLayout.getChildren().addAll(lblEvent, lblEventName);
+        //nameLayout.getStyleClass().add("name");
+
+
         //Description layout
         VBox descriptionLayout = new VBox();
         descriptionLayout.setMinHeight(40);
@@ -100,8 +123,9 @@ public class ShowCharacterDialog extends Stage {
         layout.setPadding(new Insets(10, 10, 10, 10));
 
         layout.add(nameLayout, 0, 0);
-        layout.add(lblDescription, 0, 2);
-        layout.add(txtDescription, 0, 3);
+        layout.add(eventLayout, 0 , 3);
+        layout.add(lblDescription, 0, 1);
+        layout.add(txtDescription, 0, 2);
         layout.add(buttonLayout, 0, 4);
 
         // --- Set Scene --- //
@@ -117,14 +141,20 @@ public class ShowCharacterDialog extends Stage {
      * Sets the character data displayed in the dialog window.
      *
      * @param data array containing character information
+     *
+     *
+     * edit
+     * @Alexander Olsson
      */
     public boolean showCharacter(Object[] data) {
-        String name, description;
+        String name, description, event;
         name = (String) data[0];
         description = (String) data[1];
+        event = (String) data[2];
 
         lblCharacterName.setText(name);
         txtDescription.setText(description);
+        lblEventName.setText(event);
         setTitle(name);
 
         showAndWait();

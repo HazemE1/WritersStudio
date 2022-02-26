@@ -1,5 +1,6 @@
 package com.team34;
 
+import com.team34.controller.MainController;
 import com.team34.model.Project;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -8,7 +9,6 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-
         com.team34.model.Project model =
                 new com.team34.model.Project();
 
@@ -19,7 +19,6 @@ public class App extends Application {
 
         com.team34.controller.MainController controller =
                 new com.team34.controller.MainController(view, model);
-
     }
 
     public static void main(String[] args) {

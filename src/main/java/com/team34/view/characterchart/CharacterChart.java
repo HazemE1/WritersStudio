@@ -1,6 +1,6 @@
 package com.team34.view.characterchart;
 
-import com.team34.model.event.Event;
+import com.team34.model.event.EventListObject;
 import com.team34.view.MainView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,10 +17,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class CharacterChart {
 
@@ -36,6 +33,12 @@ public class CharacterChart {
     private ScrollPane scrollPane;
 
     private HashMap<Long, CharacterRectangle> rectMap; // Stores references to CharacterRectangles by their UID.
+
+    /**
+     * @Alex
+     */
+    private HashMap<Long, EventListObject> evtMap;
+
     private HashMap<Long, AssociationPoint> assocPoints;
     private HashMap<Long, AssociationLine> associations;
     private ContextMenu contextMenu;
@@ -52,6 +55,7 @@ public class CharacterChart {
         rectMap = new HashMap<>();
         assocPoints = new HashMap<>();
         associations = new HashMap<>();
+        evtMap = new HashMap<>();
         nextLocalUID = 0L;
         currAction = new ChartAction();
 
@@ -68,6 +72,28 @@ public class CharacterChart {
         scrollPane.getStyleClass().add("characterchart-scrollpane");
         scrollPane.getStylesheets().add(com.team34.App.class.getResource("/css/main.css").toExternalForm());
 
+    }
+
+    public CharacterChart(double width, double height, EventListObject eventListObject) {
+        rectMap = new HashMap<>();
+        assocPoints = new HashMap<>();
+        associations = new HashMap<>();
+        evtMap = new HashMap<>();
+        nextLocalUID = 0L;
+        currAction = new ChartAction();
+
+        evtRectPressed = new EventRectanglePressed();
+        evtRectDragged = new EventRectangleDragged();
+
+        pane = new Pane();
+        pane.setOnMouseMoved(evtMouseMoved);
+
+        scrollPane = new ScrollPane();
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setContent(pane);
+        scrollPane.getStyleClass().add("characterchart-scrollpane");
+        scrollPane.getStylesheets().add(com.team34.App.class.getResource("/css/main.css").toExternalForm());
     }
 
     /**
@@ -91,7 +117,6 @@ public class CharacterChart {
             rect.getRect().setOnContextMenuRequested(null);
             Tooltip.uninstall(rect.getRect(), rect.getTooltip());
         });
-
         rectMap.clear();
         assocPoints.clear();
         associations.clear();
@@ -130,7 +155,6 @@ public class CharacterChart {
         rect.getRect().setOnMouseDragExited(evtRectMouseDragExited);
         rect.getRect().setOnMouseDragReleased(evtRectReleased);
         rect.getRect().setOnContextMenuRequested(evtContextRequest);
-
     }
 
     private Map.Entry<Long, CharacterRectangle> getCharacterByRectangle(Rectangle rect) {
@@ -144,7 +168,6 @@ public class CharacterChart {
                 return pair;
             }
         }
-
         return null;
     }
 
@@ -159,7 +182,6 @@ public class CharacterChart {
                 return pair;
             }
         }
-
         return null;
     }
 
@@ -244,7 +266,6 @@ public class CharacterChart {
 
         if (endCharUID != -1L)
             rectMap.get(endCharUID).addAssociationPoint(endPtUID, assocUID);
-
     }
 
     public void setAssociationPositions(long assocUID, double sX, double sY, double eX, double eY) {
@@ -303,7 +324,6 @@ public class CharacterChart {
             pt.y += dy;
             updateAssociationLinePoint(pt);
         }
-
     }
 
     private void updateAssociationLinePoint(AssociationPoint point) {
@@ -377,7 +397,6 @@ public class CharacterChart {
                 x = centerX;
                 y = rectY + rectH;
             }
-
         }
 
         return new Double[]{x, y};
@@ -392,42 +411,52 @@ public class CharacterChart {
         return pos;
     }
 
-    public void updateCharacters(ArrayList<Object[]> characters, Object[][] _associations) {
+    public void updateCharacters(ArrayList<Object[]> characters, Object[][] _associations, EventListObject eventListObject) {
         clear();
 
-        if (characters != null) {
-            for (int i = 0; i < characters.size(); i++) { // Update characters
-                Object[] characterData = characters.get(i);
-                addCharacter((Long) characterData[1], (String) characterData[0]);
-                setCharacterPosition(
-                        (Long) characterData[1],
-                        (Double) characterData[2],
-                        (Double) characterData[3]
-                );
-            }
-        }
 
-        if (_associations != null) {
-            for (int i = 0; i < _associations.length; i++) { // Update associations
-                Object[] assocData = _associations[i];
-                addAssociation(
-                        (Long) assocData[0],
-                        (Long) assocData[1],
-                        (Long) assocData[2],
-                        (String) assocData[7]
-                );
-                setAssociationPositions(
-                        (Long) assocData[0],
-                        (Double) assocData[3],
-                        (Double) assocData[4],
-                        (Double) assocData[5],
-                        (Double) assocData[6]
-                );
-                setAssociationLabelPosition(
-                        (Long) assocData[0],
-                        (Double) assocData[8],
-                        (Double) assocData[9]
-                );
+        if (eventListObject != null) {
+
+
+            if (characters != null) {
+                for (int i = 0; i < characters.size(); i++) { // Update characters
+                    Object[] characterData = characters.get(i);
+
+                    System.out.println("Test:");
+                    System.out.println(characterData[5] + " " + eventListObject.getTitle());
+                    if (Objects.equals(characterData[5].toString(), eventListObject.getTitle())) {
+                        addCharacter((Long) characterData[1], (String) characterData[0]);
+                        setCharacterPosition(
+                                (Long) characterData[1],
+                                (Double) characterData[2],
+                                (Double) characterData[3]
+                        );
+                    }
+                }
+            }
+
+            if (_associations != null) {
+                for (int i = 0; i < _associations.length; i++) { // Update associations
+                    Object[] assocData = _associations[i];
+                    addAssociation(
+                            (Long) assocData[0],
+                            (Long) assocData[1],
+                            (Long) assocData[2],
+                            (String) assocData[7]
+                    );
+                    setAssociationPositions(
+                            (Long) assocData[0],
+                            (Double) assocData[3],
+                            (Double) assocData[4],
+                            (Double) assocData[5],
+                            (Double) assocData[6]
+                    );
+                    setAssociationLabelPosition(
+                            (Long) assocData[0],
+                            (Double) assocData[8],
+                            (Double) assocData[9]
+                    );
+                }
             }
         }
     }
@@ -517,7 +546,6 @@ public class CharacterChart {
             assocPt.rectUID = -1L;
             currAction.reset();
         }
-
         return result;
     }
 
@@ -841,7 +869,6 @@ public class CharacterChart {
             contextMenuItem[CONTEXT_MENU_ITEM_CENTER_LABEL].setVisible(false);
             e.consume();
         }
-
     };
 
     /********************** EVENT CLASSES ***********************/
@@ -896,8 +923,6 @@ public class CharacterChart {
         LABEL_EDIT_MOVE
     }
 
-    ;
-
     private static class ChartAction {
         ChartActionType type;
         boolean success;
@@ -942,6 +967,5 @@ public class CharacterChart {
             end = isEndPoint;
         }
     }
-
 }
 

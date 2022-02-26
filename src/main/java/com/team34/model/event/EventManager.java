@@ -1,10 +1,11 @@
 package com.team34.model.event;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 import com.team34.model.UIDManager;
+import com.team34.model.chapter.ChapterListObject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * This class manages all events and event order lists.
@@ -41,9 +42,9 @@ public class EventManager {
      * @param description the description of the event
      * @return the UID of the new event
      */
-    public long newEvent(String name, String description) {
+    public long newEvent(String name, String description, ChapterListObject chapterListObject) {
         long uid = UIDManager.nextUID();
-        addEvent(uid, name, description);
+        addEvent(uid, name, description, chapterListObject);
 
         if (eventOrderLists.size() < 1)
             eventOrderLists.add(new LinkedList<>());
@@ -63,9 +64,9 @@ public class EventManager {
      * @param description the new description
      * @return true if the event was successfully edited; false if the edit failed.
      */
-    public boolean editEvent(long uid, String name, String description) {
+    public boolean editEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
         if (events.containsKey(uid)) {
-            events.replace(uid, new Event(name, description));
+            events.replace(uid, new Event(name, description, chapterListObject));
             hasChanged = true;
             return true;
         }
@@ -100,8 +101,8 @@ public class EventManager {
      * @param name        the name of the event
      * @param description the description of the event
      */
-    public void addEvent(long uid, String name, String description) {
-        events.put(uid, new Event(name, description));
+    public void addEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
+        events.put(uid, new Event(name, description, chapterListObject));
         hasChanged = true;
     }
 
@@ -169,6 +170,27 @@ public class EventManager {
             eventArray[i][2] = eventRef.getDescription();
         }
         return eventArray;
+    }
+
+    public ObservableList<String> getEvents2() {
+        if (events.size() < 1)
+            return null;
+
+        Long[] uidOrder = events.keySet().toArray(new Long[events.size()]);
+
+        for (int i = 0; i < uidOrder.length; i++) {
+            long uid = uidOrder[i];
+            Event eventRef = events.get(uid);
+        }
+        return null;
+    }
+
+    public ArrayList EventListChar(){
+        ObservableList<Object> list = FXCollections.observableList(Collections.singletonList(eventOrderLists));
+
+        ArrayList<Event> events = new ArrayList<>();
+
+        return events;
     }
 
     /**
@@ -242,7 +264,6 @@ public class EventManager {
 
         Long[] order = getEventOrder(orderList);
 
-
         // When the event is moved in the right direction on the timeline,
         // the events inside the scope of the loop are shifted to the left.
         if (fromIndex < toIndex) {
@@ -303,5 +324,4 @@ public class EventManager {
     public void resetChanges() {
         hasChanged = false;
     }
-
 }

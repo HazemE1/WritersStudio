@@ -1,6 +1,6 @@
-package com.team34.view.event;
+package com.team34.view.chapter;
 
-import com.team34.view.characterchart.CharacterChart;
+import com.team34.model.chapter.ChapterListObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,18 +12,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import com.team34.model.event.EventListObject;
 import com.team34.view.MainView;
 
-public class EventList extends StackPane {
+public class ChapterList extends StackPane {
 
-    private static ListView<EventListObject> list;
+    private ListView<ChapterListObject> list;
     private Button add, edit, delete;
     private Label title;
-    private MainView view;
 
     // Panes
     BorderPane outerPane;
@@ -41,7 +39,7 @@ public class EventList extends StackPane {
     /**
      * Initializes StackPane.
      */
-    public EventList(MainView view) {
+    public ChapterList() {
 //        window = new Stage();
 
         //Panes
@@ -65,14 +63,12 @@ public class EventList extends StackPane {
         installButtonIds();
 
         //Label
-        title = new Label("Events");
+        title = new Label("Chapters");
         title.setPadding(new Insets(20, 0, 0, 0));
         title.getStyleClass().add("list-headline");
-        title.getStyleClass().add("");
 
         //Event List
         list = new ListView<>();
-
 
         //Construct
         aedBox.getChildren().addAll(add, edit, delete);
@@ -91,10 +87,6 @@ public class EventList extends StackPane {
 
         //CSS
         cssEventlist = com.team34.App.class.getResource("/css/characterlist.css").toExternalForm();
-    }
-
-    public static EventListObject list(){
-        return list.getSelectionModel().getSelectedItem();
     }
 
     public void setStyleSheets() {
@@ -136,27 +128,29 @@ public class EventList extends StackPane {
      * {@link com.team34.controller.MainController} class for event handling.
      */
     public void installButtonIds() {
-        add.setId(MainView.ID_BTN_EVENT_ADD);
-        edit.setId(MainView.ID_BTN_EVENT_EDIT);
-        delete.setId(MainView.ID_BTN_EVENT_DELETE);
+        add.setId(MainView.ID_BTN_CHAPTER_ADD);
+        edit.setId(MainView.ID_BTN_CHAPTER_EDIT);
+        delete.setId(MainView.ID_BTN_CHAPTER_DELETE);
     }
 
-    public void updateListView(Object[][] events, Long[] order) {
-        if (events == null || events.length < 1) {
+    public void updateListView(Object[][] chapters, Long[] order) {
+        if (chapters == null || chapters.length < 1) {
             list.getItems().clear();
             return;
         }
 
-        ObservableList<EventListObject> ol = FXCollections.observableArrayList();
-        Object[] event = null;
+        ObservableList<ChapterListObject> ol = FXCollections.observableArrayList();
+        Object[] objects = null;
         for (int i = 0; i < order.length; i++) {
-            for (int j = 0; j < events.length; j++) {
-                if (((Long) events[j][0]).equals(order[i]))
-                    event = events[j];
+            for (int j = 0; j < chapters.length; j++) {
+                if (((Long) chapters[j][0]).equals(order[i]))
+                    objects = chapters[j];
             }
 
-            ol.add(new EventListObject((String) event[1], (Long) event[0]));
-            event = null;
+            ChapterListObject as;
+            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0]));
+
+            objects = null;
         }
 
         list.setItems(ol);
@@ -174,28 +168,18 @@ public class EventList extends StackPane {
         delete.setOnAction(buttonEventHandler);
     }
 
-    public void registerMouseEvents(EventHandler<MouseEvent> listEventHandler) {
-        list.setOnMouseClicked(listEventHandler);
-    }
-
-    /**
-     * If a character is selected in the list view, returns the character's UID. Else, returns -1.
-     *
-     * @return long
-     */
-    public long getEventUID() {
+    public long getChapterUID() {
         if (list.getSelectionModel().getSelectedItem() != null) {
             return list.getSelectionModel().getSelectedItem().getUid();
         }
-
         return -1;
     }
 
-    public ListView<EventListObject> getList() {
+    public ListView<ChapterListObject> getList() {
         return list;
     }
 
-    public void setList(ListView<EventListObject> list) {
+    public void setList(ListView<ChapterListObject> list) {
         this.list = list;
     }
 }

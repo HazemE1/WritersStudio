@@ -15,6 +15,8 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import com.team34.model.chapter.ChapterListObject;
+import com.team34.model.chapter.ChapterManager;
 import com.team34.model.event.*;
 import com.team34.model.character.*;
 
@@ -37,6 +39,7 @@ public class Project {
 
     public final EventManager eventManager;
     public final CharacterManager characterManager;
+    public final ChapterManager chapterManager;
 
     private String workingDir;
     private Path workingPath;
@@ -45,13 +48,13 @@ public class Project {
     private String currProjectName;
     private File currProjectFile;
 
-
     /**
      * Constructs the project, sets up the working directory, and loads the preferences file.
      */
     public Project() {
         eventManager = new EventManager();
         characterManager = new CharacterManager();
+        chapterManager = new ChapterManager();
         userPrefs = new UserPreferences();
 
         workingDir = System.getProperty("user.dir");
@@ -216,6 +219,7 @@ public class Project {
             throws XMLStreamException {
         long uid = -1L;
         String name = null;
+        ChapterListObject chapterListObject = null;
 
         while (reader.hasNext()) {
             event = reader.nextEvent();
@@ -236,17 +240,15 @@ public class Project {
                                 break;
                         }
                     }
-
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            eventManager.addEvent(uid, name, event.asCharacters().getData());
+                            eventManager.addEvent(uid, name, event.asCharacters().getData(), chapterListObject);
                         else
-                            eventManager.addEvent(uid, name, "");
+                            eventManager.addEvent(uid, name, "", chapterListObject);
 
                     }
                 }
-
             } else if (event.isEndElement()) {
                 if (event.asEndElement().getName().getLocalPart() == "events")
                     return;
@@ -292,9 +294,7 @@ public class Project {
                         }
                     }
                 }
-
             }
-
         }
     }
 
@@ -311,6 +311,7 @@ public class Project {
         String name = null;
         double chartX = 0.0;
         double chartY = 0.0;
+        EventListObject eventListObject = null;
 
         while (reader.hasNext()) {
             event = reader.nextEvent();
@@ -329,6 +330,7 @@ public class Project {
                             case "name":
                                 name = attr.getValue();
                                 break;
+
                             case "chartX":
                                 chartX = Double.parseDouble(attr.getValue());
                                 break;
@@ -337,17 +339,14 @@ public class Project {
                                 break;
                         }
                     }
-
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            characterManager.addCharacter(uid, name, event.asCharacters().getData(), chartX, chartY);
+                            characterManager.addCharacter(uid, name,"",eventListObject, chartX, chartY);
                         else
-                            characterManager.addCharacter(uid, name, "", chartX, chartY);
-
+                            characterManager.addCharacter(uid, name, "",eventListObject, chartX, chartY);
                     }
                 }
-
             } else if (event.isEndElement()) {
                 if (event.asEndElement().getName().getLocalPart() == "characters")
                     return;
@@ -415,17 +414,14 @@ public class Project {
                                 break;
                         }
                     }
-
                     event = reader.nextEvent();
                     if (uid != -1L && label != null) {
                         if (event.isCharacters())
                             characterManager.addAssociation(uid, startUID, endUID, sX, sY, eX, eY, event.asCharacters().getData(), lblX, lblY);
                         else
                             characterManager.addAssociation(uid, startUID, endUID, sX, sY, eX, eY, "", lblX, lblY);
-
                     }
                 }
-
             } else if (event.isEndElement()) {
                 if (event.asEndElement().getName().getLocalPart() == "associations")
                     return;
@@ -563,7 +559,6 @@ public class Project {
         Object[] data;
         for (int i = 0; i < assocs.length; i++) {
             data = assocs[i];
-
             writer.add(factory.createCharacters("\t\t"));
             writer.add(factory.createStartElement("", "", "association"));
             writer.add(factory.createAttribute("uid", Long.toString((Long) data[0])));
@@ -674,7 +669,6 @@ public class Project {
             eventManager.resetChanges();
             characterManager.resetChanges();
         }
-
     }
 
     /**
@@ -817,5 +811,4 @@ public class Project {
             windowHeight = ref.windowHeight;
         }
     }
-
 }

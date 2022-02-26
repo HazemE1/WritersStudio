@@ -1,5 +1,7 @@
 package com.team34.controller;
 
+import com.team34.model.event.EventListObject;
+import com.team34.view.dialogs.EditChapterDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -43,7 +45,9 @@ public class MainController {
     private final EventHandler<WindowEvent> evtCloseRequest;
     private final EventHandler<ActionEvent> evtMenuBarAction;
     private final EventHandler<DragEvent> evtDragDropped;
-    private final EventHandler<MouseEvent> evtMouseCharacterList;
+
+    private final EventHandler<MouseEvent> evtMouseCharacterList, mouseEventEventHandler;
+    private EventListObject eventListObject;
 
     /**
      * Constructs the controller. Initializes member variables
@@ -62,7 +66,7 @@ public class MainController {
         this.evtMenuBarAction = new EventMenuBarAction();
         this.evtDragDropped = new EventDragDropped();
         this.evtMouseCharacterList = new CharacterListMouseEvent();
-
+        this.mouseEventEventHandler = new EventListMouseEvent();
         registerEventsOnView();
     }
 
@@ -77,6 +81,7 @@ public class MainController {
         view.registerMenuBarActionEvents(evtMenuBarAction);
         view.registerDragEvent(evtDragDropped);
         view.registerMouseEvents(evtMouseCharacterList);
+        view.registerMouseEventsList(mouseEventEventHandler);
         view.registerCharacterChartEvents(
                 new EventCharacterRectReleased(),
                 new EventChartClick(),
@@ -99,7 +104,8 @@ public class MainController {
         if (view.getEditEventDialog().showCreateEvent() == EditEventDialog.WindowResult.OK) {
             long newEventUID = model.eventManager.newEvent(
                     view.getEditEventDialog().getEventName(),
-                    view.getEditEventDialog().getEventDescription()
+                    view.getEditEventDialog().getEventDescription(),
+                    view.getEditEventDialog().getChapterList()
             );
 
             if (newEventUID == -1L) {
@@ -128,7 +134,49 @@ public class MainController {
         ) {
             boolean success = model.eventManager.editEvent(uid,
                     view.getEditEventDialog().getEventName(),
-                    view.getEditEventDialog().getEventDescription()
+                    view.getEditEventDialog().getEventDescription(),
+                    view.getEditEventDialog().getChapterList()
+            );
+
+            if (!success) {
+                // TODO Popup warning dialog, stating that either name or description has unsupported format
+            }
+        }
+        refreshTitleBar();
+    }
+
+    /**
+     * @Alexander
+     */
+
+    private void createNewChapter() {
+        if (view.getEditChapterDialog().showCreateChapter() == EditChapterDialog.WindowResult.OK) {
+            long newChapterUID = model.chapterManager.newChapter(
+                    view.getEditChapterDialog().getChapterName(),
+                    view.getEditChapterDialog().getChapterDescription()
+            );
+
+            if (newChapterUID == -1L) {
+                // TODO Popup warning dialog, stating that either name or description has unsupported format
+            }
+        }
+        refreshTitleBar();
+    }
+
+    /**
+     * @Alexander
+     */
+
+    private void editChapter(long uid) {
+        Object[] eventData = model.eventManager.getEventData(uid);
+
+        if (view.getEditEventDialog().showEditEvent((String) eventData[0], (String) eventData[1])
+                == EditEventDialog.WindowResult.OK
+        ) {
+            boolean success = model.eventManager.editEvent(uid,
+                    view.getEditEventDialog().getEventName(),
+                    view.getEditEventDialog().getEventDescription(),
+                    view.getEditEventDialog().getChapterList()
             );
 
             if (!success) {
@@ -146,6 +194,38 @@ public class MainController {
                 model.eventManager.getEvents(),
                 model.eventManager.getEventOrder(view.getEventOrderList())
         );
+    }
+
+    /**
+     * Alex
+     */
+    private void refreshViewChapters() {
+        view.updateChapters(
+                model.chapterManager.getChapters(),
+                model.chapterManager.getChapterOrder(view.getChapterOrderList())
+        );
+    }
+
+    private void refreshViewCharChart() {
+
+        view.updateCharacterList(
+                model.characterManager.getCharacterList(),
+                model.characterManager.getAssociationData(),
+                view.returns()
+        );
+    }
+
+    private void selectchar() {
+
+    }
+
+    private boolean eventsExist() {
+        Object[][] event = model.eventManager.getEvents();
+        if (event == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -184,7 +264,6 @@ public class MainController {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -253,7 +332,6 @@ public class MainController {
                 model.setProjectName(file.getName());
             }
         }
-
         try {
             model.saveProject();
             refreshTitleBar();
@@ -267,27 +345,41 @@ public class MainController {
      * {@link com.team34.model.character.CharacterManager} creates a new character with the user input.
      *
      * @author Jim Andersson
+     * <p>
+     * edit
+     * @Alexander Olsson
      */
     private void createNewCharacter(double x, double y) {
-        if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
+        if (!eventsExist()) {
+
+            view.warningDialog("Måste skapa event först!", "Character");
+        } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);
 
-            long newCharacterUID = model.characterManager.newCharacter(
-                    view.getEditCharacterPanel().getCharacterName(),
-                    view.getEditCharacterPanel().getCharacterDescription(),
-                    x, y
-            );
-            view.updateCharacterList(
-                    model.characterManager.getCharacterList(),
-                    model.characterManager.getAssociationData()
-            );
+            if (view.getEditCharacterPanel().getCharacterEvent() == null) {
+                view.warningDialog("Måste välja ett event", "Character");
 
-            if (newCharacterUID == -1L) {
-                // TODO Popup warning dialog, stating that either name or description has unsupported format
+            } else {
+
+                long newCharacterUID = model.characterManager.newCharacter(
+                        view.getEditCharacterPanel().getCharacterName(),
+                        view.getEditCharacterPanel().getCharacterDescription(),
+                        view.getEditCharacterPanel().getCharacterEvent(),
+                        x, y
+                );
+                view.updateCharacterList(
+                        model.characterManager.getCharacterList(),
+                        model.characterManager.getAssociationData(),
+                        view.returns()
+                );
+
+                if (newCharacterUID == -1L) {
+                    // TODO Popup warning dialog, stating that either name or description has unsupported format
+                }
+
+                refreshTitleBar();
             }
-
-            refreshTitleBar();
         }
     }
 
@@ -302,12 +394,14 @@ public class MainController {
     private void editCharacter(long uid) {
         Object[] characterData = model.characterManager.getCharacterData(uid);
 
+
         if (view.getEditCharacterPanel().showEditCharacter((String) characterData[0], (String) characterData[1])
                 == EditCharacterDialog.WindowResult.OK
         ) {
             boolean success = model.characterManager.editCharacter(uid,
                     view.getEditCharacterPanel().getCharacterName(),
-                    view.getEditCharacterPanel().getCharacterDescription()
+                    view.getEditCharacterPanel().getCharacterDescription(),
+                    view.getEditCharacterPanel().getCharacterEvent()
             );
 
             if (!success) {
@@ -364,7 +458,7 @@ public class MainController {
                     view.getEditAssociationDialog().getAssociationLabel(), startX, startY
             );
 
-            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData());
+            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), view.returns());
             view.startCharacterAssociationDrag(assocUID, false);
             refreshTitleBar();
         }
@@ -403,7 +497,8 @@ public class MainController {
     private void refreshCharacterList() {
         view.updateCharacterList(
                 model.characterManager.getCharacterList(),
-                model.characterManager.getAssociationData()
+                model.characterManager.getAssociationData(),
+                view.returns()
         );
 
     }
@@ -428,6 +523,7 @@ public class MainController {
             Node source = (Node) e.getSource();
             String sourceID = source.getId();
             long eventUID = view.getSelectedEventUID();
+            long chapterUID = view.getSelectedChapterUID();
 
             switch (sourceID) {
                 case MainView.ID_BTN_EVENT_ADD:
@@ -444,6 +540,22 @@ public class MainController {
                 case MainView.ID_BTN_EVENT_EDIT:
                     editEvent(eventUID);
                     refreshViewEvents();
+                    break;
+
+                case MainView.ID_BTN_CHAPTER_ADD:
+                    createNewChapter();
+                    refreshViewChapters();
+                    break;
+
+                case MainView.ID_BTN_CHAPTER_DELETE:
+                    model.chapterManager.removeChapter(chapterUID);
+                    refreshViewChapters();
+                    refreshTitleBar();
+                    break;
+
+                case MainView.ID_BTN_CHAPTER_EDIT:
+                    editChapter(chapterUID);
+                    refreshViewChapters();
                     break;
 
                 case MainView.ID_BTN_CHARACTERLIST_ADD:
@@ -471,8 +583,6 @@ public class MainController {
 
         }
     }
-
-
     ////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -563,7 +673,6 @@ public class MainController {
                     System.out.println("Unrecognized ID: " + sourceID);
                     break;
             }
-
         }
     }
 
@@ -641,7 +750,6 @@ public class MainController {
                     System.out.println("Unrecognized ID: " + sourceID);
                     break;
             }
-
         }
     }
 
@@ -671,7 +779,6 @@ public class MainController {
             } else { // An association was attached to the character block
                 updateModelAssociationWithView((Long) result[0]);
             }
-
             refreshTitleBar();
         }
     }
@@ -720,7 +827,6 @@ public class MainController {
                 refreshViewEvents();
             }
         }
-
     }
 
     private class CharacterListMouseEvent implements EventHandler<MouseEvent> {
@@ -734,4 +840,11 @@ public class MainController {
         }
     }
 
+    private class EventListMouseEvent implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+
+            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), view.returns());
+        }
+    }
 }

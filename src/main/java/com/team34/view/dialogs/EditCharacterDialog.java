@@ -1,5 +1,11 @@
 package com.team34.view.dialogs;
 
+import com.team34.model.event.Event;
+import com.team34.model.event.EventListObject;
+import com.team34.model.event.EventManager;
+import com.team34.view.event.EventList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -7,6 +13,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 /**
  * @author Morgan Karlsson
@@ -19,8 +27,11 @@ public class EditCharacterDialog extends Stage {
     private TextField tfCharacterName;
     private TextArea taCharacterDescription;
     private WindowResult windowResult;
+    private ComboBox<EventListObject> cbEventGroup;
+    private ListView<EventListObject> list;
 
     public EditCharacterDialog(Stage ownerStage) {
+        list = new ListView<>();
         setTitle("Edit Character");
         setOnCloseRequest(e -> windowResult = EditCharacterDialog.WindowResult.CANCEL);
 
@@ -28,12 +39,18 @@ public class EditCharacterDialog extends Stage {
 
         //Label
         Label lblCharacterName = new Label("Character name:");
+        Label lblEventGroup = new Label("Event group:");
         Label lblCharacterDescription = new Label("Character description:");
 
         //Textfield
         tfCharacterName = new TextField();
         tfCharacterName.setPromptText("Enter character name here");
         tfCharacterName.setMaxWidth(150);
+
+        cbEventGroup = new ComboBox<>();
+        //cbEventGroup.setItems(eventManager.getEvents());
+        cbEventGroup.setPromptText("Choose event");
+
 
         //TextArea
         taCharacterDescription = new TextArea();
@@ -52,7 +69,6 @@ public class EditCharacterDialog extends Stage {
             close();
         });
 
-
         // --- Layouts --- //
 
         //Name Layout
@@ -66,6 +82,10 @@ public class EditCharacterDialog extends Stage {
         buttonLayout.setSpacing(10);
         buttonLayout.getChildren().addAll(btnSave, btnCancel);
 
+        HBox eventGroupLayout = new HBox();
+        eventGroupLayout.setSpacing(10);
+        eventGroupLayout.getChildren().addAll(lblEventGroup, cbEventGroup);
+
         //Overall Layout
         GridPane layout = new GridPane();
         layout.setMinSize(100, 300);
@@ -75,9 +95,11 @@ public class EditCharacterDialog extends Stage {
         layout.setPadding(new Insets(10, 10, 10, 10));
 
         layout.add(nameLayout, 0, 0);
-        layout.add(lblCharacterDescription, 0, 1);
-        layout.add(taCharacterDescription, 0, 2);
-        layout.add(buttonLayout, 0, 3);
+        layout.add(eventGroupLayout, 0, 2);
+
+        layout.add(lblCharacterDescription, 0, 3);
+        layout.add(taCharacterDescription, 0, 4);
+        layout.add(buttonLayout, 0, 5);
 
         // --- Set Scene --- //
         Scene scene = new Scene(layout);
@@ -134,6 +156,9 @@ public class EditCharacterDialog extends Stage {
         return taCharacterDescription.getText();
     }
 
+    public EventListObject getCharacterEvent() { return cbEventGroup.getValue();
+    }
+
     /**
      * Used to specify how the window was closed. If the user confirmed the action,
      * use OK, otherwise use CANCEL.
@@ -145,5 +170,23 @@ public class EditCharacterDialog extends Stage {
         CANCEL
     }
 
+    public void updateListView(Object[][] events, Long[] order) {
+        if (events == null || events.length < 1) {
+            list.getItems().clear();
+            return;
+        }
 
+        ObservableList<EventListObject> ol = FXCollections.observableArrayList();
+        Object[] event = null;
+        for (int i = 0; i < order.length; i++) {
+            for (int j = 0; j < events.length; j++) {
+                if (((Long) events[j][0]).equals(order[i]))
+                    event = events[j];
+            }
+
+            ol.add(new EventListObject((String) event[1], (Long) event[0]));
+            event = null;
+        }
+        cbEventGroup.setItems(ol);
+    }
 }
