@@ -14,6 +14,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
 
+import java.awt.MouseInfo;
+
 import javax.xml.stream.XMLStreamException;
 
 import java.io.File;
@@ -45,6 +47,7 @@ public class MainController {
     private final EventHandler<WindowEvent> evtCloseRequest;
     private final EventHandler<ActionEvent> evtMenuBarAction;
     private final EventHandler<DragEvent> evtDragDropped;
+    private final EventHandler<DragEvent> evtDragComplete;
 
     private final EventHandler<MouseEvent> evtMouseCharacterList, mouseEventEventHandler;
     private EventListObject eventListObject;
@@ -65,6 +68,7 @@ public class MainController {
         this.evtCloseRequest = new EventCloseRequest();
         this.evtMenuBarAction = new EventMenuBarAction();
         this.evtDragDropped = new EventDragDropped();
+        this.evtDragComplete = new EventDragComplete();
         this.evtMouseCharacterList = new CharacterListMouseEvent();
         this.mouseEventEventHandler = new EventListMouseEvent();
         registerEventsOnView();
@@ -79,7 +83,8 @@ public class MainController {
         view.registerContextMenuEvents(evtContextMenuAction);
         view.registerCloseRequestEvent(evtCloseRequest);
         view.registerMenuBarActionEvents(evtMenuBarAction);
-        view.registerDragEvent(evtDragDropped);
+        view.registerDragEventDragDrop(evtDragDropped);
+        view.registerDragEventDragComplete(evtDragComplete);
         view.registerMouseEvents(evtMouseCharacterList);
         view.registerMouseEventsList(mouseEventEventHandler);
         view.registerCharacterChartEvents(
@@ -226,6 +231,29 @@ public class MainController {
         } else {
             return true;
         }
+    }
+
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * Uses refreshViewEvents function as a template with some modifications
+     * idEvent is the specific event rectangle on the timeline that the user wishes to move
+     * xMouse is the absolute x position of the mouse relative to the screen
+     * @author Erik Hedåker
+     */
+    private void moveEventToMouseTimeline(int idEvent, int xMouse) {
+        view.moveEventToMouseTimeline(
+                model.eventManager.getEvents(),
+                model.eventManager.getEventOrder(view.getEventOrderList()),
+                idEvent,
+                xMouse);
+    }
+
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * @author Erik Hedåker
+     */
+    private void swapEventPositionsTimeline(int dragged, int target) {
+        view.swapEventPositionsTimeline(dragged, target);
     }
 
     /**
@@ -822,9 +850,35 @@ public class MainController {
             int dragged = model.eventManager.getEventIndex(view.getEventOrderList(), uidDragged);
             int target = model.eventManager.getEventIndex(view.getEventOrderList(), uidTarget);
 
-            if (dragged != -1 && target != -1) {
+            // Modification added in order to make task F.Tid.1.4 work
+            if ((dragged != -1 && target != -1) && (dragged != target)) {
                 model.eventManager.moveEvent(view.getEventOrderList(), dragged, target);
+                swapEventPositionsTimeline(dragged, target);
                 refreshViewEvents();
+            }
+        }
+    }
+
+    /**
+     * EventHandler class used in the implementation of task F.Tid.1.4
+     * Uses EventDragDropped class as a template with some modifications
+     * The event if-expression should only evaluates true if EventDragDropped if-expression evaluates false
+     * @author Erik Hedåker
+     */
+    private class EventDragComplete implements EventHandler<DragEvent> {
+
+        @Override
+        public void handle(DragEvent dragEvent) {
+            Rectangle rect = (Rectangle) dragEvent.getSource();
+
+            long uidDragged = Long.parseLong(dragEvent.getDragboard().getString());
+            long uidTarget = view.getEventUidByRectangle(rect);
+
+            int dragged = model.eventManager.getEventIndex(view.getEventOrderList(), uidDragged);
+            int target = model.eventManager.getEventIndex(view.getEventOrderList(), uidTarget);
+
+            if ((dragged != -1 && target != -1) && (dragged == target)) {
+                moveEventToMouseTimeline(dragged, MouseInfo.getPointerInfo().getLocation().x);
             }
         }
     }
