@@ -789,8 +789,8 @@ public class Project {
      */
     public class UserPreferences {
         public String projectDir = "";
-        public boolean windowMaximized = false;
-        public int windowWidth = 1280;
+        public boolean windowMaximized = true;
+        public int windowWidth = 1800;
         public int windowHeight = 720;
 
         /**
