@@ -195,7 +195,7 @@ public class MainController {
     }
 
     /**
-     * Alex
+     * @author Alex Olsson
      */
     private void refreshViewChapters() {
         view.updateChapters(
