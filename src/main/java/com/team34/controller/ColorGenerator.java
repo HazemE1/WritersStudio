@@ -7,8 +7,7 @@ public class ColorGenerator {
     static int n = 0;
 
     public static String getNewColor() {
-
-        switch ((n++)%6) {
+        switch ((n++)%7) {
             case 1:
                 return "#9EC0E6";
             case 2:
@@ -24,5 +23,12 @@ public class ColorGenerator {
             default:
                 return "#F282A7";
         }
+    }
+
+    public static String getNewRandomColor(){
+        Random random = new Random();
+        int randomNumber = random.nextInt(0xffffff + 1);
+        String colorCode = String.format("#%06x", randomNumber);
+        return colorCode;
     }
 }
