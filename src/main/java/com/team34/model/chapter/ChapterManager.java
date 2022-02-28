@@ -71,7 +71,7 @@ public class ChapterManager {
             return null;
 
         Long[] uidOrder = chapters.keySet().toArray(new Long[chapters.size()]);
-        Object[][] eventArray = new Object[uidOrder.length][3];
+        Object[][] eventArray = new Object[uidOrder.length][4];
 
         for (int i = 0; i < uidOrder.length; i++) {
             long uid = uidOrder[i];
@@ -79,6 +79,7 @@ public class ChapterManager {
             eventArray[i][0] = uid;
             eventArray[i][1] = chapterRef.getName();
             eventArray[i][2] = chapterRef.getDescription();
+            eventArray[i][3] = chapterRef.getColor();
         }
         return eventArray;
     }

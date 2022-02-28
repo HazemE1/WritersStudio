@@ -66,7 +66,7 @@ public class EventManager {
      */
     public boolean editEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
         if (events.containsKey(uid)) {
-            events.replace(uid, new Event(name, description, chapterListObject));
+            events.replace(uid, new Event(name, description, chapterListObject, chapterListObject.getColor()));
             hasChanged = true;
             return true;
         }
@@ -102,7 +102,7 @@ public class EventManager {
      * @param description the description of the event
      */
     public void addEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
-        events.put(uid, new Event(name, description, chapterListObject));
+        events.put(uid, new Event(name, description, chapterListObject, chapterListObject.getColor()));
         hasChanged = true;
     }
 
@@ -122,7 +122,7 @@ public class EventManager {
         Event event = events.get(uid);
         data[0] = event.getName();
         data[1] = event.getDescription();
-        data[2] = event.getColor();
+        data[3] = event.getColor();
 
         return data;
     }

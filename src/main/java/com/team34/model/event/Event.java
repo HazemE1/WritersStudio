@@ -22,13 +22,15 @@ public class Event {
      * @param name        Event name
      * @param description Event description
      */
-    public Event(String name, String description, ChapterListObject chapterListObject) {
+    public Event(String name, String description, ChapterListObject chapterListObject, String color) {
         this.name = name;
         this.description = description;
         this.chapterListObject = chapterListObject;
-        if(chapterListObject == null) return;
-        System.out.println(chapterListObject.getColor());
-        this.color = chapterListObject.getColor();
+        this.color = color;
+    }
+
+    public String getColor(){
+        return color;
     }
 
     public String getName() {
@@ -49,9 +51,5 @@ public class Event {
 
     public ChapterListObject getChapterListObject() {
         return chapterListObject;
-    }
-
-    public Object getColor() {
-        return color;
     }
 }

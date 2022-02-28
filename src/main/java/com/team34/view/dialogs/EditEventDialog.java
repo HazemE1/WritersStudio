@@ -200,7 +200,7 @@ public class EditEventDialog extends Stage {
             }
 
             ChapterListObject as;
-            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0], ColorGenerator.getNewRandomColor()));
+            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0], (String) objects[3]));
 
             objects = null;
         }
