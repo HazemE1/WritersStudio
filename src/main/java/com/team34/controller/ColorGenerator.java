@@ -2,10 +2,18 @@ package com.team34.controller;
 
 import java.util.Random;
 
+/**
+ * Generate random color for events.
+ * @author Frida Jacobsson
+ */
 public class ColorGenerator {
 
     static int n = 0;
 
+    /**
+     * @author Frida Jacobsson
+     * @return a predefined hex color in string based on a algorithm
+     */
     public static String getNewColor() {
         switch ((n++)%7) {
             case 1:
@@ -25,6 +33,10 @@ public class ColorGenerator {
         }
     }
 
+    /**
+     * @author Frida Jacobsson
+     * @return random hex color in string
+     */
     public static String getNewRandomColor(){
         Random random = new Random();
         int randomNumber = random.nextInt(0xffffff + 1);
