@@ -29,6 +29,11 @@ public class Event {
         this.color = color;
     }
 
+    public Event(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public String getColor(){
         return color;
     }

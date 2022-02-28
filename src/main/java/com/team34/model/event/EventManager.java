@@ -102,8 +102,12 @@ public class EventManager {
      * @param description the description of the event
      */
     public void addEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
-        events.put(uid, new Event(name, description, chapterListObject, chapterListObject.getColor()));
-        hasChanged = true;
+        if(chapterListObject!=null) {
+            events.put(uid, new Event(name, description, chapterListObject, chapterListObject.getColor()));
+            hasChanged = true;
+        }else{
+            events.put(uid, new Event(name, description));
+        }
     }
 
     /**
@@ -118,7 +122,7 @@ public class EventManager {
      * @return an array with a constant size of 2
      */
     public Object[] getEventData(long uid) {
-        Object[] data = new Object[3];
+        Object[] data = new Object[4];
         Event event = events.get(uid);
         data[0] = event.getName();
         data[1] = event.getDescription();
