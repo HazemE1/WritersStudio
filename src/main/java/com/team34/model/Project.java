@@ -34,6 +34,7 @@ import com.team34.model.character.*;
  * Any project that was already loaded when loading a new project, will be discarded.
  *
  * @author Kasper S. Skott
+ * @updated Alexander Olsson
  */
 public class Project {
 
@@ -242,7 +243,6 @@ public class Project {
                         }
                     }
                     event = reader.nextEvent();
-                    System.out.println(event);
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
                             eventManager.addEvent(uid, name, event.asCharacters().getData(), chapterListObject);
@@ -477,7 +477,6 @@ public class Project {
             writer.add(factory.createStartElement("", "", "event"));
             writer.add(factory.createAttribute("name", (String) event[i][1]));
             writer.add(factory.createAttribute("uid", Long.toString((Long) event[i][0])));
-           // writer.add(factory.createAttribute("eventList", String.valueOf((EventListObject) event[i][3])));
 
             writer.add(factory.createCharacters((String) event[i][2]));
 
@@ -512,7 +511,6 @@ public class Project {
                 writer.add(factory.createEndElement("", "", "li"));
                 writer.add(factory.createCharacters(System.lineSeparator()));
             }
-
             writer.add(factory.createCharacters("\t\t"));
             writer.add(factory.createEndElement("", "", "order_list"));
             writer.add(factory.createCharacters(System.lineSeparator()));
@@ -547,9 +545,6 @@ public class Project {
             writer.add(factory.createAttribute("eventName", (String) data[6]));
             writer.add(factory.createAttribute("eventUID", Long.toString((Long) data[7])));
             writer.add(factory.createCharacters((String) data[4]));
-       
-
-
             writer.add(factory.createEndElement("", "", "character"));
             writer.add(factory.createCharacters(System.lineSeparator()));
         }

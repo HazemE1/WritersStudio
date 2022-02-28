@@ -102,7 +102,6 @@ public class EventManager {
      * @param description the description of the event
      */
     public void addEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
-        System.out.println(uid + " " + " " + name + " "+ description );
         events.put(uid, new Event(name, description, chapterListObject));
         hasChanged = true;
     }
