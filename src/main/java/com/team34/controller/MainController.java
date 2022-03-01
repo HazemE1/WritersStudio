@@ -1,7 +1,7 @@
 package com.team34.controller;
 
 import com.team34.model.event.EventListObject;
-import com.team34.view.dialogs.EditChapterDialog;
+import com.team34.view.dialogs.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -14,15 +14,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
 
+import java.awt.MouseInfo;
+
 import javax.xml.stream.XMLStreamException;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import com.team34.view.dialogs.EditCharacterDialog;
-import com.team34.view.dialogs.EditEventDialog;
-import com.team34.view.dialogs.EditAssociationDialog;
 import com.team34.model.Project;
 import com.team34.view.MainView;
 
@@ -35,6 +34,7 @@ import com.team34.view.MainView;
  * it makes it easier to implement changes in a safe manner, lowering the risk of errors.
  *
  * @author Kasper S. Skott
+ * @updated Frida Jacobsson 2022-02-25
  */
 public class MainController {
 
@@ -45,6 +45,7 @@ public class MainController {
     private final EventHandler<WindowEvent> evtCloseRequest;
     private final EventHandler<ActionEvent> evtMenuBarAction;
     private final EventHandler<DragEvent> evtDragDropped;
+    private final EventHandler<DragEvent> evtDragComplete;
 
     private final EventHandler<MouseEvent> evtMouseCharacterList, mouseEventEventHandler;
     private EventListObject eventListObject;
@@ -65,6 +66,7 @@ public class MainController {
         this.evtCloseRequest = new EventCloseRequest();
         this.evtMenuBarAction = new EventMenuBarAction();
         this.evtDragDropped = new EventDragDropped();
+        this.evtDragComplete = new EventDragComplete();
         this.evtMouseCharacterList = new CharacterListMouseEvent();
         this.mouseEventEventHandler = new EventListMouseEvent();
         registerEventsOnView();
@@ -79,7 +81,8 @@ public class MainController {
         view.registerContextMenuEvents(evtContextMenuAction);
         view.registerCloseRequestEvent(evtCloseRequest);
         view.registerMenuBarActionEvents(evtMenuBarAction);
-        view.registerDragEvent(evtDragDropped);
+        view.registerDragEventDragDrop(evtDragDropped);
+        view.registerDragEventDragComplete(evtDragComplete);
         view.registerMouseEvents(evtMouseCharacterList);
         view.registerMouseEventsList(mouseEventEventHandler);
         view.registerCharacterChartEvents(
@@ -146,16 +149,16 @@ public class MainController {
     }
 
     /**
-     * @Alexander
+     * @auhtor Alexander Olsson
      */
 
     private void createNewChapter() {
         if (view.getEditChapterDialog().showCreateChapter() == EditChapterDialog.WindowResult.OK) {
             long newChapterUID = model.chapterManager.newChapter(
                     view.getEditChapterDialog().getChapterName(),
-                    view.getEditChapterDialog().getChapterDescription()
+                    view.getEditChapterDialog().getChapterDescription(),
+                    ColorGenerator.getNewColor()
             );
-
             if (newChapterUID == -1L) {
                 // TODO Popup warning dialog, stating that either name or description has unsupported format
             }
@@ -197,7 +200,7 @@ public class MainController {
     }
 
     /**
-     * Alex
+     * @author Alex Olsson
      */
     private void refreshViewChapters() {
         view.updateChapters(
@@ -226,6 +229,29 @@ public class MainController {
         } else {
             return true;
         }
+    }
+
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * Uses refreshViewEvents function as a template with some modifications
+     * idEvent is the specific event rectangle on the timeline that the user wishes to move
+     * xMouse is the absolute x position of the mouse relative to the screen
+     * @author Erik Hedåker
+     */
+    private void moveEventToMouseTimeline(int idEvent, int xMouse) {
+        view.moveEventToMouseTimeline(
+                model.eventManager.getEvents(),
+                model.eventManager.getEventOrder(view.getEventOrderList()),
+                idEvent,
+                xMouse);
+    }
+
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * @author Erik Hedåker
+     */
+    private void swapEventPositionsTimeline(int dragged, int target) {
+        view.swapEventPositionsTimeline(dragged, target);
     }
 
     /**
@@ -352,19 +378,20 @@ public class MainController {
     private void createNewCharacter(double x, double y) {
         if (!eventsExist()) {
 
-            view.warningDialog("Måste skapa event först!", "Character");
+            WarningDialog.displayWarning("You need to create an event before you can create a character", "Error");
         } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);
 
             if (view.getEditCharacterPanel().getCharacterEvent() == null) {
-                view.warningDialog("Måste välja ett event", "Character");
+                WarningDialog.displayWarning("You neeed to pick an event for your character", "Error");
 
             } else {
 
                 long newCharacterUID = model.characterManager.newCharacter(
                         view.getEditCharacterPanel().getCharacterName(),
                         view.getEditCharacterPanel().getCharacterDescription(),
+                        view.getEditCharacterPanel().getCharacterAge(),
                         view.getEditCharacterPanel().getCharacterEvent(),
                         x, y
                 );
@@ -400,6 +427,7 @@ public class MainController {
         ) {
             boolean success = model.characterManager.editCharacter(uid,
                     view.getEditCharacterPanel().getCharacterName(),
+                    view.getEditCharacterPanel().getCharacterAge(),
                     view.getEditCharacterPanel().getCharacterDescription(),
                     view.getEditCharacterPanel().getCharacterEvent()
             );
@@ -822,9 +850,35 @@ public class MainController {
             int dragged = model.eventManager.getEventIndex(view.getEventOrderList(), uidDragged);
             int target = model.eventManager.getEventIndex(view.getEventOrderList(), uidTarget);
 
-            if (dragged != -1 && target != -1) {
+            // Modification added in order to make task F.Tid.1.4 work
+            if ((dragged != -1 && target != -1) && (dragged != target)) {
                 model.eventManager.moveEvent(view.getEventOrderList(), dragged, target);
+                swapEventPositionsTimeline(dragged, target);
                 refreshViewEvents();
+            }
+        }
+    }
+
+    /**
+     * EventHandler class used in the implementation of task F.Tid.1.4
+     * Uses EventDragDropped class as a template with some modifications
+     * The event if-expression should only evaluates true if EventDragDropped if-expression evaluates false
+     * @author Erik Hedåker
+     */
+    private class EventDragComplete implements EventHandler<DragEvent> {
+
+        @Override
+        public void handle(DragEvent dragEvent) {
+            Rectangle rect = (Rectangle) dragEvent.getSource();
+
+            long uidDragged = Long.parseLong(dragEvent.getDragboard().getString());
+            long uidTarget = view.getEventUidByRectangle(rect);
+
+            int dragged = model.eventManager.getEventIndex(view.getEventOrderList(), uidDragged);
+            int target = model.eventManager.getEventIndex(view.getEventOrderList(), uidTarget);
+
+            if ((dragged != -1 && target != -1) && (dragged == target)) {
+                moveEventToMouseTimeline(dragged, MouseInfo.getPointerInfo().getLocation().x);
             }
         }
     }

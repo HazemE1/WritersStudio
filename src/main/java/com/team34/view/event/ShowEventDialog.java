@@ -46,7 +46,6 @@ public class ShowEventDialog extends Stage {
             close();
         });
 
-
         // --- Layouts --- //
 
         //Title Layout

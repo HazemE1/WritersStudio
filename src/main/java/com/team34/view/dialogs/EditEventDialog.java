@@ -1,5 +1,6 @@
 package com.team34.view.dialogs;
 
+import com.team34.controller.ColorGenerator;
 import com.team34.model.chapter.ChapterListObject;
 import com.team34.model.event.EventListObject;
 import javafx.collections.FXCollections;
@@ -199,7 +200,7 @@ public class EditEventDialog extends Stage {
             }
 
             ChapterListObject as;
-            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0]));
+            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0], (String) objects[3]));
 
             objects = null;
         }

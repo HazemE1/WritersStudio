@@ -239,7 +239,6 @@ public class Project {
                             case "name":
                                 name = attr.getValue();
                                 break;
-
                         }
                     }
                     event = reader.nextEvent();
@@ -353,6 +352,8 @@ public class Project {
                             characterManager.addCharacter(uid, name,"",new EventListObject(eventName, eventUID), chartX, chartY);
                         else
                             characterManager.addCharacter(uid, name, "",new EventListObject(eventName,eventUID ), chartX, chartY);
+
+
                     }
                 }
             } else if (event.isEndElement()) {

@@ -2,6 +2,7 @@ package com.team34.view.timeline;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
@@ -72,9 +73,11 @@ public class Timeline {
     private EventHandler<ContextMenuEvent> evtShowContextEvent; // Fires when an event is right-clicked
     private EventHandler<ContextMenuEvent> evtShowContextPane; // Fires when the pane is right-clicked
     private EventHandler<DragEvent> evtDragDropped;
+    private EventHandler<DragEvent> evtDragComplete;
 
     private HashMap<Long, LabeledRectangle> eventRectMap; // Stores references to LabeledRectangles by their eventUID.
     private Long[] eventUIDOrder; // This is a reference to the order of the events.
+    private HashMap<Long, Double> eventPosition;
 
     /**
      * Creates a new instance of Timeline with the given minimum width in pixels.
@@ -108,7 +111,7 @@ public class Timeline {
         line.addToPane(pane);
 
         eventRectMap = new HashMap<>(INITIAL_EVENT_CAPACITY);
-
+        eventPosition = new HashMap<>(INITIAL_EVENT_CAPACITY);
     }
 
     /**
@@ -121,7 +124,7 @@ public class Timeline {
      * @param label    the text that is to be displayed within the rectangle
      * @param width    the width of the rectangle. Set to 0.0 to use default
      */
-    public void addEvent(long eventUID, String label, double width) {
+    public void addEvent(long eventUID, String label, double width, String color) {
         LabeledRectangle existingRect = eventRectMap.get(eventUID);
 
         if (existingRect != null) { // If the event is getting overwritten, remove the old shapes first.
@@ -130,7 +133,7 @@ public class Timeline {
             Tooltip.uninstall(existingRect.getRect(), existingRect.getTooltip());
         }
 
-        LabeledRectangle rect = new LabeledRectangle(label, width, 0.0f);
+        LabeledRectangle rect = new LabeledRectangle(label, width, 0.0f, color);
         rect.setStylesheetClasses("timeline-event-rect", "timeline-event-text", "timeline-tooltip");
         eventRectMap.put(eventUID, rect);
 
@@ -166,6 +169,7 @@ public class Timeline {
         });
 
         rect.getRect().setOnDragDropped(evtDragDropped);
+        rect.getRect().setOnDragDone(evtDragComplete);
 
         Tooltip.install(rect.getRect(), rect.getTooltip());
     }
@@ -177,8 +181,8 @@ public class Timeline {
      * @param eventUID the unique ID, associated with the event throughout the project
      * @param label    the text that is to be displayed within the rectangle
      */
-    public void addEvent(long eventUID, String label) {
-        addEvent(eventUID, label, 0.0);
+    public void addEvent(long eventUID, String label, String color) {
+        addEvent(eventUID, label, 0.0, color);
     }
 
     /**
@@ -266,7 +270,15 @@ public class Timeline {
                 if (rect == null)
                     continue;
 
-                rect.setX(nextX);
+                // Modification added in order to make task F.Tid.1.4 work
+                if (eventPosition.containsKey(eventUIDOrder[i])) {
+                    rect.setX(eventPosition.get(eventUIDOrder[i]));
+                }
+                else {
+                    rect.setX(nextX);
+                    eventPosition.put(eventUIDOrder[i], nextX);
+                }
+
                 rect.setY(y);
 
                 nextX += rect.getBoundsInLocal().getWidth() + LAYOUT_SPACING; // take individual width into account
@@ -289,7 +301,6 @@ public class Timeline {
 
         // Recalculate the timeline line shapes.
         line.recalculate(posX, posY, width);
-
     }
 
     /**
@@ -299,6 +310,83 @@ public class Timeline {
      */
     public void recalculateLayout() {
         recalculateLayout(eventUIDOrder);
+    }
+
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * Uses recalculateLayout function as a template with some modifications
+     * Much of the original code is left untouched, might need some adjustment or refactoring to fix future bugs
+     * idEvent is the specific event rectangle on the timeline that the user wishes to move
+     * xMouse is the absolute x position of the mouse relative to the screen
+     * @author Erik Hedåker
+     */
+    public void moveEventToMouseTimeline(int idEvent, int xMouse) {
+        if (eventUIDOrder != null)
+            setEventOrder(eventUIDOrder);
+
+        // Recalculate position
+        posX = LAYOUT_SPACING;
+        posY = pane.getMinHeight() / 2.0;
+
+        // Reset positions of event rectangles according to the given order.
+        double y = posY - LabeledRectangle.DEFAULT_HEIGHT / 2.0;
+        double nextX = posX + LAYOUT_SPACING;
+
+        if (eventUIDOrder != null) {
+            for (int i = 0; i < eventUIDOrder.length; i++) {
+                LabeledRectangle rect = eventRectMap.get(eventUIDOrder[i]);
+                if (rect == null)
+                    continue;
+
+                if (eventPosition.containsKey(eventUIDOrder[i])) {
+                    rect.setX(eventPosition.get(eventUIDOrder[i]));
+                }
+                else {
+                    rect.setX(nextX);
+                    eventPosition.put(eventUIDOrder[i], nextX);
+                }
+
+                rect.setY(y);
+
+                nextX += rect.getBoundsInLocal().getWidth() + LAYOUT_SPACING; // take individual width into account
+            }
+
+            //Manually set event rectangle position to mouse
+            LabeledRectangle rect = eventRectMap.get(eventUIDOrder[idEvent]);
+            Bounds boundsInScreen = pane.localToScreen(pane.getBoundsInLocal());
+            double newX = xMouse - boundsInScreen.getMinX() - (rect.getRect().getWidth() / 2);
+            eventPosition.put(eventUIDOrder[idEvent], newX);
+            rect.setX(newX);
+            rect.setY(y);
+        }
+
+        // Adjust timeline length (width) if necessary
+        nextX += LAYOUT_SPACING; // end should have more space
+        if (nextX - posX > minWidth)
+            width = nextX - posX;
+        else
+            width = minWidth;
+
+        // Readjust pane sizes
+        pane.setMinWidth(width + LAYOUT_SPACING + LAYOUT_SPACING);
+        pane.setPrefSize(pane.getMinWidth(), pane.getMinHeight());
+
+        scrollPane.setMinViewportHeight(pane.getMinHeight());
+        scrollPane.setPrefViewportHeight(pane.getMinHeight());
+
+        // Recalculate the timeline line shapes.
+        line.recalculate(posX, posY, width);
+    }
+
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * Swaps the position values of a dragged and target event rectangle
+     * @author Erik Hedåker
+     */
+    public void swapEventPositionsTimeline(int dragged, int target) {
+        double temp = eventPosition.get(eventUIDOrder[dragged]);
+        eventPosition.put(eventUIDOrder[dragged], eventPosition.get(eventUIDOrder[target]));
+        eventPosition.put(eventUIDOrder[target], temp);
     }
 
     /**
@@ -345,8 +433,12 @@ public class Timeline {
         return contextMenu;
     }
 
-    public void registerEventHandlers(EventHandler<DragEvent> dragEventEventHandler) {
+    public void registerEventHandlersDragDrop(EventHandler<DragEvent> dragEventEventHandler) {
         this.evtDragDropped = dragEventEventHandler;
+    }
+
+    public void registerEventHandlersDragComplete(EventHandler<DragEvent> dragEventEventHandler) {
+        this.evtDragComplete = dragEventEventHandler;
     }
 
     ////// EVENTS ////////////////////////////////////////////////////////////

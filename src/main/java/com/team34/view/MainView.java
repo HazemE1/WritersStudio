@@ -126,7 +126,7 @@ public class MainView {
      */
     public MainView(Stage mainStage, double screenW, double screenH, boolean maximized) {
         eventOrderList = 0;
-        chapterOrderList =0;
+        chapterOrderList = 0;
         this.mainStage = mainStage;
         lastChartMouseClickX = 0.0;
         lastChartMouseClickY = 0.0;
@@ -169,7 +169,7 @@ public class MainView {
         leftPane.setMinSize(250.0, 200.0);
         leftChapterPane.setMinSize(250.0, 200.0);
         rightPane.setMinSize(250.0, 200.0);
-        centerPane.setMinSize(650,200);
+        centerPane.setMinSize(650, 200);
 
         secondLayerSplit.setOrientation(Orientation.HORIZONTAL); // layed-out horizontally, but splitted vertically
         secondLayerSplit.getItems().addAll(leftChapterPane, leftPane, centerPane, rightPane);
@@ -223,14 +223,14 @@ public class MainView {
 
 
         /**
-         * @ALex
+         * New chaper dialog
+         * @author Alexander Olsson
          */
         editChapterDialog = new EditChapterDialog(mainStage);
-        // NY Chapter dialog
     }
 
-    public void newCharChart(EventListObject eventListObject){
-        characterChart = new CharacterChart(centerPane.getWidth(), centerPane.getHeight(),eventListObject);
+    public void newCharChart(EventListObject eventListObject) {
+        characterChart = new CharacterChart(centerPane.getWidth(), centerPane.getHeight(), eventListObject);
 
         characterChart.addToPane(centerPane);
     }
@@ -396,8 +396,12 @@ public class MainView {
      * @param dragEventHandler
      * @author Jim Andersson
      */
-    public void registerDragEvent(EventHandler<DragEvent> dragEventHandler) {
-        timeline.registerEventHandlers(dragEventHandler);
+    public void registerDragEventDragDrop(EventHandler<DragEvent> dragEventHandler) {
+        timeline.registerEventHandlersDragDrop(dragEventHandler);
+    }
+
+    public void registerDragEventDragComplete(EventHandler<DragEvent> dragEventHandler) {
+        timeline.registerEventHandlersDragComplete(dragEventHandler);
     }
 
     /**
@@ -411,7 +415,11 @@ public class MainView {
         timeline.clear();
         if (events != null) {
             for (int i = 0; i < events.length; i++) {
-                timeline.addEvent((Long) events[i][0], (String) events[i][1]);
+                if(events[i][3] != "") {
+                    timeline.addEvent((Long) events[i][0], (String) events[i][1], (String) events[i][3]);
+                }else{
+                    timeline.addEvent((Long) events[i][0], (String) events[i][1], "#5DB2BD");
+                }
             }
         }
         if (eventOrder != null)
@@ -426,6 +434,37 @@ public class MainView {
     public void updateChapters(Object[][] chapters, Long[] chapterOrder) {
         leftChapterPane.updateListView(chapters, chapterOrder);
         editEventDialog.updateListView(chapters, chapterOrder);
+    }
+
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * Uses updateEvents function as a template with some modifications
+     * Much of the original code is left untouched, might need some adjustment or refactoring to fix future bugs
+     * idEvent is the specific event rectangle on the timeline that the user wishes to move
+     * xMouse is the absolute x position of the mouse relative to the screen
+     * @author Erik Hedåker
+     */
+    public void moveEventToMouseTimeline(Object[][] events, Long[] eventOrder, int idEvent, int xMouse) {
+        timeline.clear();
+        if (events != null) {
+            for (int i = 0; i < events.length; i++) {
+                timeline.addEvent((Long) events[i][0], (String) events[i][1], (String) events[i][3]);
+            }
+        }
+        if (eventOrder != null)
+            timeline.setEventOrder(eventOrder);
+
+        timeline.moveEventToMouseTimeline(idEvent, xMouse);
+
+        leftPane.updateListView(events, eventOrder);
+    }
+
+    /**
+     * Function used in the implementation of task F.Tid.1.4
+     * @author Erik Hedåker
+     */
+    public void swapEventPositionsTimeline(int dragged, int target) {
+        timeline.swapEventPositionsTimeline(dragged, target);
     }
 
     /**
@@ -464,11 +503,10 @@ public class MainView {
      */
     public void updateCharacterList(ArrayList<Object[]> characters, Object[][] associations, EventListObject eventListObject) {
         rightPane.updateListView(characters);
-
         characterChart.updateCharacters(characters, associations, eventListObject);
     }
 
-    public EventListObject returns(){
+    public EventListObject returns() {
         return EventList.list();
     }
 
@@ -482,44 +520,11 @@ public class MainView {
         return rightPane.getCharacterUID();
     }
 
-
-    /**
-     * Warning dialog
-     *
-     * @Alexander Olsson
-     */
-
-    public void warningDialog(String text, String title){
-        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK);
-        alert.setTitle(title);
-        alert.showAndWait();
-    }
-
-    public Boolean warningDialogOptions(String text, String title){
-        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK, ButtonType.CANCEL);
-        alert.setTitle(title);
-        alert.showAndWait();
-
-        if (alert.getResult() == ButtonType.OK) {
-            return true;
-        }
-
-        alert.getResult();
-
-        return false;
-    }
-
     public long getSelectedEventUID() {
         return leftPane.getEventUID();
     }
 
-    /**
-     *
-     * ALEX
-     * @return
-     */
-
-    public long getSelectedChapterUID(){
+    public long getSelectedChapterUID() {
         return leftChapterPane.getChapterUID();
     }
 

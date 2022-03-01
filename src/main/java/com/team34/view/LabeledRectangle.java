@@ -36,11 +36,12 @@ public class LabeledRectangle {
      * @param width  the width of the rectangle. Set to 0.0 to use default
      * @param height the height of the rectangle. Set to 0.0 to use default
      */
-    public LabeledRectangle(String label, double width, double height) {
+    public LabeledRectangle(String label, double width, double height, String color) {
         double w = width < 1.0 ? DEFAULT_WIDTH : width;
         double h = height < 1.0 ? DEFAULT_HEIGHT : height;
 
         rect = new Rectangle(w, h);
+        rect.setStyle("-fx-fill: "+ color);
 
         clipRect = new Rectangle(w, h);
         clipRect.xProperty().bind(rect.xProperty());

@@ -25,8 +25,8 @@ public class ShowCharacterDialog extends Stage {
     private Button btnEdit;
     private Button btnBack;
     private boolean edit;
-    private Label lblName,lblEvent;
-    private Label lblCharacterName, lblEventName;
+    private Label lblName,lblAge,lblEvent;
+    private Label lblCharacterName, lblCharacterAge, lblEventName;
     private Label lblDescription;
     private Text txtDescription;
     private ComboBox<Object> charEventGroup;
@@ -46,28 +46,31 @@ public class ShowCharacterDialog extends Stage {
         lblName = new Label("Name: ");
         lblName.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        lblEvent = new Label("Event: ");
+        lblAge = new Label("Age:");
+        lblAge.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        lblCharacterName = new Label();
+        lblEvent = new Label("Event: ");
+        lblEvent.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
         charEventGroup = new ComboBox<>();
         charEventGroup.setPromptText("Choose event group");
         //charEventGroup.setItems(eventManager.EventListChar());
-
 
         lblDescription = new Label("Description:");
         lblDescription.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
         //Textfield
         lblCharacterName = new Label();
-        lblCharacterName.setMaxWidth(150);
+        lblCharacterName.setMaxWidth(200);
+
+        lblCharacterAge = new Label();
+        lblCharacterAge.setMaxWidth(200);
 
         lblEventName = new Label();
-        lblEventName.setMaxWidth(150);
+        lblEventName.setMaxWidth(200);
 
         //TextArea
         txtDescription = new Text();
-
 
         //Buttons
         btnBack = new Button("Back");
@@ -82,7 +85,6 @@ public class ShowCharacterDialog extends Stage {
             close();
         });
 
-
         // --- Layouts --- //
 
         //Name Layout
@@ -93,13 +95,18 @@ public class ShowCharacterDialog extends Stage {
         nameLayout.getChildren().addAll(lblName, lblCharacterName);
         nameLayout.getStyleClass().add("name");
 
+        //Age layout
+        HBox ageLayout = new HBox();
+        ageLayout.setMinHeight(6);
+        ageLayout.setSpacing(10);
+        ageLayout.setAlignment(Pos.CENTER_LEFT);
+        ageLayout.getChildren().addAll(lblAge, lblCharacterAge);
+
         HBox eventLayout = new HBox();
         eventLayout.setMinHeight(30);
         eventLayout.setSpacing(10);
         eventLayout.setAlignment(Pos.CENTER_LEFT);
         eventLayout.getChildren().addAll(lblEvent, lblEventName);
-        //nameLayout.getStyleClass().add("name");
-
 
         //Description layout
         VBox descriptionLayout = new VBox();
@@ -126,7 +133,9 @@ public class ShowCharacterDialog extends Stage {
         layout.add(eventLayout, 0 , 3);
         layout.add(lblDescription, 0, 1);
         layout.add(txtDescription, 0, 2);
-        layout.add(buttonLayout, 0, 4);
+        layout.add(lblAge, 0, 4);
+        layout.add(lblCharacterAge, 0, 5);
+        layout.add(buttonLayout, 0, 6);
 
         // --- Set Scene --- //
         Scene scene = new Scene(layout);
@@ -144,16 +153,19 @@ public class ShowCharacterDialog extends Stage {
      *
      *
      * edit
-     * @Alexander Olsson
+     * @updated Alexander Olsson
+     * @eupdated Frida Jacobsson 2022-02-24
      */
     public boolean showCharacter(Object[] data) {
-        String name, description, event;
+        String name, description, event, age;
         name = (String) data[0];
         description = (String) data[1];
         event = (String) data[2];
+        age = (String) data[3];
 
         lblCharacterName.setText(name);
         txtDescription.setText(description);
+        lblCharacterAge.setText(age);
         lblEventName.setText(event);
         setTitle(name);
 

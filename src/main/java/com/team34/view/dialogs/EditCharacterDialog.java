@@ -1,9 +1,7 @@
 package com.team34.view.dialogs;
 
-import com.team34.model.event.Event;
+import com.team34.controller.Validator;
 import com.team34.model.event.EventListObject;
-import com.team34.model.event.EventManager;
-import com.team34.view.event.EventList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -14,17 +12,16 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.util.List;
-
 /**
  * @author Morgan Karlsson
+ * @updated Frida Jacobsson 2022-02-25
  */
 
 public class EditCharacterDialog extends Stage {
 
     private Button btnSave;
     private Button btnCancel;
-    private TextField tfCharacterName;
+    private TextField tfCharacterName, tfCharacterAge;
     private TextArea taCharacterDescription;
     private WindowResult windowResult;
     private ComboBox<EventListObject> cbEventGroup;
@@ -39,22 +36,25 @@ public class EditCharacterDialog extends Stage {
 
         //Label
         Label lblCharacterName = new Label("Character name:");
+        Label lblCharacterAge = new Label("Character age:");
         Label lblEventGroup = new Label("Event group:");
         Label lblCharacterDescription = new Label("Character description:");
 
         //Textfield
         tfCharacterName = new TextField();
-        tfCharacterName.setPromptText("Enter character name here");
+        tfCharacterName.setPromptText("");
         tfCharacterName.setMaxWidth(150);
 
-        cbEventGroup = new ComboBox<>();
-        //cbEventGroup.setItems(eventManager.getEvents());
-        cbEventGroup.setPromptText("Choose event");
+        tfCharacterAge = new TextField();
+        tfCharacterAge.setPromptText("");
+        tfCharacterAge.setMaxWidth(60);
 
+        cbEventGroup = new ComboBox<>();
+        cbEventGroup.setPromptText("Choose event");
 
         //TextArea
         taCharacterDescription = new TextArea();
-        taCharacterDescription.setPromptText("Enter character description here");
+        taCharacterDescription.setPromptText("");
 
         //Buttons
         btnSave = new Button("Save");
@@ -95,11 +95,15 @@ public class EditCharacterDialog extends Stage {
         layout.setPadding(new Insets(10, 10, 10, 10));
 
         layout.add(nameLayout, 0, 0);
-        layout.add(eventGroupLayout, 0, 2);
 
-        layout.add(lblCharacterDescription, 0, 3);
-        layout.add(taCharacterDescription, 0, 4);
-        layout.add(buttonLayout, 0, 5);
+        layout.add(lblCharacterAge, 0, 2);
+        layout.add(tfCharacterAge, 0, 3);
+
+        layout.add(eventGroupLayout, 0, 4);
+
+        layout.add(lblCharacterDescription, 0, 5);
+        layout.add(taCharacterDescription, 0, 6);
+        layout.add(buttonLayout, 0, 7);
 
         // --- Set Scene --- //
         Scene scene = new Scene(layout);
@@ -120,6 +124,7 @@ public class EditCharacterDialog extends Stage {
         setTitle("New Character");
 
         tfCharacterName.setText("");
+        tfCharacterAge.setText("");
         taCharacterDescription.setText("");
 
         tfCharacterName.requestFocus();
@@ -157,6 +162,22 @@ public class EditCharacterDialog extends Stage {
     }
 
     public EventListObject getCharacterEvent() { return cbEventGroup.getValue();
+    }
+
+    /**
+     *
+     * @author Frida Jacobsson
+     * @return Characters age only if the age is a valid int, otherwise display warning.
+     */
+    public int getCharacterAge() {
+        int age = Validator.returnStringAsInt(tfCharacterAge.getText());
+        if(Validator.validateValidAge(age)){
+            return age;
+        }
+        else{
+            WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
+            return -1;
+        }
     }
 
     /**
