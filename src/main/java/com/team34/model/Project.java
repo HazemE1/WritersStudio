@@ -34,6 +34,7 @@ import com.team34.model.character.*;
  * Any project that was already loaded when loading a new project, will be discarded.
  *
  * @author Kasper S. Skott
+ * @updated Alexander Olsson
  */
 public class Project {
 
@@ -221,7 +222,6 @@ public class Project {
         String name = null;
         ChapterListObject chapterListObject = null;
 
-
         while (reader.hasNext()) {
             event = reader.nextEvent();
 
@@ -241,7 +241,6 @@ public class Project {
                                 break;
                         }
                     }
-
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
@@ -251,7 +250,6 @@ public class Project {
 
                     }
                 }
-
             } else if (event.isEndElement()) {
                 if (event.asEndElement().getName().getLocalPart() == "events")
                     return;
@@ -297,9 +295,7 @@ public class Project {
                         }
                     }
                 }
-
             }
-
         }
     }
 
@@ -316,7 +312,8 @@ public class Project {
         String name = null;
         double chartX = 0.0;
         double chartY = 0.0;
-        EventListObject eventListObject = null;
+        long eventUID = -1L;
+        String eventName = null;
 
         while (reader.hasNext()) {
             event = reader.nextEvent();
@@ -342,18 +339,23 @@ public class Project {
                             case "chartY":
                                 chartY = Double.parseDouble(attr.getValue());
                                 break;
+                            case "eventName":
+                                eventName = attr.getValue();
+                            case "eventUID":
+                                eventUID = Long.parseLong(attr.getValue());
+
                         }
                     }
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            characterManager.addCharacter(uid, name,"", 0, eventListObject, chartX, chartY);
+                            characterManager.addCharacter(uid, name,"", 0, new EventListObject(eventName, eventUID), chartX, chartY);
                         else
-                            characterManager.addCharacter(uid, name, "",0, eventListObject, chartX, chartY);
+                            characterManager.addCharacter(uid, name, "",0, new EventListObject(eventName,eventUID ), chartX, chartY);
+
 
                     }
                 }
-
             } else if (event.isEndElement()) {
                 if (event.asEndElement().getName().getLocalPart() == "characters")
                     return;
@@ -421,17 +423,14 @@ public class Project {
                                 break;
                         }
                     }
-
                     event = reader.nextEvent();
                     if (uid != -1L && label != null) {
                         if (event.isCharacters())
                             characterManager.addAssociation(uid, startUID, endUID, sX, sY, eX, eY, event.asCharacters().getData(), lblX, lblY);
                         else
                             characterManager.addAssociation(uid, startUID, endUID, sX, sY, eX, eY, "", lblX, lblY);
-
                     }
                 }
-
             } else if (event.isEndElement()) {
                 if (event.asEndElement().getName().getLocalPart() == "associations")
                     return;
@@ -513,7 +512,6 @@ public class Project {
                 writer.add(factory.createEndElement("", "", "li"));
                 writer.add(factory.createCharacters(System.lineSeparator()));
             }
-
             writer.add(factory.createCharacters("\t\t"));
             writer.add(factory.createEndElement("", "", "order_list"));
             writer.add(factory.createCharacters(System.lineSeparator()));
@@ -545,9 +543,9 @@ public class Project {
             writer.add(factory.createAttribute("uid", Long.toString((Long) data[1])));
             writer.add(factory.createAttribute("chartX", Double.toString((Double) data[2])));
             writer.add(factory.createAttribute("chartY", Double.toString((Double) data[3])));
-
+            writer.add(factory.createAttribute("eventName", (String) data[6]));
+            writer.add(factory.createAttribute("eventUID", Long.toString((Long) data[7])));
             writer.add(factory.createCharacters((String) data[4]));
-
             writer.add(factory.createEndElement("", "", "character"));
             writer.add(factory.createCharacters(System.lineSeparator()));
         }
@@ -569,7 +567,6 @@ public class Project {
         Object[] data;
         for (int i = 0; i < assocs.length; i++) {
             data = assocs[i];
-
             writer.add(factory.createCharacters("\t\t"));
             writer.add(factory.createStartElement("", "", "association"));
             writer.add(factory.createAttribute("uid", Long.toString((Long) data[0])));
@@ -680,7 +677,6 @@ public class Project {
             eventManager.resetChanges();
             characterManager.resetChanges();
         }
-
     }
 
     /**
@@ -823,5 +819,4 @@ public class Project {
             windowHeight = ref.windowHeight;
         }
     }
-
 }

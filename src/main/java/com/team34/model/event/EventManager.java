@@ -174,6 +174,7 @@ public class EventManager {
             eventArray[i][1] = eventRef.getName();
             eventArray[i][2] = eventRef.getDescription();
             eventArray[i][3] = eventRef.getColor();
+            eventArray[i][2] = eventRef.getChapterListObject();
         }
         return eventArray;
     }
