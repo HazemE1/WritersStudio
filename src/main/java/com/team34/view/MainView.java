@@ -448,7 +448,7 @@ public class MainView {
         timeline.clear();
         if (events != null) {
             for (int i = 0; i < events.length; i++) {
-                timeline.addEvent((Long) events[i][0], (String) events[i][1]);
+                timeline.addEvent((Long) events[i][0], (String) events[i][1], (String) events[i][3]);
             }
         }
         if (eventOrder != null)
