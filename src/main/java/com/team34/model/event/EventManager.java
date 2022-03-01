@@ -66,7 +66,7 @@ public class EventManager {
      */
     public boolean editEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
         if (events.containsKey(uid)) {
-            events.replace(uid, new Event(name, description, chapterListObject));
+            events.replace(uid, new Event(name, description, chapterListObject, chapterListObject.getColor()));
             hasChanged = true;
             return true;
         }
@@ -102,8 +102,12 @@ public class EventManager {
      * @param description the description of the event
      */
     public void addEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
-        events.put(uid, new Event(name, description, chapterListObject));
-        hasChanged = true;
+        if(chapterListObject!=null) {
+            events.put(uid, new Event(name, description, chapterListObject, chapterListObject.getColor()));
+            hasChanged = true;
+        }else{
+            events.put(uid, new Event(name, description));
+        }
     }
 
     /**
@@ -118,10 +122,11 @@ public class EventManager {
      * @return an array with a constant size of 2
      */
     public Object[] getEventData(long uid) {
-        Object[] data = new Object[2];
+        Object[] data = new Object[4];
         Event event = events.get(uid);
         data[0] = event.getName();
         data[1] = event.getDescription();
+        data[3] = event.getColor();
 
         return data;
     }
@@ -160,7 +165,7 @@ public class EventManager {
             return null;
 
         Long[] uidOrder = events.keySet().toArray(new Long[events.size()]);
-        Object[][] eventArray = new Object[uidOrder.length][3];
+        Object[][] eventArray = new Object[uidOrder.length][4];
 
         for (int i = 0; i < uidOrder.length; i++) {
             long uid = uidOrder[i];
@@ -168,6 +173,7 @@ public class EventManager {
             eventArray[i][0] = uid;
             eventArray[i][1] = eventRef.getName();
             eventArray[i][2] = eventRef.getDescription();
+            eventArray[i][3] = eventRef.getColor();
         }
         return eventArray;
     }

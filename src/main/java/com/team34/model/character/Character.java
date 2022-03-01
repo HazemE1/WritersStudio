@@ -1,25 +1,26 @@
 package com.team34.model.character;
 
-import com.team34.model.event.Event;
 import com.team34.model.event.EventListObject;
 
 /**
  * @author Morgan Karlsson
+ * @updated Frida Jacobsson 2022-02-24
  */
 
 public class Character {
 
     private String name = "";
     private String description = "";
+    private int age = 0;
     private double chartPositionX = 0.0;
     private double chartPositionY = 0.0;
     private EventListObject event;
 
-    public Character(String name, String description, EventListObject event, double posX, double posY) {
+    public Character(String name, String description, int age, EventListObject event, double posX, double posY) {
         this.name = name;
         this.description = description;
         this.event = event;
-        //this.event = event;
+        this.age = age;
         chartPositionX = posX;
         chartPositionY = posY;
     }
@@ -52,15 +53,11 @@ public class Character {
         return chartPositionX;
     }
 
-    public void setChartPositionX(double chartPositionX) {
-        this.chartPositionX = chartPositionX;
-    }
-
     public double getChartPositionY() {
         return chartPositionY;
     }
 
-    public void setChartPositionY(double chartPositionY) {
-        this.chartPositionY = chartPositionY;
+    public int getAge() {
+        return age;
     }
 }

@@ -124,7 +124,7 @@ public class Timeline {
      * @param label    the text that is to be displayed within the rectangle
      * @param width    the width of the rectangle. Set to 0.0 to use default
      */
-    public void addEvent(long eventUID, String label, double width) {
+    public void addEvent(long eventUID, String label, double width, String color) {
         LabeledRectangle existingRect = eventRectMap.get(eventUID);
 
         if (existingRect != null) { // If the event is getting overwritten, remove the old shapes first.
@@ -133,7 +133,7 @@ public class Timeline {
             Tooltip.uninstall(existingRect.getRect(), existingRect.getTooltip());
         }
 
-        LabeledRectangle rect = new LabeledRectangle(label, width, 0.0f);
+        LabeledRectangle rect = new LabeledRectangle(label, width, 0.0f, color);
         rect.setStylesheetClasses("timeline-event-rect", "timeline-event-text", "timeline-tooltip");
         eventRectMap.put(eventUID, rect);
 
@@ -181,8 +181,8 @@ public class Timeline {
      * @param eventUID the unique ID, associated with the event throughout the project
      * @param label    the text that is to be displayed within the rectangle
      */
-    public void addEvent(long eventUID, String label) {
-        addEvent(eventUID, label, 0.0);
+    public void addEvent(long eventUID, String label, String color) {
+        addEvent(eventUID, label, 0.0, color);
     }
 
     /**

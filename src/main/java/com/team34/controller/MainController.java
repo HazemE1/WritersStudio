@@ -1,7 +1,7 @@
 package com.team34.controller;
 
 import com.team34.model.event.EventListObject;
-import com.team34.view.dialogs.EditChapterDialog;
+import com.team34.view.dialogs.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -22,9 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-import com.team34.view.dialogs.EditCharacterDialog;
-import com.team34.view.dialogs.EditEventDialog;
-import com.team34.view.dialogs.EditAssociationDialog;
 import com.team34.model.Project;
 import com.team34.view.MainView;
 
@@ -37,6 +34,7 @@ import com.team34.view.MainView;
  * it makes it easier to implement changes in a safe manner, lowering the risk of errors.
  *
  * @author Kasper S. Skott
+ * @updated Frida Jacobsson 2022-02-25
  */
 public class MainController {
 
@@ -151,16 +149,16 @@ public class MainController {
     }
 
     /**
-     * @Alexander
+     * @auhtor Alexander Olsson
      */
 
     private void createNewChapter() {
         if (view.getEditChapterDialog().showCreateChapter() == EditChapterDialog.WindowResult.OK) {
             long newChapterUID = model.chapterManager.newChapter(
                     view.getEditChapterDialog().getChapterName(),
-                    view.getEditChapterDialog().getChapterDescription()
+                    view.getEditChapterDialog().getChapterDescription(),
+                    ColorGenerator.getNewColor()
             );
-
             if (newChapterUID == -1L) {
                 // TODO Popup warning dialog, stating that either name or description has unsupported format
             }
@@ -202,7 +200,7 @@ public class MainController {
     }
 
     /**
-     * Alex
+     * @author Alex Olsson
      */
     private void refreshViewChapters() {
         view.updateChapters(
@@ -380,19 +378,20 @@ public class MainController {
     private void createNewCharacter(double x, double y) {
         if (!eventsExist()) {
 
-            view.warningDialog("Måste skapa event först!", "Character");
+            WarningDialog.displayWarning("You need to create an event before you can create a character", "Error");
         } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);
 
             if (view.getEditCharacterPanel().getCharacterEvent() == null) {
-                view.warningDialog("Måste välja ett event", "Character");
+                WarningDialog.displayWarning("You neeed to pick an event for your character", "Error");
 
             } else {
 
                 long newCharacterUID = model.characterManager.newCharacter(
                         view.getEditCharacterPanel().getCharacterName(),
                         view.getEditCharacterPanel().getCharacterDescription(),
+                        view.getEditCharacterPanel().getCharacterAge(),
                         view.getEditCharacterPanel().getCharacterEvent(),
                         x, y
                 );
@@ -428,6 +427,7 @@ public class MainController {
         ) {
             boolean success = model.characterManager.editCharacter(uid,
                     view.getEditCharacterPanel().getCharacterName(),
+                    view.getEditCharacterPanel().getCharacterAge(),
                     view.getEditCharacterPanel().getCharacterDescription(),
                     view.getEditCharacterPanel().getCharacterEvent()
             );

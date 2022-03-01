@@ -35,7 +35,8 @@ public class CharacterChart {
     private HashMap<Long, CharacterRectangle> rectMap; // Stores references to CharacterRectangles by their UID.
 
     /**
-     * @Alex
+     * @author Alexander Olssson
+     * @updated Frida Jacobsson
      */
     private HashMap<Long, EventListObject> evtMap;
 
@@ -139,7 +140,7 @@ public class CharacterChart {
             Tooltip.uninstall(existingRect.getRect(), existingRect.getTooltip());
         }
 
-        CharacterRectangle rect = new CharacterRectangle(name, 0.0, 0.0);
+        CharacterRectangle rect = new CharacterRectangle(name, 0.0, 0.0, "#F2E0D0");
         rect.setStylesheetClasses("characterchart-rect", "characterchart-text", "characterchart-tooltip");
         rectMap.put(uid, rect);
 
