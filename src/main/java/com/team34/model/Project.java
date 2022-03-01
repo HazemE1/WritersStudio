@@ -349,9 +349,9 @@ public class Project {
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            characterManager.addCharacter(uid, name,"",new EventListObject(eventName, eventUID), chartX, chartY);
+                            characterManager.addCharacter(uid, name,"", 0, new EventListObject(eventName, eventUID), chartX, chartY);
                         else
-                            characterManager.addCharacter(uid, name, "",new EventListObject(eventName,eventUID ), chartX, chartY);
+                            characterManager.addCharacter(uid, name, "",0, new EventListObject(eventName,eventUID ), chartX, chartY);
 
 
                     }
