@@ -552,7 +552,6 @@ public class MainController {
             String sourceID = source.getId();
             long eventUID = view.getSelectedEventUID();
             long chapterUID = view.getSelectedChapterUID();
-
             switch (sourceID) {
                 case MainView.ID_BTN_EVENT_ADD:
                     createNewEvent();
@@ -560,12 +559,14 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_EVENT_DELETE:
+                    if(eventUID == -1) return;
                     model.eventManager.removeEvent(eventUID);
                     refreshViewEvents();
                     refreshTitleBar();
                     break;
 
                 case MainView.ID_BTN_EVENT_EDIT:
+                    if(eventUID == -1) return;
                     editEvent(eventUID);
                     refreshViewEvents();
                     break;
@@ -576,12 +577,14 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_CHAPTER_DELETE:
+                    if(chapterUID == -1) return;
                     model.chapterManager.removeChapter(chapterUID);
                     refreshViewChapters();
                     refreshTitleBar();
                     break;
 
                 case MainView.ID_BTN_CHAPTER_EDIT:
+                    if(chapterUID == -1) return;
                     editChapter(chapterUID);
                     refreshViewChapters();
                     break;

@@ -188,11 +188,8 @@ public class EventList extends StackPane {
      * @return long
      */
     public long getEventUID() {
-        if (list.getSelectionModel().getSelectedItem() != null) {
-            return list.getSelectionModel().getSelectedItem().getUid();
-        }
-
-        return -1;
+        if(list.getSelectionModel().getSelectedItem() == null) return -1;
+        return list.getSelectionModel().getSelectedItem().getUid();
     }
 
     public ListView<EventListObject> getList() {
