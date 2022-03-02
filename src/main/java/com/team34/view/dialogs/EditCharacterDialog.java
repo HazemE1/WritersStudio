@@ -175,7 +175,6 @@ public class EditCharacterDialog extends Stage {
             return age;
         }
         else{
-            WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
             return -1;
         }
     }

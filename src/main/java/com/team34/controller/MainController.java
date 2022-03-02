@@ -386,7 +386,10 @@ public class MainController {
             if (view.getEditCharacterPanel().getCharacterEvent() == null) {
                 WarningDialog.displayWarning("You neeed to pick an event for your character", "Error");
 
-            } else {
+            }
+            if(view.getEditCharacterPanel().getCharacterAge() == -1){
+                WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
+            }else {
 
                 long newCharacterUID = model.characterManager.newCharacter(
                         view.getEditCharacterPanel().getCharacterName(),
