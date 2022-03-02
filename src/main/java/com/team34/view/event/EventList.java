@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -61,6 +62,9 @@ public class EventList extends StackPane {
         add = new Button();
         edit = new Button();
         delete = new Button();
+        add.setCursor(Cursor.HAND);
+        edit.setCursor(Cursor.HAND);
+        delete.setCursor(Cursor.HAND);
         installButtonIcons();
         installButtonIds();
 

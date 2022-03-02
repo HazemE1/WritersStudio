@@ -377,7 +377,6 @@ public class MainController {
      */
     private void createNewCharacter(double x, double y) {
         if (!eventsExist()) {
-
             WarningDialog.displayWarning("You need to create an event before you can create a character", "Error");
         } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
@@ -385,7 +384,6 @@ public class MainController {
 
             if (view.getEditCharacterPanel().getCharacterEvent() == null) {
                 WarningDialog.displayWarning("You neeed to pick an event for your character", "Error");
-
             }
             if(view.getEditCharacterPanel().getCharacterAge() == -1){
                 WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
@@ -403,7 +401,6 @@ public class MainController {
                         model.characterManager.getAssociationData(),
                         view.returns()
                 );
-
                 if (newCharacterUID == -1L) {
                     // TODO Popup warning dialog, stating that either name or description has unsupported format
                 }
