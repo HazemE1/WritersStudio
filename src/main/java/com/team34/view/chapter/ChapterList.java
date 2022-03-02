@@ -12,6 +12,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -64,6 +65,13 @@ public class ChapterList extends StackPane {
         add.setCursor(Cursor.HAND);
         edit.setCursor(Cursor.HAND);
         delete.setCursor(Cursor.HAND);
+        Tooltip tAdd = new Tooltip("Add");
+        Tooltip.install(add, tAdd);
+        Tooltip tEdit = new Tooltip("Edit");
+        Tooltip.install(edit, tEdit);
+        Tooltip tDelete = new Tooltip("Delete");
+        Tooltip.install(delete, tDelete);
+
         installButtonIcons();
         installButtonIds();
 
