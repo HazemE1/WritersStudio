@@ -1,32 +1,30 @@
 package com.team34.controller;
 
+import com.team34.model.Project;
+import com.team34.model.chapter.Chapter;
 import com.team34.model.event.EventListObject;
+import com.team34.view.MainView;
+import com.team34.view.dialogs.EditAssociationDialog;
 import com.team34.view.dialogs.EditChapterDialog;
+import com.team34.view.dialogs.EditCharacterDialog;
+import com.team34.view.dialogs.EditEventDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.DragEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
 
-import java.awt.MouseInfo;
-
 import javax.xml.stream.XMLStreamException;
-
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-
-import com.team34.view.dialogs.EditCharacterDialog;
-import com.team34.view.dialogs.EditEventDialog;
-import com.team34.view.dialogs.EditAssociationDialog;
-import com.team34.model.Project;
-import com.team34.view.MainView;
 
 /**
  * This class handles logic and communication between the model and view components of the system.
@@ -91,7 +89,9 @@ public class MainController {
                 new EventCharacterRectReleased(),
                 new EventChartClick(),
                 new EventAssociationLabelReleased()
+
         );
+        view.registerChapterPressEvent(new EventChapterPressed());
     }
 
     /**
@@ -238,6 +238,7 @@ public class MainController {
      * Uses refreshViewEvents function as a template with some modifications
      * idEvent is the specific event rectangle on the timeline that the user wishes to move
      * xMouse is the absolute x position of the mouse relative to the screen
+     *
      * @author Erik Hedåker
      */
     private void moveEventToMouseTimeline(int idEvent, int xMouse) {
@@ -250,6 +251,7 @@ public class MainController {
 
     /**
      * Function used in the implementation of task F.Tid.1.4
+     *
      * @author Erik Hedåker
      */
     private void swapEventPositionsTimeline(int dragged, int target) {
@@ -555,6 +557,7 @@ public class MainController {
 
             switch (sourceID) {
                 case MainView.ID_BTN_EVENT_ADD:
+
                     createNewEvent();
                     refreshViewEvents();
                     break;
@@ -781,6 +784,22 @@ public class MainController {
         }
     }
 
+    private class EventChapterPressed implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent e) {
+            if (e.getButton() != MouseButton.PRIMARY)
+                return;
+
+            if (view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem() == null)
+                return;
+
+            Chapter c = model.chapterManager.getChapter(view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem().getUid());
+
+            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), c);
+
+        }
+    }
+
     private class EventCharacterRectReleased implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent e) {
@@ -863,6 +882,7 @@ public class MainController {
      * EventHandler class used in the implementation of task F.Tid.1.4
      * Uses EventDragDropped class as a template with some modifications
      * The event if-expression should only evaluates true if EventDragDropped if-expression evaluates false
+     *
      * @author Erik Hedåker
      */
     private class EventDragComplete implements EventHandler<DragEvent> {

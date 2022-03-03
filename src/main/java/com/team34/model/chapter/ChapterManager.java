@@ -1,11 +1,9 @@
 package com.team34.model.chapter;
 
 import com.team34.model.UIDManager;
-import com.team34.model.event.Event;
 import com.team34.model.event.EventManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -17,9 +15,10 @@ public class ChapterManager {
 
     public ChapterManager() {
         hasChanged = false;
-        chapters = new HashMap<Long, Chapter>();
+        chapters = new HashMap<>();
         chapterOrderLists = new ArrayList<>();
-        chapterOrderLists.add(new LinkedList<Long>());
+        chapterOrderLists.add(new LinkedList<>());
+
     }
 
     public long newChapter(String name, String description) {
@@ -133,5 +132,9 @@ public class ChapterManager {
      */
     public void resetChanges() {
         hasChanged = false;
+    }
+
+    public Chapter getChapter(long uid) {
+        return this.chapters.get(uid);
     }
 }

@@ -1,5 +1,7 @@
 package com.team34.view.characterchart;
 
+import com.team34.model.chapter.Chapter;
+import com.team34.model.event.Event;
 import com.team34.model.event.EventListObject;
 import com.team34.view.MainView;
 import javafx.event.ActionEvent;
@@ -10,7 +12,10 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.*;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -416,14 +421,10 @@ public class CharacterChart {
 
 
         if (eventListObject != null) {
-
-
             if (characters != null) {
                 for (int i = 0; i < characters.size(); i++) { // Update characters
                     Object[] characterData = characters.get(i);
 
-                    System.out.println("Test:");
-                    System.out.println(characterData[5] + " " + eventListObject.getTitle());
                     if (Objects.equals(characterData[5].toString(), eventListObject.getTitle())) {
                         addCharacter((Long) characterData[1], (String) characterData[0]);
                         setCharacterPosition(
@@ -460,6 +461,55 @@ public class CharacterChart {
             }
         }
     }
+
+
+    public void updateCharacters(ArrayList<Object[]> characters, Object[][] _associations, Chapter c) {
+        clear();
+
+        for (Event e : c.getEvents()) {
+            System.out.println(e.getName());
+            if (e != null) {
+                if (characters != null) {
+                    for (int i = 0; i < characters.size(); i++) { // Update characters
+                        Object[] characterData = characters.get(i);
+                        if (Objects.equals(characterData[5].toString(), e.getChapterListObject().getTitle())) {
+                            addCharacter((Long) characterData[1], (String) characterData[0]);
+                            setCharacterPosition(
+                                    (Long) characterData[1],
+                                    (Double) characterData[2],
+                                    (Double) characterData[3]
+                            );
+                        }
+                    }
+                }
+
+                if (_associations != null) {
+                    for (int i = 0; i < _associations.length; i++) { // Update associations
+                        Object[] assocData = _associations[i];
+                        addAssociation(
+                                (Long) assocData[0],
+                                (Long) assocData[1],
+                                (Long) assocData[2],
+                                (String) assocData[7]
+                        );
+                        setAssociationPositions(
+                                (Long) assocData[0],
+                                (Double) assocData[3],
+                                (Double) assocData[4],
+                                (Double) assocData[5],
+                                (Double) assocData[6]
+                        );
+                        setAssociationLabelPosition(
+                                (Long) assocData[0],
+                                (Double) assocData[8],
+                                (Double) assocData[9]
+                        );
+                    }
+                }
+            }
+        }
+    }
+
 
     private void setAssociationLabelPosition(long assocUID, double newX, double newY) {
         Text text = associations.get(assocUID).text;

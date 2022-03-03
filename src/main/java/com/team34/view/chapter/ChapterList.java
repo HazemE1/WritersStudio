@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -76,7 +77,6 @@ public class ChapterList extends StackPane {
         aedBox.setAlignment(Pos.CENTER);
 
         eventBox.getChildren().addAll(list);
-
         innerPane.setTop(aedBox);
         innerPane.setCenter(eventBox);
 
@@ -174,6 +174,10 @@ public class ChapterList extends StackPane {
             return list.getSelectionModel().getSelectedItem().getUid();
         }
         return -1;
+    }
+
+    public void addMouseClickEventHandler(EventHandler<MouseEvent> e) {
+        list.setOnMouseClicked(e);
     }
 
     public ListView<ChapterListObject> getList() {

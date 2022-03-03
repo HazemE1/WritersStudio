@@ -1,5 +1,16 @@
 package com.team34.model;
 
+import com.team34.model.chapter.ChapterListObject;
+import com.team34.model.chapter.ChapterManager;
+import com.team34.model.character.CharacterManager;
+import com.team34.model.event.Event;
+import com.team34.model.event.EventListObject;
+import com.team34.model.event.EventManager;
+
+import javax.xml.stream.*;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,16 +20,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-
-import javax.xml.stream.*;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import com.team34.model.chapter.ChapterListObject;
-import com.team34.model.chapter.ChapterManager;
-import com.team34.model.event.*;
-import com.team34.model.character.*;
 
 /**
  * This class represents the top layer of the model/data.
@@ -52,9 +53,10 @@ public class Project {
      * Constructs the project, sets up the working directory, and loads the preferences file.
      */
     public Project() {
-        eventManager = new EventManager();
-        characterManager = new CharacterManager();
         chapterManager = new ChapterManager();
+
+        eventManager = new EventManager(chapterManager);
+        characterManager = new CharacterManager();
         userPrefs = new UserPreferences();
 
         workingDir = System.getProperty("user.dir");
@@ -243,9 +245,9 @@ public class Project {
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            eventManager.addEvent(uid, name, event.asCharacters().getData(), chapterListObject);
+                            eventManager.addEvent(uid, new Event(name, event.asCharacters().getData(), chapterListObject));
                         else
-                            eventManager.addEvent(uid, name, "", chapterListObject);
+                            eventManager.addEvent(uid, new Event(name, "", chapterListObject));
 
                     }
                 }
@@ -342,9 +344,9 @@ public class Project {
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            characterManager.addCharacter(uid, name,"",eventListObject, chartX, chartY);
+                            characterManager.addCharacter(uid, name, "", eventListObject, chartX, chartY);
                         else
-                            characterManager.addCharacter(uid, name, "",eventListObject, chartX, chartY);
+                            characterManager.addCharacter(uid, name, "", eventListObject, chartX, chartY);
                     }
                 }
             } else if (event.isEndElement()) {

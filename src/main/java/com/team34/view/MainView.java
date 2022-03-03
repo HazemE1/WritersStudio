@@ -1,16 +1,25 @@
 package com.team34.view;
 
-import com.team34.view.chapter.ChapterList;
-import com.team34.view.dialogs.EditChapterDialog;
+import com.team34.model.chapter.Chapter;
 import com.team34.model.event.EventListObject;
-
+import com.team34.model.event.EventManager;
+import com.team34.view.chapter.ChapterList;
+import com.team34.view.character.CharacterList;
+import com.team34.view.character.ShowCharacterDialog;
+import com.team34.view.characterchart.CharacterChart;
+import com.team34.view.dialogs.EditAssociationDialog;
+import com.team34.view.dialogs.EditChapterDialog;
+import com.team34.view.dialogs.EditCharacterDialog;
+import com.team34.view.dialogs.EditEventDialog;
+import com.team34.view.event.EventList;
+import com.team34.view.timeline.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -18,18 +27,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.util.Optional;
 import java.util.ArrayList;
-
-import com.team34.model.event.EventManager;
-import com.team34.view.character.CharacterList;
-import com.team34.view.event.EventList;
-import com.team34.view.dialogs.EditEventDialog;
-import com.team34.view.dialogs.EditCharacterDialog;
-import com.team34.view.dialogs.EditAssociationDialog;
-import com.team34.view.timeline.Timeline;
-import com.team34.view.characterchart.CharacterChart;
-import com.team34.view.character.ShowCharacterDialog;
+import java.util.Optional;
 
 /**
  * This class represents the top layer of the view.
@@ -126,7 +125,7 @@ public class MainView {
      */
     public MainView(Stage mainStage, double screenW, double screenH, boolean maximized) {
         eventOrderList = 0;
-        chapterOrderList =0;
+        chapterOrderList = 0;
         this.mainStage = mainStage;
         lastChartMouseClickX = 0.0;
         lastChartMouseClickY = 0.0;
@@ -169,7 +168,7 @@ public class MainView {
         leftPane.setMinSize(250.0, 200.0);
         leftChapterPane.setMinSize(250.0, 200.0);
         rightPane.setMinSize(250.0, 200.0);
-        centerPane.setMinSize(650,200);
+        centerPane.setMinSize(650, 200);
 
         secondLayerSplit.setOrientation(Orientation.HORIZONTAL); // layed-out horizontally, but splitted vertically
         secondLayerSplit.getItems().addAll(leftChapterPane, leftPane, centerPane, rightPane);
@@ -229,8 +228,8 @@ public class MainView {
         // NY Chapter dialog
     }
 
-    public void newCharChart(EventListObject eventListObject){
-        characterChart = new CharacterChart(centerPane.getWidth(), centerPane.getHeight(),eventListObject);
+    public void newCharChart(EventListObject eventListObject) {
+        characterChart = new CharacterChart(centerPane.getWidth(), centerPane.getHeight(), eventListObject);
 
         characterChart.addToPane(centerPane);
     }
@@ -438,6 +437,7 @@ public class MainView {
      * Much of the original code is left untouched, might need some adjustment or refactoring to fix future bugs
      * idEvent is the specific event rectangle on the timeline that the user wishes to move
      * xMouse is the absolute x position of the mouse relative to the screen
+     *
      * @author Erik Hedåker
      */
     public void moveEventToMouseTimeline(Object[][] events, Long[] eventOrder, int idEvent, int xMouse) {
@@ -457,6 +457,7 @@ public class MainView {
 
     /**
      * Function used in the implementation of task F.Tid.1.4
+     *
      * @author Erik Hedåker
      */
     public void swapEventPositionsTimeline(int dragged, int target) {
@@ -503,7 +504,14 @@ public class MainView {
         characterChart.updateCharacters(characters, associations, eventListObject);
     }
 
-    public EventListObject returns(){
+    public void updateCharacterList(ArrayList<Object[]> characters, Object[][] associations, Chapter c) {
+        rightPane.updateListView(characters);
+
+        characterChart.updateCharacters(characters, associations, c);
+    }
+
+
+    public EventListObject returns() {
         return EventList.list();
     }
 
@@ -524,13 +532,13 @@ public class MainView {
      * @Alexander Olsson
      */
 
-    public void warningDialog(String text, String title){
+    public void warningDialog(String text, String title) {
         Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK);
         alert.setTitle(title);
         alert.showAndWait();
     }
 
-    public Boolean warningDialogOptions(String text, String title){
+    public Boolean warningDialogOptions(String text, String title) {
         Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK, ButtonType.CANCEL);
         alert.setTitle(title);
         alert.showAndWait();
@@ -549,12 +557,12 @@ public class MainView {
     }
 
     /**
-     *
      * ALEX
+     *
      * @return
      */
 
-    public long getSelectedChapterUID(){
+    public long getSelectedChapterUID() {
         return leftChapterPane.getChapterUID();
     }
 
@@ -574,6 +582,10 @@ public class MainView {
                                              EventHandler<MouseEvent> evtMouseClicked,
                                              EventHandler<MouseEvent> evtLabelReleased) {
         characterChart.registerEvents(evtCharacterReleased, evtMouseClicked, evtLabelReleased);
+    }
+
+    public void registerChapterEvents(EventHandler<MouseEvent> evtChapterClicked) {
+        leftChapterPane.addMouseClickEventHandler(evtChapterClicked);
     }
 
     public Object[] getChartCharacterData(long uid) {
@@ -602,5 +614,13 @@ public class MainView {
 
     public ShowCharacterDialog getShowCharacterDialog() {
         return showCharacterDialog;
+    }
+
+    public void registerChapterPressEvent(EventHandler<MouseEvent> eventChapterPressed) {
+        leftChapterPane.addMouseClickEventHandler(eventChapterPressed);
+    }
+
+    public ChapterList getLeftChapterPane() {
+        return leftChapterPane;
     }
 }

@@ -24,6 +24,11 @@ public class Event {
         this.name = name;
         this.description = description;
         this.chapterListObject = chapterListObject;
+
+    }
+
+    public void setChapterListObject(ChapterListObject chapterListObject) {
+        this.chapterListObject = chapterListObject;
     }
 
     public String getName() {
