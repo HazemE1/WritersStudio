@@ -5,6 +5,7 @@ import com.team34.view.MainView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -143,6 +144,7 @@ public class CharacterChart {
         CharacterRectangle rect = new CharacterRectangle(name, 0.0, 0.0, "#F2E0D0");
         rect.setStylesheetClasses("characterchart-rect", "characterchart-text", "characterchart-tooltip");
         rectMap.put(uid, rect);
+
 
         pane.getChildren().add(rect.getRect());
         pane.getChildren().add(rect.getText());

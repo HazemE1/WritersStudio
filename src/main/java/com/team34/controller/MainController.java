@@ -377,7 +377,6 @@ public class MainController {
      */
     private void createNewCharacter(double x, double y) {
         if (!eventsExist()) {
-
             WarningDialog.displayWarning("You need to create an event before you can create a character", "Error");
         } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
@@ -385,8 +384,10 @@ public class MainController {
 
             if (view.getEditCharacterPanel().getCharacterEvent() == null) {
                 WarningDialog.displayWarning("You neeed to pick an event for your character", "Error");
-
-            } else {
+            }
+            if(view.getEditCharacterPanel().getCharacterAge() == -1){
+                WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
+            }else {
 
                 long newCharacterUID = model.characterManager.newCharacter(
                         view.getEditCharacterPanel().getCharacterName(),
@@ -400,7 +401,6 @@ public class MainController {
                         model.characterManager.getAssociationData(),
                         view.returns()
                 );
-
                 if (newCharacterUID == -1L) {
                     // TODO Popup warning dialog, stating that either name or description has unsupported format
                 }
@@ -552,7 +552,6 @@ public class MainController {
             String sourceID = source.getId();
             long eventUID = view.getSelectedEventUID();
             long chapterUID = view.getSelectedChapterUID();
-
             switch (sourceID) {
                 case MainView.ID_BTN_EVENT_ADD:
                     createNewEvent();
@@ -560,12 +559,14 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_EVENT_DELETE:
+                    if(eventUID == -1) return;
                     model.eventManager.removeEvent(eventUID);
                     refreshViewEvents();
                     refreshTitleBar();
                     break;
 
                 case MainView.ID_BTN_EVENT_EDIT:
+                    if(eventUID == -1) return;
                     editEvent(eventUID);
                     refreshViewEvents();
                     break;
@@ -576,12 +577,14 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_CHAPTER_DELETE:
+                    if(chapterUID == -1) return;
                     model.chapterManager.removeChapter(chapterUID);
                     refreshViewChapters();
                     refreshTitleBar();
                     break;
 
                 case MainView.ID_BTN_CHAPTER_EDIT:
+                    if(chapterUID == -1) return;
                     editChapter(chapterUID);
                     refreshViewChapters();
                     break;

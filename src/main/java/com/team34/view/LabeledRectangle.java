@@ -2,6 +2,7 @@ package com.team34.view;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Tooltip;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -41,6 +42,7 @@ public class LabeledRectangle {
         double h = height < 1.0 ? DEFAULT_HEIGHT : height;
 
         rect = new Rectangle(w, h);
+        rect.setCursor(Cursor.HAND); //Change cursor to hand
         rect.setStyle("-fx-fill: "+ color);
 
         clipRect = new Rectangle(w, h);

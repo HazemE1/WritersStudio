@@ -7,9 +7,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -61,6 +63,16 @@ public class EventList extends StackPane {
         add = new Button();
         edit = new Button();
         delete = new Button();
+        add.setCursor(Cursor.HAND);
+        edit.setCursor(Cursor.HAND);
+        delete.setCursor(Cursor.HAND);
+        Tooltip tAdd = new Tooltip("Add");
+        Tooltip.install(add, tAdd);
+        Tooltip tEdit = new Tooltip("Edit");
+        Tooltip.install(edit, tEdit);
+        Tooltip tDelete = new Tooltip("Delete");
+        Tooltip.install(delete, tDelete);
+
         installButtonIcons();
         installButtonIds();
 
@@ -184,11 +196,8 @@ public class EventList extends StackPane {
      * @return long
      */
     public long getEventUID() {
-        if (list.getSelectionModel().getSelectedItem() != null) {
-            return list.getSelectionModel().getSelectedItem().getUid();
-        }
-
-        return -1;
+        if(list.getSelectionModel().getSelectedItem() == null) return -1;
+        return list.getSelectionModel().getSelectedItem().getUid();
     }
 
     public ListView<EventListObject> getList() {
