@@ -19,6 +19,8 @@ import javafx.scene.layout.*;
 import com.team34.model.event.EventListObject;
 import com.team34.view.MainView;
 
+import java.util.Arrays;
+
 public class ChapterList extends StackPane {
 
     private ListView<ChapterListObject> list;
@@ -142,14 +144,18 @@ public class ChapterList extends StackPane {
         }
 
         ObservableList<ChapterListObject> ol = FXCollections.observableArrayList();
+
         Object[] objects = null;
         for (int i = 0; i < order.length; i++) {
+            System.out.println(order[i] + " order[i], Chapters");
+
             for (int j = 0; j < chapters.length; j++) {
                 if (((Long) chapters[j][0]).equals(order[i]))
                     objects = chapters[j];
             }
-            ChapterListObject as;
-            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0], (String) objects[3]));
+            ol.add(new ChapterListObject((String) objects[1], (Long) objects[0], (String) objects[3]));
+            System.out.println(ol + " _______*****_____");
+
             objects = null;
         }
         list.setItems(ol);

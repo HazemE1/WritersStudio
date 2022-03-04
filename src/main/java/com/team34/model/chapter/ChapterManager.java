@@ -1,9 +1,9 @@
 package com.team34.model.chapter;
 
 import com.team34.model.UIDManager;
-import com.team34.model.event.EventManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -17,7 +17,6 @@ public class ChapterManager {
         hasChanged = false;
         chapters = new HashMap<Long, Chapter>();
         chapterOrderLists = new ArrayList<>();
-        chapterOrderLists.add(new LinkedList<Long>());
     }
 
     public long newChapter(String name, String description, String color) {
@@ -81,17 +80,24 @@ public class ChapterManager {
             eventArray[i][2] = chapterRef.getDescription();
             eventArray[i][3] = chapterRef.getColor();
         }
+        System.out.println(Arrays.deepToString(eventArray) + "Chapters");
         return eventArray;
     }
 
     public Long[] getChapterOrder(int chapterOrderList) {
         if (chapterOrderLists == null)
             return null;
+
         if (chapterOrderList >= chapterOrderLists.size() || chapterOrderList < 0)
             return null;
 
+
+        System.out.println(chapterOrderLists+ " ChapterorderLists");
+        //System.out.println(Arrays.toString(chapterOrderLists.get(chapterOrderList).toArray()) + "hej2");
+
         return chapterOrderLists.get(chapterOrderList).toArray(
                 new Long[chapterOrderLists.get(chapterOrderList).size()]
+
         );
     }
 
@@ -110,7 +116,7 @@ public class ChapterManager {
     }
 
     /**
-     * Removes all events and event order lists, and sets {@link EventManager#} to false.
+     * Removes all events and event order lists, and sets {@link #} to false.
      */
     public void clear() {
         chapters.clear();
@@ -121,14 +127,14 @@ public class ChapterManager {
     /**
      * Returns whether the data inside this class has changed
      *
-     * @return the value of {@link EventManager#}
+     * @return the value of {@link #}
      */
     public boolean hasChanged() {
         return hasChanged;
     }
 
     /**
-     * Sets {@link EventManager#} to false.
+     * Sets {@link #} to false.
      */
     public void resetChanges() {
         hasChanged = false;

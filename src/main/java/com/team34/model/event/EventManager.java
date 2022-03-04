@@ -208,7 +208,6 @@ public class EventManager {
                 eventArray[i][5] = "";
             }
         }
-        System.out.println(Arrays.deepToString(eventArray));
         return eventArray;
     }
 
@@ -225,6 +224,8 @@ public class EventManager {
         if (eventOrderList >= eventOrderLists.size() || eventOrderList < 0)
             return null;
 
+        System.out.println(eventOrderLists + " Eventorderlist");
+        //System.out.println(Arrays.toString(eventOrderLists.get(eventOrderList).toArray()) + "hej1");
         return eventOrderLists.get(eventOrderList).toArray(
                 new Long[eventOrderLists.get(eventOrderList).size()]
         );

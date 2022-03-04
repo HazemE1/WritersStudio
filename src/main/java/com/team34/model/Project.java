@@ -209,6 +209,88 @@ public class Project {
         }
     }
 
+
+    private void loadChapters(XMLEvent event, XMLEventReader reader)
+            throws XMLStreamException {
+        long uid = -1L;
+        String name = null;
+        String color = null;
+
+        while (reader.hasNext()) {
+            event = reader.nextEvent();
+
+            if (event.isStartElement()) {
+                StartElement startElement = event.asStartElement();
+
+                if (startElement.getName().getLocalPart() == "chapter") {
+                    Iterator<Attribute> attrIt = startElement.getAttributes();
+                    while (attrIt.hasNext()) {
+                        Attribute attr = attrIt.next();
+                        switch (attr.getName().getLocalPart()) {
+                            case "uid":
+                                uid = Long.parseLong(attr.getValue());
+                                break;
+                            case "name":
+                                name = attr.getValue();
+                                break;
+                            case "color":
+                                color = attr.getValue();
+                                break;
+
+                        }
+                    }
+                    event = reader.nextEvent();
+                    if (uid != -1L && name != null) {
+                        if (event.isCharacters())
+
+                            chapterManager.addChapter(uid, name, event.asCharacters().getData(),color);
+                        else
+                            chapterManager.addChapter(uid, name, "", color);
+
+                    }
+                }
+            } else if (event.isEndElement()) {
+                if (event.asEndElement().getName().getLocalPart() == "chapters")
+                    return;
+            }
+        }
+    }
+
+    private void loadChapterOrderLists(XMLEvent event, XMLEventReader reader)
+            throws XMLStreamException {
+        LinkedList<Long> orderList = new LinkedList<>();
+
+        while (reader.hasNext()) {
+            event = reader.nextEvent();
+
+            if (event.isStartElement()) {
+                StartElement startElement = event.asStartElement();
+
+                if (startElement.getName().getLocalPart() == "chapter_list") {
+                    orderList = new LinkedList<Long>();
+
+                    while (reader.hasNext()) {
+                        event = reader.nextEvent();
+
+                        if (event.isStartElement()) {
+                            startElement = event.asStartElement();
+                            if (startElement.getName().getLocalPart() == "li") {
+                                event = reader.nextEvent();
+                                if (event.isCharacters())
+                                    orderList.add(Long.parseLong(event.asCharacters().getData()));
+                            }
+                        } else if (event.isEndElement()) {
+                            if (event.asEndElement().getName().getLocalPart() == "chapter_list")
+                                chapterManager.addOrderList(orderList);
+                            if (event.asEndElement().getName().getLocalPart() == "chapter_order")
+                                return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Internal helper method to {@link Project#loadProject(File)}
      *
@@ -223,7 +305,6 @@ public class Project {
         String chapter = null;
         long chapterUid = -1L;
         String color = null;
-        ChapterListObject chapterListObject = null;
 
         while (reader.hasNext()) {
             event = reader.nextEvent();
@@ -477,6 +558,54 @@ public class Project {
         }
     }
 
+    private void writeChapters(XMLEventFactory factory, XMLEventWriter writer)
+        throws XMLStreamException{
+        Object[][] chapter = chapterManager.getChapters();
+        if(chapter == null)
+            return;
+        for (int i = 0; i < chapter.length; i++){
+
+            writer.add(factory.createCharacters("\t\t"));
+            writer.add(factory.createStartElement("", "", "chapter"));
+            writer.add(factory.createAttribute("uid", Long.toString((Long) chapter[i][0])));
+            writer.add(factory.createAttribute("name", (String) chapter[i][1]));
+            writer.add(factory.createAttribute("color", (String) chapter[i][3]));
+            writer.add(factory.createCharacters((String) chapter[i][2]));
+
+
+            writer.add(factory.createEndElement("", "", "chapter"));
+            writer.add(factory.createCharacters(System.lineSeparator()));
+
+        }
+    }
+
+    private void writeChapterOrderLists(XMLEventFactory factory, XMLEventWriter writer)
+            throws XMLStreamException {
+        int i = 0;
+        Long[] orderList = chapterManager.getChapterOrder(i);
+        if (orderList == null)
+            return;
+
+        while (orderList != null) {
+            writer.add(factory.createCharacters("\t\t"));
+            writer.add(factory.createStartElement("", "", "chapter_list"));
+            writer.add(factory.createCharacters(System.lineSeparator()));
+
+            for (int j = 0; j < orderList.length; j++) {
+                writer.add(factory.createCharacters("\t\t\t"));
+                writer.add(factory.createStartElement("", "", "li"));
+                writer.add(factory.createCharacters(Long.toString(orderList[j])));
+                writer.add(factory.createEndElement("", "", "li"));
+                writer.add(factory.createCharacters(System.lineSeparator()));
+            }
+            writer.add(factory.createCharacters("\t\t"));
+            writer.add(factory.createEndElement("", "", "chapter_list"));
+            writer.add(factory.createCharacters(System.lineSeparator()));
+
+            orderList = chapterManager.getChapterOrder(++i);
+        }
+    }
+
     /**
      * Internal helper method to {@link Project#saveProject()}
      *
@@ -490,15 +619,25 @@ public class Project {
         if (event == null)
             return;
 
+
         for (int i = 0; i < event.length; i++) {
-            writer.add(factory.createCharacters("\t\t"));
-            writer.add(factory.createStartElement("", "", "event"));
-            writer.add(factory.createAttribute("uid", Long.toString((Long) event[i][0])));
-            writer.add(factory.createAttribute("name", (String) event[i][1]));
-            writer.add(factory.createAttribute("color", (String) event[i][3]));
-            writer.add(factory.createAttribute("chapter",(String) event[i][4]));
-            writer.add(factory.createAttribute("chapterUid",Long.toString((Long) event[i][5])));
-            writer.add(factory.createCharacters((String) event[i][2]));
+            if(!event[i][5].equals("")){
+                writer.add(factory.createCharacters("\t\t"));
+                writer.add(factory.createStartElement("", "", "event"));
+                writer.add(factory.createAttribute("uid", Long.toString((Long) event[i][0])));
+                writer.add(factory.createAttribute("name", (String) event[i][1]));
+                writer.add(factory.createAttribute("color", (String) event[i][3]));
+                writer.add(factory.createAttribute("chapter",(String) event[i][4]));
+                writer.add(factory.createAttribute("chapterUid",Long.toString((Long) event[i][5])));
+                writer.add(factory.createCharacters((String) event[i][2]));
+            } else {
+                writer.add(factory.createCharacters("\t\t"));
+                writer.add(factory.createStartElement("", "", "event"));
+                writer.add(factory.createAttribute("uid", Long.toString((Long) event[i][0])));
+                writer.add(factory.createAttribute("name", (String) event[i][1]));
+                writer.add(factory.createAttribute("color", (String) event[i][3]));
+                writer.add(factory.createCharacters((String) event[i][2]));
+            }
 
 
             writer.add(factory.createEndElement("", "", "event"));
@@ -678,6 +817,12 @@ public class Project {
                         case "uid_manager":
                             loadUIDManager(event, eventReader);
                             break;
+                        case "chapters":
+                            loadChapters(event, eventReader);
+                            break;
+                        case "chapter_order":
+                            loadChapterOrderLists(event, eventReader);
+                            break;
                         case "events":
                             loadEvents(event, eventReader);
                             break;
@@ -697,6 +842,7 @@ public class Project {
             currProjectFile = projectFile;
             eventManager.resetChanges();
             characterManager.resetChanges();
+            chapterManager.resetChanges();
         }
     }
 
@@ -734,6 +880,22 @@ public class Project {
             writeUIDManager(eventFactory, eventWriter);
             eventWriter.add(eventFactory.createCharacters("\t"));
             eventWriter.add(eventFactory.createEndElement("", "", "uid_manager"));
+            eventWriter.add(eventFactory.createCharacters(System.lineSeparator()));
+
+            eventWriter.add(eventFactory.createCharacters("\t"));
+            eventWriter.add(eventFactory.createStartElement("", "", "chapters"));
+            eventWriter.add(eventFactory.createCharacters(System.lineSeparator()));
+            writeChapters(eventFactory, eventWriter);
+            eventWriter.add(eventFactory.createCharacters("\t"));
+            eventWriter.add(eventFactory.createEndElement("", "", "chapters"));
+            eventWriter.add(eventFactory.createCharacters(System.lineSeparator()));
+
+            eventWriter.add(eventFactory.createCharacters("\t"));
+            eventWriter.add(eventFactory.createStartElement("", "", "chapter_order"));
+            eventWriter.add(eventFactory.createCharacters(System.lineSeparator()));
+            writeChapterOrderLists(eventFactory, eventWriter);
+            eventWriter.add(eventFactory.createCharacters("\t"));
+            eventWriter.add(eventFactory.createEndElement("", "", "chapter_order"));
             eventWriter.add(eventFactory.createCharacters(System.lineSeparator()));
 
             eventWriter.add(eventFactory.createCharacters("\t"));

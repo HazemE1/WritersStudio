@@ -21,6 +21,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import com.team34.model.Project;
 import com.team34.view.MainView;
@@ -195,6 +196,7 @@ public class MainController {
      * Instructs the view to update the view of events with the current state of the model.
      */
     private void refreshViewEvents() {
+        System.out.println(Arrays.toString(model.eventManager.getEventOrder(view.getEventOrderList())) + " orderEvents");
         view.updateEvents(
                 model.eventManager.getEvents(),
                 model.eventManager.getEventOrder(view.getEventOrderList())
@@ -205,6 +207,7 @@ public class MainController {
      * @author Alex Olsson
      */
     private void refreshViewChapters() {
+        System.out.println(Arrays.toString(model.chapterManager.getChapterOrder(view.getChapterOrderList())) + " Orderchapters");
         view.updateChapters(
                 model.chapterManager.getChapters(),
                 model.chapterManager.getChapterOrder(view.getChapterOrderList())
@@ -315,6 +318,7 @@ public class MainController {
             model.loadProject(file);
             refreshViewEvents();
             refreshCharacterList();
+            refreshViewChapters();
             refreshTitleBar();
         } catch (Exception e) {
             e.printStackTrace();

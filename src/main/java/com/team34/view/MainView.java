@@ -264,10 +264,13 @@ public class MainView {
      * @return the index of the event order list
      */
     public int getEventOrderList() {
+        System.out.println(eventOrderList + " Event orderlist");
+
         return eventOrderList;
     }
 
     public int getChapterOrderList() {
+        System.out.println(chapterOrderList + " Chapter orderlist");
         return chapterOrderList;
     }
 
@@ -449,6 +452,7 @@ public class MainView {
     }
 
     public void updateChapters(Object[][] chapters, Long[] chapterOrder) {
+        System.out.println();
         leftChapterPane.updateListView(chapters, chapterOrder);
         editEventDialog.updateListView(chapters, chapterOrder);
     }
