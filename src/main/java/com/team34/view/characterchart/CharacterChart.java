@@ -472,7 +472,7 @@ public class CharacterChart {
                 if (characters != null) {
                     for (int i = 0; i < characters.size(); i++) { // Update characters
                         Object[] characterData = characters.get(i);
-                        if (Objects.equals(characterData[5].toString(), e.getChapterListObject().getTitle())) {
+                        if (Objects.equals(characterData[5].toString(), e.getName())) {
                             addCharacter((Long) characterData[1], (String) characterData[0]);
                             setCharacterPosition(
                                     (Long) characterData[1],
