@@ -1,9 +1,11 @@
 package com.team34.view;
 
 import com.team34.view.chapter.ChapterList;
+import com.team34.view.chapter.ShowChapterDialog;
 import com.team34.view.dialogs.EditChapterDialog;
 import com.team34.model.event.EventListObject;
 
+import com.team34.view.event.ShowEventDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
@@ -105,6 +107,8 @@ public class MainView {
     private EditAssociationDialog editAssociationDialog;
     private EditChapterDialog editChapterDialog;
     private ShowCharacterDialog showCharacterDialog;
+    private ShowEventDialog showEventDialog;
+    private ShowChapterDialog showChapterDialog;
     private int eventOrderList; // index to specify which order list to use
     private int chapterOrderList;
     private double lastChartMouseClickX;
@@ -220,6 +224,15 @@ public class MainView {
 
         // Create association dialog
         editAssociationDialog = new EditAssociationDialog(mainStage);
+
+        //Create show event dialog
+        showEventDialog = new ShowEventDialog(mainStage);
+
+        //Create show chapter dialog
+        showChapterDialog = new ShowChapterDialog(mainStage);
+
+
+
 
 
         /**
@@ -362,6 +375,10 @@ public class MainView {
 
     public void registerMouseEventsList(EventHandler<MouseEvent> listEventHandler) {
         leftPane.registerMouseEvents(listEventHandler);
+    }
+
+    public void registerMouseChapterList(EventHandler<MouseEvent> listEventHandler){
+        leftChapterPane.registerMouseEvents(listEventHandler);
     }
 
     /**
@@ -570,7 +587,23 @@ public class MainView {
         return rightPane.listItemSelected();
     }
 
+    public boolean eventListItemSelected(){
+        return leftPane.eventItemSelected();
+    }
+
+    public boolean chapterListItemSelected(){
+        return leftChapterPane.ChapterItemSelected();
+    }
+
     public ShowCharacterDialog getShowCharacterDialog() {
         return showCharacterDialog;
+    }
+
+    public ShowEventDialog getShowEventDialog(){
+        return showEventDialog;
+    }
+
+    public ShowChapterDialog getShowChapterDialog(){
+        return showChapterDialog;
     }
 }

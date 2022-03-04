@@ -220,6 +220,9 @@ public class Project {
             throws XMLStreamException {
         long uid = -1L;
         String name = null;
+        String chapter = null;
+        long chapterUid = -1L;
+        String color = null;
         ChapterListObject chapterListObject = null;
 
         while (reader.hasNext()) {
@@ -239,14 +242,24 @@ public class Project {
                             case "name":
                                 name = attr.getValue();
                                 break;
+                            case "color":
+                                color = attr.getValue();
+                                break;
+                            case "chapter":
+                                chapter = attr.getValue();
+                                break;
+                            case "chapterUid":
+                                chapterUid = Long.parseLong(attr.getValue());
+                                break;
                         }
                     }
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            eventManager.addEvent(uid, name, event.asCharacters().getData(), chapterListObject);
+
+                            eventManager.addEvent(uid, name, event.asCharacters().getData(), new ChapterListObject(chapter, chapterUid, color));
                         else
-                            eventManager.addEvent(uid, name, "", chapterListObject);
+                            eventManager.addEvent(uid, name, "", new ChapterListObject(chapter, chapterUid, color));
 
                     }
                 }
@@ -314,6 +327,7 @@ public class Project {
         double chartY = 0.0;
         long eventUID = -1L;
         String eventName = null;
+        int age = 0;
 
         while (reader.hasNext()) {
             event = reader.nextEvent();
@@ -332,7 +346,6 @@ public class Project {
                             case "name":
                                 name = attr.getValue();
                                 break;
-
                             case "chartX":
                                 chartX = Double.parseDouble(attr.getValue());
                                 break;
@@ -341,17 +354,21 @@ public class Project {
                                 break;
                             case "eventName":
                                 eventName = attr.getValue();
+                                break;
                             case "eventUID":
                                 eventUID = Long.parseLong(attr.getValue());
+                                break;
+                            case "age":
+                                age = Integer.parseInt(attr.getValue());
 
                         }
                     }
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            characterManager.addCharacter(uid, name,"", 0, new EventListObject(eventName, eventUID), chartX, chartY);
+                            characterManager.addCharacter(uid, name,"", age, new EventListObject(eventName, eventUID), chartX, chartY);
                         else
-                            characterManager.addCharacter(uid, name, "",0, new EventListObject(eventName,eventUID ), chartX, chartY);
+                            characterManager.addCharacter(uid, name, "",age, new EventListObject(eventName,eventUID ), chartX, chartY);
 
 
                     }
@@ -476,10 +493,13 @@ public class Project {
         for (int i = 0; i < event.length; i++) {
             writer.add(factory.createCharacters("\t\t"));
             writer.add(factory.createStartElement("", "", "event"));
-            writer.add(factory.createAttribute("name", (String) event[i][1]));
             writer.add(factory.createAttribute("uid", Long.toString((Long) event[i][0])));
-
+            writer.add(factory.createAttribute("name", (String) event[i][1]));
+            writer.add(factory.createAttribute("color", (String) event[i][3]));
+            writer.add(factory.createAttribute("chapter",(String) event[i][4]));
+            writer.add(factory.createAttribute("chapterUid",Long.toString((Long) event[i][5])));
             writer.add(factory.createCharacters((String) event[i][2]));
+
 
             writer.add(factory.createEndElement("", "", "event"));
             writer.add(factory.createCharacters(System.lineSeparator()));
@@ -545,6 +565,7 @@ public class Project {
             writer.add(factory.createAttribute("chartY", Double.toString((Double) data[3])));
             writer.add(factory.createAttribute("eventName", (String) data[6]));
             writer.add(factory.createAttribute("eventUID", Long.toString((Long) data[7])));
+            writer.add(factory.createAttribute("age", String.valueOf((int) data[8])));
             writer.add(factory.createCharacters((String) data[4]));
             writer.add(factory.createEndElement("", "", "character"));
             writer.add(factory.createCharacters(System.lineSeparator()));

@@ -1,4 +1,4 @@
-package com.team34.view.event;
+package com.team34.view.chapter;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,24 +17,21 @@ import javafx.stage.Stage;
 import javax.swing.*;
 
 /**
- * Shows a dialog window containing a summary of the event data.
+ * Shows a dialog window containing a summary of the Chapter data.
  *
- * @author Jim Andersson
- *
- * Updated
  * @author Alexander Olsson
  */
-public class ShowEventDialog extends Stage {
+public class ShowChapterDialog extends Stage {
 
     private Button btnOk, btnEdit;
-    private Label lblEvent, lblEventTitle, lblDescription, lblChapter, lblChapterTitle;
+    private Label lblDescription, lblChapter, lblChapterTitle;
     private Text txtEventDescription;
     private boolean edit;
 
     /**
      * Initializes dialog window.
      */
-    public ShowEventDialog(Stage ownerStage) {
+    public ShowChapterDialog(Stage ownerStage) {
         setTitle("Event Summary");
 
         setOnCloseRequest(e -> edit = false);
@@ -45,11 +42,7 @@ public class ShowEventDialog extends Stage {
 
 
         //Label
-        lblEvent = new Label("Event: ");
-        lblEvent.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
-        lblEventTitle = new Label();
-        lblEventTitle.setMaxWidth(150);
 
         lblChapter = new Label("Chapter: ");
         lblChapter.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -78,11 +71,7 @@ public class ShowEventDialog extends Stage {
 
         // --- Layouts --- //
 
-        //Title Layout
-        HBox eventLayout = new HBox();
-        eventLayout.setMinHeight(10);
-        eventLayout.setSpacing(10);
-        eventLayout.getChildren().addAll(lblEvent, lblEventTitle);
+
 
         HBox chapterLayout = new HBox();
         chapterLayout.setMinHeight(30);
@@ -104,11 +93,10 @@ public class ShowEventDialog extends Stage {
         layout.setAlignment(Pos.CENTER);
         layout.setPadding(new Insets(10, 10, 10, 10));
 
-        layout.add(eventLayout, 0, 0);
+        layout.add(chapterLayout,0,0);
         layout.add(lblDescription, 0, 1);
         layout.add(txtEventDescription, 0, 2);
-        layout.add(chapterLayout,0,3);
-        layout.add(buttonLayout, 0, 4);
+        layout.add(buttonLayout, 0, 3);
 
         // --- Set Scene --- //
         Scene scene = new Scene(layout);
@@ -119,21 +107,17 @@ public class ShowEventDialog extends Stage {
         initOwner(ownerStage);
     }
 
-    public boolean showEvent(Object[] data){
+    public boolean showChapter(Object[] data){
 
-        String name, description, chapter;
-        name = (String) data[0];
+        String description, chapter;
         description = (String) data[1];
-        chapter = (String) data[2];
+        chapter = (String) data[0];
 
-        lblEventTitle.setText(name);
         lblChapterTitle.setText(chapter);
         txtEventDescription.setText(description);
-        setTitle(name);
+        setTitle(chapter);
 
         showAndWait();
-
         return edit;
-
     }
 }

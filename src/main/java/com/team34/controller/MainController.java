@@ -47,7 +47,7 @@ public class MainController {
     private final EventHandler<DragEvent> evtDragDropped;
     private final EventHandler<DragEvent> evtDragComplete;
 
-    private final EventHandler<MouseEvent> evtMouseCharacterList, mouseEventEventHandler;
+    private final EventHandler<MouseEvent> evtMouseCharacterList, mouseEventEventHandler, mouseEventChapterHandler;
     private EventListObject eventListObject;
 
     /**
@@ -69,6 +69,8 @@ public class MainController {
         this.evtDragComplete = new EventDragComplete();
         this.evtMouseCharacterList = new CharacterListMouseEvent();
         this.mouseEventEventHandler = new EventListMouseEvent();
+        this.mouseEventChapterHandler = new ChapterListMouseEvent();
+
         registerEventsOnView();
     }
 
@@ -85,6 +87,7 @@ public class MainController {
         view.registerDragEventDragComplete(evtDragComplete);
         view.registerMouseEvents(evtMouseCharacterList);
         view.registerMouseEventsList(mouseEventEventHandler);
+        view.registerMouseChapterList(mouseEventChapterHandler);
         view.registerCharacterChartEvents(
                 new EventCharacterRectReleased(),
                 new EventChartClick(),
@@ -171,15 +174,14 @@ public class MainController {
      */
 
     private void editChapter(long uid) {
-        Object[] eventData = model.eventManager.getEventData(uid);
+        Object[] chapterData = model.chapterManager.getChapterData(uid);
 
-        if (view.getEditEventDialog().showEditEvent((String) eventData[0], (String) eventData[1])
-                == EditEventDialog.WindowResult.OK
+        if (view.getEditChapterDialog().showEditChapter((String) chapterData[0], (String) chapterData[1])
+                == EditChapterDialog.WindowResult.OK
         ) {
-            boolean success = model.eventManager.editEvent(uid,
-                    view.getEditEventDialog().getEventName(),
-                    view.getEditEventDialog().getEventDescription(),
-                    view.getEditEventDialog().getChapterList()
+            boolean success = model.chapterManager.editChapter(uid,
+                    view.getEditChapterDialog().getChapterName(),
+                    view.getEditChapterDialog().getChapterDescription()
             );
 
             if (!success) {
@@ -209,18 +211,6 @@ public class MainController {
         );
     }
 
-    private void refreshViewCharChart() {
-
-        view.updateCharacterList(
-                model.characterManager.getCharacterList(),
-                model.characterManager.getAssociationData(),
-                view.returns()
-        );
-    }
-
-    private void selectchar() {
-
-    }
 
     private boolean eventsExist() {
         Object[][] event = model.eventManager.getEvents();
@@ -446,6 +436,18 @@ public class MainController {
             editCharacter(uid);
     }
 
+    private void showEvents(long uid){
+        Object[] eventData = model.eventManager.getEventData(uid);
+        if(view.getShowEventDialog().showEvent(eventData))
+            editEvent(uid);
+    }
+
+    private void showChapters(long uid){
+        Object[] chapterData = model.chapterManager.getChapterData(uid);
+        if(view.getShowChapterDialog().showChapter(chapterData))
+            editChapter(uid);
+    }
+
     /**
      * Deletes character. Identifies the selected character in the list view and removes the corresponding
      * character stored in {@link com.team34.model.character.CharacterManager}.
@@ -566,8 +568,10 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_EVENT_EDIT:
-                    editEvent(eventUID);
-                    refreshViewEvents();
+                    if(view.getSelectedEventUID() != -1) {
+                        editEvent(eventUID);
+                        refreshViewEvents();
+                    }
                     break;
 
                 case MainView.ID_BTN_CHAPTER_ADD:
@@ -582,8 +586,10 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_CHAPTER_EDIT:
-                    editChapter(chapterUID);
-                    refreshViewChapters();
+                    if(view.getSelectedChapterUID() != -1) {
+                        editChapter(chapterUID);
+                        refreshViewChapters();
+                    }
                     break;
 
                 case MainView.ID_BTN_CHARACTERLIST_ADD:
@@ -891,14 +897,33 @@ public class MainController {
                     && view.characterListItemSelected()) {
                 showCharacter(view.getCharacterUID());
             }
+
         }
     }
 
     private class EventListMouseEvent implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent mouseEvent) {
+            if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.getClickCount() == 2
+                    && view.eventListItemSelected()) {
+                showEvents(view.getSelectedEventUID());
+            }
 
             view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), view.returns());
         }
+    }
+
+    private class ChapterListMouseEvent implements EventHandler<MouseEvent>{
+
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.getClickCount() == 2
+                    && view.chapterListItemSelected()) {
+                showChapters(view.getSelectedChapterUID());
+            }
+
+            //view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), view.returns());
+        }
+
     }
 }

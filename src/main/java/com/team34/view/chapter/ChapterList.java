@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import com.team34.model.event.EventListObject;
@@ -179,5 +180,13 @@ public class ChapterList extends StackPane {
 
     public void setList(ListView<ChapterListObject> list) {
         this.list = list;
+    }
+
+    public boolean ChapterItemSelected() {
+        return list.getSelectionModel().getSelectedIndex() >= 0;
+    }
+
+    public void registerMouseEvents(EventHandler<MouseEvent> listEventHandler) {
+        list.setOnMouseClicked(listEventHandler);
     }
 }

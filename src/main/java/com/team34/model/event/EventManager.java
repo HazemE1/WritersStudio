@@ -66,9 +66,17 @@ public class EventManager {
      */
     public boolean editEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
         if (events.containsKey(uid)) {
-            events.replace(uid, new Event(name, description, chapterListObject, chapterListObject.getColor()));
-            hasChanged = true;
-            return true;
+
+            if(chapterListObject!=null){
+                events.replace(uid, new Event(name, description, chapterListObject, chapterListObject.getColor()));
+                hasChanged = true;
+                return true;
+
+            }
+            else{
+                events.replace(uid, new Event(name, description));
+            }
+
         }
         return false;
     }
@@ -103,9 +111,11 @@ public class EventManager {
      */
     public void addEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
         if(chapterListObject!=null) {
+            System.out.println("true");
             events.put(uid, new Event(name, description, chapterListObject, chapterListObject.getColor()));
             hasChanged = true;
         }else{
+            System.out.println("false");
             events.put(uid, new Event(name, description));
         }
     }
@@ -124,9 +134,19 @@ public class EventManager {
     public Object[] getEventData(long uid) {
         Object[] data = new Object[4];
         Event event = events.get(uid);
-        data[0] = event.getName();
-        data[1] = event.getDescription();
-        data[3] = event.getColor();
+
+        if(event.getChapterListObject() != null){
+            data[0] = event.getName();
+            data[1] = event.getDescription();
+            data[2] = event.getChapterListObject().getTitle();
+            data[3] = event.getColor();
+
+        }else{
+            data[0] = event.getName();
+            data[1] = event.getDescription();
+            data[2] = "";
+            data[3] = event.getColor();
+        }
 
         return data;
     }
@@ -165,7 +185,7 @@ public class EventManager {
             return null;
 
         Long[] uidOrder = events.keySet().toArray(new Long[events.size()]);
-        Object[][] eventArray = new Object[uidOrder.length][4];
+        Object[][] eventArray = new Object[uidOrder.length][6];
 
         for (int i = 0; i < uidOrder.length; i++) {
             long uid = uidOrder[i];
@@ -173,31 +193,12 @@ public class EventManager {
             eventArray[i][0] = uid;
             eventArray[i][1] = eventRef.getName();
             eventArray[i][2] = eventRef.getDescription();
-            eventArray[i][3] = eventRef.getColor();
-            eventArray[i][2] = eventRef.getChapterListObject();
+            eventArray[i][3] = eventRef.getChapterListObject().getColor();
+            eventArray[i][4] = eventRef.getChapterListObject().getTitle();
+            eventArray[i][5] = eventRef.getChapterListObject().getUid();
         }
+        System.out.println(Arrays.deepToString(eventArray));
         return eventArray;
-    }
-
-    public ObservableList<String> getEvents2() {
-        if (events.size() < 1)
-            return null;
-
-        Long[] uidOrder = events.keySet().toArray(new Long[events.size()]);
-
-        for (int i = 0; i < uidOrder.length; i++) {
-            long uid = uidOrder[i];
-            Event eventRef = events.get(uid);
-        }
-        return null;
-    }
-
-    public ArrayList EventListChar(){
-        ObservableList<Object> list = FXCollections.observableList(Collections.singletonList(eventOrderLists));
-
-        ArrayList<Event> events = new ArrayList<>();
-
-        return events;
     }
 
     /**

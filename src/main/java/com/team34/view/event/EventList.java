@@ -198,4 +198,10 @@ public class EventList extends StackPane {
     public void setList(ListView<EventListObject> list) {
         this.list = list;
     }
+
+    public boolean eventItemSelected() {
+        return list.getSelectionModel().getSelectedIndex() >= 0;
+    }
+
+
 }
