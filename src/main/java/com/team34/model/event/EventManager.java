@@ -190,12 +190,23 @@ public class EventManager {
         for (int i = 0; i < uidOrder.length; i++) {
             long uid = uidOrder[i];
             Event eventRef = events.get(uid);
-            eventArray[i][0] = uid;
-            eventArray[i][1] = eventRef.getName();
-            eventArray[i][2] = eventRef.getDescription();
-            eventArray[i][3] = eventRef.getChapterListObject().getColor();
-            eventArray[i][4] = eventRef.getChapterListObject().getTitle();
-            eventArray[i][5] = eventRef.getChapterListObject().getUid();
+
+            if(eventRef.getChapterListObject() != null){
+                eventArray[i][0] = uid;
+                eventArray[i][1] = eventRef.getName();
+                eventArray[i][2] = eventRef.getDescription();
+                eventArray[i][3] = eventRef.getChapterListObject().getColor();
+                eventArray[i][4] = eventRef.getChapterListObject().getTitle();
+                eventArray[i][5] = eventRef.getChapterListObject().getUid();
+
+            }else{
+                eventArray[i][0] = uid;
+                eventArray[i][1] = eventRef.getName();
+                eventArray[i][2] = eventRef.getDescription();
+                eventArray[i][3] = "";
+                eventArray[i][4] = "";
+                eventArray[i][5] = "";
+            }
         }
         System.out.println(Arrays.deepToString(eventArray));
         return eventArray;
