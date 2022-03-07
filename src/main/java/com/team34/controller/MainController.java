@@ -1,29 +1,26 @@
 package com.team34.controller;
 
+import com.team34.model.Project;
 import com.team34.model.event.EventListObject;
+import com.team34.view.MainView;
 import com.team34.view.dialogs.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.DragEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.WindowEvent;
 
-import java.awt.MouseInfo;
-
 import javax.xml.stream.XMLStreamException;
-
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-
-import com.team34.model.Project;
-import com.team34.view.MainView;
 
 /**
  * This class handles logic and communication between the model and view components of the system.
@@ -105,6 +102,7 @@ public class MainController {
      */
     private void createNewEvent() {
         if (view.getEditEventDialog().showCreateEvent() == EditEventDialog.WindowResult.OK) {
+
             long newEventUID = model.eventManager.newEvent(
                     view.getEditEventDialog().getEventName(),
                     view.getEditEventDialog().getEventDescription(),
@@ -236,6 +234,7 @@ public class MainController {
      * Uses refreshViewEvents function as a template with some modifications
      * idEvent is the specific event rectangle on the timeline that the user wishes to move
      * xMouse is the absolute x position of the mouse relative to the screen
+     *
      * @author Erik Hedåker
      */
     private void moveEventToMouseTimeline(int idEvent, int xMouse) {
@@ -248,6 +247,7 @@ public class MainController {
 
     /**
      * Function used in the implementation of task F.Tid.1.4
+     *
      * @author Erik Hedåker
      */
     private void swapEventPositionsTimeline(int dragged, int target) {
@@ -385,9 +385,9 @@ public class MainController {
             if (view.getEditCharacterPanel().getCharacterEvent() == null) {
                 WarningDialog.displayWarning("You neeed to pick an event for your character", "Error");
             }
-            if(view.getEditCharacterPanel().getCharacterAge() == -1){
+            if (view.getEditCharacterPanel().getCharacterAge() == -1) {
                 WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
-            }else {
+            } else {
 
                 long newCharacterUID = model.characterManager.newCharacter(
                         view.getEditCharacterPanel().getCharacterName(),
@@ -559,14 +559,14 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_EVENT_DELETE:
-                    if(eventUID == -1) return;
+                    if (eventUID == -1) return;
                     model.eventManager.removeEvent(eventUID);
                     refreshViewEvents();
                     refreshTitleBar();
                     break;
 
                 case MainView.ID_BTN_EVENT_EDIT:
-                    if(eventUID == -1) return;
+                    if (eventUID == -1) return;
                     editEvent(eventUID);
                     refreshViewEvents();
                     break;
@@ -577,14 +577,14 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_CHAPTER_DELETE:
-                    if(chapterUID == -1) return;
+                    if (chapterUID == -1) return;
                     model.chapterManager.removeChapter(chapterUID);
                     refreshViewChapters();
                     refreshTitleBar();
                     break;
 
                 case MainView.ID_BTN_CHAPTER_EDIT:
-                    if(chapterUID == -1) return;
+                    if (chapterUID == -1) return;
                     editChapter(chapterUID);
                     refreshViewChapters();
                     break;
@@ -866,6 +866,7 @@ public class MainController {
      * EventHandler class used in the implementation of task F.Tid.1.4
      * Uses EventDragDropped class as a template with some modifications
      * The event if-expression should only evaluates true if EventDragDropped if-expression evaluates false
+     *
      * @author Erik Hedåker
      */
     private class EventDragComplete implements EventHandler<DragEvent> {
