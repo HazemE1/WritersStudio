@@ -1,13 +1,13 @@
 package com.team34.model.character;
 
+import com.team34.model.UIDManager;
+import com.team34.model.event.EventListObject;
+import com.team34.view.character.CharacterListObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import com.team34.model.UIDManager;
-import com.team34.model.event.EventListObject;
-import com.team34.view.character.CharacterListObject;
 
 /**
  * Manages the characters in the application. All character objects are stored as values in a HashMap and can be
@@ -43,13 +43,13 @@ public class CharacterManager {
     }
 
     public long newCharacter(String name, String description, int age, EventListObject event, double posX, double posY) {
-            long uid = UIDManager.nextUID();
-            addCharacter(uid, name, description, age, event, posX, posY);
-            return uid;
+        long uid = UIDManager.nextUID();
+        addCharacter(uid, name, description, age, event, posX, posY);
+        return uid;
     }
 
     public void addCharacter(long uid, String name, String description, int age, EventListObject event, double posX, double posY) {
-        characterMap.put(uid, new Character(name, description, age, event,  posX, posY));
+        characterMap.put(uid, new Character(name, description, age, event, posX, posY));
         hasChanged = true;
     }
 
@@ -255,5 +255,14 @@ public class CharacterManager {
      */
     public void resetChanges() {
         hasChanged = false;
+    }
+
+    public Character getCharacter(String characterName) {
+        for (Character value : characterMap.values()) {
+            if (value.getName().equalsIgnoreCase(characterName))
+                return value;
+
+        }
+        return null;
     }
 }

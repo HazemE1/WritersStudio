@@ -102,6 +102,10 @@ public class MainController {
      */
     private void createNewEvent() {
         if (view.getEditEventDialog().showCreateEvent() == EditEventDialog.WindowResult.OK) {
+            if (model.eventManager.getEvent(view.getEditEventDialog().getEventName()) != null) {
+                view.showDialog("An event with that name already exists, new event was not created!");
+                return;
+            }
 
             long newEventUID = model.eventManager.newEvent(
                     view.getEditEventDialog().getEventName(),
@@ -148,18 +152,21 @@ public class MainController {
 
     /**
      * @auhtor Alexander Olsson
+     * @Edit Hazem Elkhalil
      */
 
     private void createNewChapter() {
         if (view.getEditChapterDialog().showCreateChapter() == EditChapterDialog.WindowResult.OK) {
-            long newChapterUID = model.chapterManager.newChapter(
+            if (model.chapterManager.getChapter(view.getEditChapterDialog().getChapterName()) != null) {
+                view.showDialog("A chapter with that name already exists, chapter was not created!");
+                return;
+            }
+            model.chapterManager.newChapter(
                     view.getEditChapterDialog().getChapterName(),
                     view.getEditChapterDialog().getChapterDescription(),
                     ColorGenerator.getNewColor()
             );
-            if (newChapterUID == -1L) {
-                // TODO Popup warning dialog, stating that either name or description has unsupported format
-            }
+
         }
         refreshTitleBar();
     }
@@ -171,9 +178,11 @@ public class MainController {
     private void editChapter(long uid) {
         Object[] eventData = model.eventManager.getEventData(uid);
 
-        if (view.getEditEventDialog().showEditEvent((String) eventData[0], (String) eventData[1])
-                == EditEventDialog.WindowResult.OK
-        ) {
+        if (view.getEditEventDialog().showEditEvent((String) eventData[0], (String) eventData[1]) == EditEventDialog.WindowResult.OK) {
+            if (model.chapterManager.getChapter(view.getEditChapterDialog().getChapterName()) != null) {
+                view.showDialog("A chapter with that name already exists, chapter was not created!");
+                return;
+            }
             boolean success = model.eventManager.editEvent(uid,
                     view.getEditEventDialog().getEventName(),
                     view.getEditEventDialog().getEventDescription(),
@@ -388,7 +397,10 @@ public class MainController {
             if (view.getEditCharacterPanel().getCharacterAge() == -1) {
                 WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
             } else {
-
+                if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) != null) {
+                    view.showDialog("A Character with that name already exists, a character has not been created");
+                    return;
+                }
                 long newCharacterUID = model.characterManager.newCharacter(
                         view.getEditCharacterPanel().getCharacterName(),
                         view.getEditCharacterPanel().getCharacterDescription(),
@@ -425,6 +437,10 @@ public class MainController {
         if (view.getEditCharacterPanel().showEditCharacter((String) characterData[0], (String) characterData[1])
                 == EditCharacterDialog.WindowResult.OK
         ) {
+            if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) != null) {
+                view.showDialog("A Character with that name already exists, a character has not been created");
+                return;
+            }
             boolean success = model.characterManager.editCharacter(uid,
                     view.getEditCharacterPanel().getCharacterName(),
                     view.getEditCharacterPanel().getCharacterAge(),

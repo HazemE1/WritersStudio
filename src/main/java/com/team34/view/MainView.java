@@ -1,16 +1,27 @@
 package com.team34.view;
 
-import com.team34.view.chapter.ChapterList;
-import com.team34.view.dialogs.EditChapterDialog;
 import com.team34.model.event.EventListObject;
-
+import com.team34.model.event.EventManager;
+import com.team34.view.chapter.ChapterList;
+import com.team34.view.character.CharacterList;
+import com.team34.view.character.ShowCharacterDialog;
+import com.team34.view.characterchart.CharacterChart;
+import com.team34.view.dialogs.EditAssociationDialog;
+import com.team34.view.dialogs.EditChapterDialog;
+import com.team34.view.dialogs.EditCharacterDialog;
+import com.team34.view.dialogs.EditEventDialog;
+import com.team34.view.event.EventList;
+import com.team34.view.timeline.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.SplitPane;
 import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -18,18 +29,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.util.Optional;
+import javax.swing.*;
 import java.util.ArrayList;
-
-import com.team34.model.event.EventManager;
-import com.team34.view.character.CharacterList;
-import com.team34.view.event.EventList;
-import com.team34.view.dialogs.EditEventDialog;
-import com.team34.view.dialogs.EditCharacterDialog;
-import com.team34.view.dialogs.EditAssociationDialog;
-import com.team34.view.timeline.Timeline;
-import com.team34.view.characterchart.CharacterChart;
-import com.team34.view.character.ShowCharacterDialog;
+import java.util.Optional;
 
 /**
  * This class represents the top layer of the view.
@@ -40,27 +42,20 @@ import com.team34.view.character.ShowCharacterDialog;
  */
 public class MainView {
 
-    private static final double MIN_WINDOW_WIDTH = 1000.0;
-    private static final double MIN_WINDOW_HEIGHT = 600.0;
-    private static final double MAX_WINDOW_WIDTH = 3840.0; // 4K Ultra HD
-    private static final double MAX_WINDOW_HEIGHT = 2160.0; // 4K Ultra HD
-
-    //// CONTROL IDs ///////////////////////////
-
     public static final String ID_BTN_CHARACTERLIST_ADD = "ID_BTN_CHARACTERLIST_ADD";
     public static final String ID_BTN_CHARACTERLIST_EDIT = "ID_BTN_CHARACTERLIST_EDIT";
     public static final String ID_BTN_CHARACTERLIST_DELETE = "ID_BTN_CHARACTERLIST_DELETE";
     public static final String ID_BTN_EVENT_ADD = "BTN_EVENT_ADD";
+
+    //// CONTROL IDs ///////////////////////////
     public static final String ID_BTN_EVENT_EDIT = "BTN_EVENT_EDIT";
     public static final String ID_BTN_EVENT_DELETE = "BTN_EVENT_DELETE";
     public static final String ID_BTN_CHAPTER_ADD = "BTN_CHAPTER_ADD";
     public static final String ID_BTN_CHAPTER_EDIT = "BTN_CHAPTER_EDIT";
     public static final String ID_BTN_CHAPTER_DELETE = "BTN_CHAPTER_DELETE";
-
     public static final String ID_TIMELINE_NEW_EVENT = "TIMELINE_NEW_EVENT";
     public static final String ID_TIMELINE_REMOVE_EVENT = "TIMELINE_REMOVE_EVENT";
     public static final String ID_TIMELINE_EDIT_EVENT = "TIMELINE_EDIT_EVENT";
-
     public static final String ID_MENU_NEW = "MENU_NEW_PROJECT";
     public static final String ID_MENU_OPEN = "MENU_OPEN_PROJECT";
     public static final String ID_MENU_SAVE = "MENU_SAVE";
@@ -68,7 +63,6 @@ public class MainView {
     public static final String ID_MENU_EXIT = "MENU_EXIT";
     public static final String ID_MENU_ADD_CHARACTER = "MENU_ADD_CHARACTER";
     public static final String ID_MENU_ADD_EVENT = "MENU_ADD_EVENT";
-
     public static final String ID_CHART_NEW_ASSOCIATION = "CHART_NEW_ASSOCIATION";
     public static final String ID_CHART_EDIT_CHARACTER = "CHART_EDIT_CHARACTER";
     public static final String ID_CHART_REMOVE_CHARACTER = "CHART_REMOVE_CHARACTER";
@@ -76,9 +70,12 @@ public class MainView {
     public static final String ID_CHART_EDIT_ASSOCIATION = "CHART_EDIT_ASSOCIATION";
     public static final String ID_CHART_REMOVE_ASSOCIATION = "CHART_REMOVE_ASSOCIATION";
     public static final String ID_CHART_CENTER_ASSOCIATION_LABEL = "CHART_CENTER_ASSOCIATION_LABEL";
+    private static final double MIN_WINDOW_WIDTH = 1000.0;
+    private static final double MIN_WINDOW_HEIGHT = 600.0;
+    private static final double MAX_WINDOW_WIDTH = 3840.0; // 4K Ultra HD
+    private static final double MAX_WINDOW_HEIGHT = 2160.0; // 4K Ultra HD
 
     //// PANES /////////////////////////////////////////
-
     private final BorderPane rootPane;
     private final BorderPane contentBorderPane;
     private final StackPane topPane;
@@ -91,11 +88,10 @@ public class MainView {
     private final SplitPane secondLayerSplit;
 
     //// CONTROLS //////////////////////////////////////
-
-    private MenuBar menuBar;
+    public CharacterChart characterChart;
 
     ////////////////////////////////////////////////////
-
+    private MenuBar menuBar;
     private Stage mainStage;
     private Scene mainScene;
     private String cssMain;
@@ -109,8 +105,6 @@ public class MainView {
     private int chapterOrderList;
     private double lastChartMouseClickX;
     private double lastChartMouseClickY;
-
-    public CharacterChart characterChart;
 
 ////////////////////////////////////////////////////
 
@@ -254,10 +248,6 @@ public class MainView {
         return eventOrderList;
     }
 
-    public int getChapterOrderList() {
-        return chapterOrderList;
-    }
-
     /**
      * Sets the index of which event order list to use.
      * '0' is the default order list.
@@ -266,6 +256,10 @@ public class MainView {
      */
     public void setEventOrderList(int eventOrderList) {
         this.eventOrderList = eventOrderList;
+    }
+
+    public int getChapterOrderList() {
+        return chapterOrderList;
     }
 
     /**
@@ -415,9 +409,9 @@ public class MainView {
         timeline.clear();
         if (events != null) {
             for (int i = 0; i < events.length; i++) {
-                if(events[i][3] != "") {
+                if (events[i][3] != "") {
                     timeline.addEvent((Long) events[i][0], (String) events[i][1], (String) events[i][3]);
-                }else{
+                } else {
                     timeline.addEvent((Long) events[i][0], (String) events[i][1], "#5DB2BD");
                 }
             }
@@ -442,6 +436,7 @@ public class MainView {
      * Much of the original code is left untouched, might need some adjustment or refactoring to fix future bugs
      * idEvent is the specific event rectangle on the timeline that the user wishes to move
      * xMouse is the absolute x position of the mouse relative to the screen
+     *
      * @author Erik Hedåker
      */
     public void moveEventToMouseTimeline(Object[][] events, Long[] eventOrder, int idEvent, int xMouse) {
@@ -461,6 +456,7 @@ public class MainView {
 
     /**
      * Function used in the implementation of task F.Tid.1.4
+     *
      * @author Erik Hedåker
      */
     public void swapEventPositionsTimeline(int dragged, int target) {
@@ -572,5 +568,9 @@ public class MainView {
 
     public ShowCharacterDialog getShowCharacterDialog() {
         return showCharacterDialog;
+    }
+
+    public void showDialog(String message) {
+        JOptionPane.showMessageDialog(null, message);
     }
 }

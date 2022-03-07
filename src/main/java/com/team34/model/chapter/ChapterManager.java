@@ -22,7 +22,7 @@ public class ChapterManager {
 
     public long newChapter(String name, String description, String color) {
         long uid = UIDManager.nextUID();
-        addChapter(uid, name, description, color );
+        addChapter(uid, name, description, color);
 
         if (chapterOrderLists.size() < 1)
             chapterOrderLists.add(new LinkedList<>());
@@ -132,5 +132,13 @@ public class ChapterManager {
      */
     public void resetChanges() {
         hasChanged = false;
+    }
+
+    public Chapter getChapter(String chapterName) {
+        for (Chapter value : chapters.values()) {
+            if (value.getName().equalsIgnoreCase(chapterName))
+                return value;
+        }
+        return null;
     }
 }

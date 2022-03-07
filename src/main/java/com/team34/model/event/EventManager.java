@@ -1,11 +1,14 @@
 package com.team34.model.event;
 
-import java.util.*;
-
 import com.team34.model.UIDManager;
 import com.team34.model.chapter.ChapterListObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * This class manages all events and event order lists.
@@ -102,10 +105,10 @@ public class EventManager {
      * @param description the description of the event
      */
     public void addEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
-        if(chapterListObject!=null) {
+        if (chapterListObject != null) {
             events.put(uid, new Event(name, description, chapterListObject, chapterListObject.getColor()));
             hasChanged = true;
-        }else{
+        } else {
             events.put(uid, new Event(name, description));
         }
     }
@@ -192,7 +195,7 @@ public class EventManager {
         return null;
     }
 
-    public ArrayList EventListChar(){
+    public ArrayList EventListChar() {
         ObservableList<Object> list = FXCollections.observableList(Collections.singletonList(eventOrderLists));
 
         ArrayList<Event> events = new ArrayList<>();
@@ -330,5 +333,13 @@ public class EventManager {
      */
     public void resetChanges() {
         hasChanged = false;
+    }
+
+    public Event getEvent(String eventName) {
+        for (Event value : events.values()) {
+            if (value.getName().equalsIgnoreCase(eventName))
+                return value;
+        }
+        return null;
     }
 }
