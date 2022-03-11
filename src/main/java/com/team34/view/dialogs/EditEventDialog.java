@@ -103,6 +103,7 @@ public class EditEventDialog extends Stage {
         layout.add(taEventDescription, 0, 3);
         layout.add(buttonLayout, 0, 4);
 
+
         // --- Set Scene --- //
         Scene scene = new Scene(layout);
         setScene(scene);

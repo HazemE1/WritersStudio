@@ -86,6 +86,10 @@ public class EditCharacterDialog extends Stage {
         eventGroupLayout.setSpacing(10);
         eventGroupLayout.getChildren().addAll(lblEventGroup, cbEventGroup);
 
+        HBox ageLayout = new HBox();
+        ageLayout.setSpacing(10);
+        ageLayout.getChildren().addAll(lblCharacterAge, tfCharacterAge);
+
         //Overall Layout
         GridPane layout = new GridPane();
         layout.setMinSize(100, 300);
@@ -95,15 +99,11 @@ public class EditCharacterDialog extends Stage {
         layout.setPadding(new Insets(10, 10, 10, 10));
 
         layout.add(nameLayout, 0, 0);
-
-        layout.add(lblCharacterAge, 0, 2);
-        layout.add(tfCharacterAge, 0, 3);
-
-        layout.add(eventGroupLayout, 0, 4);
-
-        layout.add(lblCharacterDescription, 0, 5);
-        layout.add(taCharacterDescription, 0, 6);
-        layout.add(buttonLayout, 0, 7);
+        layout.add(ageLayout, 0, 1);
+        layout.add(eventGroupLayout, 0, 2);
+        layout.add(lblCharacterDescription, 0, 3);
+        layout.add(taCharacterDescription, 0, 4);
+        layout.add(buttonLayout, 0, 5);
 
         // --- Set Scene --- //
         Scene scene = new Scene(layout);

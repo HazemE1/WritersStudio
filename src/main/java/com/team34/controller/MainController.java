@@ -21,6 +21,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import com.team34.model.Project;
 import com.team34.view.MainView;
@@ -47,7 +48,7 @@ public class MainController {
     private final EventHandler<DragEvent> evtDragDropped;
     private final EventHandler<DragEvent> evtDragComplete;
 
-    private final EventHandler<MouseEvent> evtMouseCharacterList, mouseEventEventHandler;
+    private final EventHandler<MouseEvent> evtMouseCharacterList, mouseEventEventHandler, mouseEventChapterHandler;
     private EventListObject eventListObject;
 
     /**
@@ -69,6 +70,8 @@ public class MainController {
         this.evtDragComplete = new EventDragComplete();
         this.evtMouseCharacterList = new CharacterListMouseEvent();
         this.mouseEventEventHandler = new EventListMouseEvent();
+        this.mouseEventChapterHandler = new ChapterListMouseEvent();
+
         registerEventsOnView();
     }
 
@@ -85,6 +88,7 @@ public class MainController {
         view.registerDragEventDragComplete(evtDragComplete);
         view.registerMouseEvents(evtMouseCharacterList);
         view.registerMouseEventsList(mouseEventEventHandler);
+        view.registerMouseChapterList(mouseEventChapterHandler);
         view.registerCharacterChartEvents(
                 new EventCharacterRectReleased(),
                 new EventChartClick(),
@@ -171,15 +175,14 @@ public class MainController {
      */
 
     private void editChapter(long uid) {
-        Object[] eventData = model.eventManager.getEventData(uid);
+        Object[] chapterData = model.chapterManager.getChapterData(uid);
 
-        if (view.getEditEventDialog().showEditEvent((String) eventData[0], (String) eventData[1])
-                == EditEventDialog.WindowResult.OK
+        if (view.getEditChapterDialog().showEditChapter((String) chapterData[0], (String) chapterData[1])
+                == EditChapterDialog.WindowResult.OK
         ) {
-            boolean success = model.eventManager.editEvent(uid,
-                    view.getEditEventDialog().getEventName(),
-                    view.getEditEventDialog().getEventDescription(),
-                    view.getEditEventDialog().getChapterList()
+            boolean success = model.chapterManager.editChapter(uid,
+                    view.getEditChapterDialog().getChapterName(),
+                    view.getEditChapterDialog().getChapterDescription()
             );
 
             if (!success) {
@@ -193,6 +196,7 @@ public class MainController {
      * Instructs the view to update the view of events with the current state of the model.
      */
     private void refreshViewEvents() {
+        System.out.println(Arrays.toString(model.eventManager.getEventOrder(view.getEventOrderList())) + " orderEvents");
         view.updateEvents(
                 model.eventManager.getEvents(),
                 model.eventManager.getEventOrder(view.getEventOrderList())
@@ -203,24 +207,13 @@ public class MainController {
      * @author Alex Olsson
      */
     private void refreshViewChapters() {
+        System.out.println(Arrays.toString(model.chapterManager.getChapterOrder(view.getChapterOrderList())) + " Orderchapters");
         view.updateChapters(
                 model.chapterManager.getChapters(),
                 model.chapterManager.getChapterOrder(view.getChapterOrderList())
         );
     }
 
-    private void refreshViewCharChart() {
-
-        view.updateCharacterList(
-                model.characterManager.getCharacterList(),
-                model.characterManager.getAssociationData(),
-                view.returns()
-        );
-    }
-
-    private void selectchar() {
-
-    }
 
     private boolean eventsExist() {
         Object[][] event = model.eventManager.getEvents();
@@ -325,6 +318,7 @@ public class MainController {
             model.loadProject(file);
             refreshViewEvents();
             refreshCharacterList();
+            refreshViewChapters();
             refreshTitleBar();
         } catch (Exception e) {
             e.printStackTrace();
@@ -444,6 +438,18 @@ public class MainController {
         Object[] characterData = model.characterManager.getCharacterData(uid);
         if (view.getShowCharacterDialog().showCharacter(characterData))
             editCharacter(uid);
+    }
+
+    private void showEvents(long uid){
+        Object[] eventData = model.eventManager.getEventData(uid);
+        if(view.getShowEventDialog().showEvent(eventData))
+            editEvent(uid);
+    }
+
+    private void showChapters(long uid){
+        Object[] chapterData = model.chapterManager.getChapterData(uid);
+        if(view.getShowChapterDialog().showChapter(chapterData))
+            editChapter(uid);
     }
 
     /**
@@ -566,9 +572,15 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_EVENT_EDIT:
+/*
                     if(eventUID == -1) return;
                     editEvent(eventUID);
                     refreshViewEvents();
+                    */
+                    if(view.getSelectedEventUID() != -1) {
+                        editEvent(eventUID);
+                        refreshViewEvents();
+                    }
                     break;
 
                 case MainView.ID_BTN_CHAPTER_ADD:
@@ -584,9 +596,15 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_CHAPTER_EDIT:
+/*
                     if(chapterUID == -1) return;
                     editChapter(chapterUID);
                     refreshViewChapters();
+                    */
+                    if(view.getSelectedChapterUID() != -1) {
+                        editChapter(chapterUID);
+                        refreshViewChapters();
+                    }
                     break;
 
                 case MainView.ID_BTN_CHARACTERLIST_ADD:
@@ -894,14 +912,33 @@ public class MainController {
                     && view.characterListItemSelected()) {
                 showCharacter(view.getCharacterUID());
             }
+
         }
     }
 
     private class EventListMouseEvent implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent mouseEvent) {
+            if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.getClickCount() == 2
+                    && view.eventListItemSelected()) {
+                showEvents(view.getSelectedEventUID());
+            }
 
             view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), view.returns());
         }
+    }
+
+    private class ChapterListMouseEvent implements EventHandler<MouseEvent>{
+
+        @Override
+        public void handle(MouseEvent mouseEvent) {
+            if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.getClickCount() == 2
+                    && view.chapterListItemSelected()) {
+                showChapters(view.getSelectedChapterUID());
+            }
+
+            //view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), view.returns());
+        }
+
     }
 }

@@ -24,7 +24,7 @@ public class EditChapterDialog extends Stage {
     private TextArea taEventDescription;
 
     public EditChapterDialog(Stage ownerStage) {
-        setTitle("Edit Event");
+        setTitle("Edit Chapter");
         setOnCloseRequest(e -> windowResult = WindowResult.CANCEL);
 
         // --- GUI elements --- //
