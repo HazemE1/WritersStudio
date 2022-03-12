@@ -244,9 +244,9 @@ public class Project {
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            eventManager.addEvent(uid, name, event.asCharacters().getData(), chapterListObject);
+                            eventManager.addEvent(uid, new Event(name, event.asCharacters().getData(), chapterListObject));
                         else
-                            eventManager.addEvent(uid, name, "", chapterListObject);
+                            eventManager.addEvent(uid, new Event(name, "", chapterListObject));
 
                     }
                 }
@@ -352,8 +352,6 @@ public class Project {
                             characterManager.addCharacter(uid, name,"", 0, new EventListObject(eventName, eventUID), chartX, chartY);
                         else
                             characterManager.addCharacter(uid, name, "",0, new EventListObject(eventName,eventUID ), chartX, chartY);
-
-
                     }
                 }
             } else if (event.isEndElement()) {
@@ -512,6 +510,7 @@ public class Project {
                 writer.add(factory.createEndElement("", "", "li"));
                 writer.add(factory.createCharacters(System.lineSeparator()));
             }
+
             writer.add(factory.createCharacters("\t\t"));
             writer.add(factory.createEndElement("", "", "order_list"));
             writer.add(factory.createCharacters(System.lineSeparator()));
@@ -797,8 +796,8 @@ public class Project {
      */
     public class UserPreferences {
         public String projectDir = "";
-        public boolean windowMaximized = false;
-        public int windowWidth = 1280;
+        public boolean windowMaximized = true;
+        public int windowWidth = 1800;
         public int windowHeight = 720;
 
         /**

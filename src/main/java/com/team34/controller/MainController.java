@@ -1,9 +1,17 @@
 package com.team34.controller;
 
 import com.team34.model.Project;
+import com.team34.model.Project;
+import com.team34.model.chapter.Chapter;
+import com.team34.model.chapter.Chapter;
 import com.team34.model.event.EventListObject;
 import com.team34.view.MainView;
 import com.team34.view.dialogs.*;
+import com.team34.view.MainView;
+import com.team34.view.dialogs.EditAssociationDialog;
+import com.team34.view.dialogs.EditChapterDialog;
+import com.team34.view.dialogs.EditCharacterDialog;
+import com.team34.view.dialogs.EditEventDialog;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -110,7 +118,7 @@ public class MainController {
             long newEventUID = model.eventManager.newEvent(
                     view.getEditEventDialog().getEventName(),
                     view.getEditEventDialog().getEventDescription(),
-                    "",
+                    ColorGenerator.getNewColor(),
                     view.getEditEventDialog().getChapterList()
             );
 
@@ -244,7 +252,6 @@ public class MainController {
      * Uses refreshViewEvents function as a template with some modifications
      * idEvent is the specific event rectangle on the timeline that the user wishes to move
      * xMouse is the absolute x position of the mouse relative to the screen
-     *
      * @author Erik Hedåker
      */
     private void moveEventToMouseTimeline(int idEvent, int xMouse) {
@@ -257,7 +264,6 @@ public class MainController {
 
     /**
      * Function used in the implementation of task F.Tid.1.4
-     *
      * @author Erik Hedåker
      */
     private void swapEventPositionsTimeline(int dragged, int target) {
@@ -414,6 +420,7 @@ public class MainController {
                         model.characterManager.getAssociationData(),
                         view.returns()
                 );
+
                 if (newCharacterUID == -1L) {
                     // TODO Popup warning dialog, stating that either name or description has unsupported format
                 }
@@ -801,6 +808,22 @@ public class MainController {
         }
     }
 
+    private class EventChapterPressed implements EventHandler<MouseEvent> {
+        @Override
+        public void handle(MouseEvent e) {
+            if (e.getButton() != MouseButton.PRIMARY)
+                return;
+
+            if (view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem() == null)
+                return;
+
+            Chapter c = model.chapterManager.getChapter(view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem().getUid());
+
+            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), c);
+
+        }
+    }
+
     private class EventCharacterRectReleased implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent e) {
@@ -883,7 +906,6 @@ public class MainController {
      * EventHandler class used in the implementation of task F.Tid.1.4
      * Uses EventDragDropped class as a template with some modifications
      * The event if-expression should only evaluates true if EventDragDropped if-expression evaluates false
-     *
      * @author Erik Hedåker
      */
     private class EventDragComplete implements EventHandler<DragEvent> {

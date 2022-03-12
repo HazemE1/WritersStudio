@@ -2,6 +2,9 @@ package com.team34.view;
 
 import com.team34.model.event.EventListObject;
 import com.team34.model.event.EventManager;
+import com.team34.model.chapter.Chapter;
+import com.team34.model.event.EventListObject;
+import com.team34.model.event.EventManager;
 import com.team34.view.chapter.ChapterList;
 import com.team34.view.character.CharacterList;
 import com.team34.view.character.ShowCharacterDialog;
@@ -20,6 +23,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.SplitPane;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -503,6 +509,14 @@ public class MainView {
     }
 
     public EventListObject returns() {
+    public void updateCharacterList(ArrayList<Object[]> characters, Object[][] associations, Chapter c) {
+        rightPane.updateListView(characters);
+
+        characterChart.updateCharacters(characters, associations, c);
+    }
+
+
+    public EventListObject returns() {
         return EventList.list();
     }
 
@@ -516,9 +530,43 @@ public class MainView {
         return rightPane.getCharacterUID();
     }
 
+
+    /**
+     * Warning dialog
+     *
+     * @Alexander Olsson
+     */
+
+    public void warningDialog(String text, String title) {
+        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK);
+        alert.setTitle(title);
+        alert.showAndWait();
+    }
+
+    public Boolean warningDialogOptions(String text, String title) {
+        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.OK, ButtonType.CANCEL);
+        alert.setTitle(title);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.OK) {
+            return true;
+        }
+
+        alert.getResult();
+
+        return false;
+    }
+
     public long getSelectedEventUID() {
         return leftPane.getEventUID();
     }
+
+    public long getSelectedChapterUID() {
+    /**
+     * ALEX
+     *
+     * @return
+     */
 
     public long getSelectedChapterUID() {
         return leftChapterPane.getChapterUID();

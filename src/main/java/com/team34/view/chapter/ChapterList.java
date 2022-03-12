@@ -18,6 +18,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+
 public class ChapterList extends StackPane {
 
     private ListView<ChapterListObject> list;
@@ -60,6 +66,7 @@ public class ChapterList extends StackPane {
         add = new Button();
         edit = new Button();
         delete = new Button();
+
         add.setCursor(Cursor.HAND);
         edit.setCursor(Cursor.HAND);
         delete.setCursor(Cursor.HAND);
