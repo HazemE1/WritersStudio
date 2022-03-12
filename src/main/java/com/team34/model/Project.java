@@ -15,6 +15,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import com.team34.controller.ColorGenerator;
 import com.team34.model.chapter.ChapterListObject;
 import com.team34.model.chapter.ChapterManager;
 import com.team34.model.event.*;
@@ -244,9 +245,9 @@ public class Project {
                     event = reader.nextEvent();
                     if (uid != -1L && name != null) {
                         if (event.isCharacters())
-                            eventManager.addEvent(uid, new Event(name, event.asCharacters().getData(), chapterListObject));
+                            eventManager.addEvent(uid, new Event(name, event.asCharacters().getData(), chapterListObject, ColorGenerator.getNewRandomColor()));
                         else
-                            eventManager.addEvent(uid, new Event(name, "", chapterListObject));
+                            eventManager.addEvent(uid, new Event(name, "", chapterListObject, ColorGenerator.getNewRandomColor()));
 
                     }
                 }

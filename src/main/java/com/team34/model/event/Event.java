@@ -34,9 +34,6 @@ public class Event {
         this.description = description;
     }
 
-    public void setChapterListObject(ChapterListObject chapterListObject) {
-        this.chapterListObject = chapterListObject;
-    }
 
     public void setColor(String color) {
         this.color = color;

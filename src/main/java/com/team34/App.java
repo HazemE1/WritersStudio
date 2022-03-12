@@ -1,5 +1,6 @@
 package com.team34;
 
+import com.team34.controller.MainController;
 import com.team34.model.Project;
 import com.team34.view.MainView;
 import javafx.application.Application;

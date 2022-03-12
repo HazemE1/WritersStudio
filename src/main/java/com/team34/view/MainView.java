@@ -1,7 +1,5 @@
 package com.team34.view;
 
-import com.team34.model.event.EventListObject;
-import com.team34.model.event.EventManager;
 import com.team34.model.chapter.Chapter;
 import com.team34.model.event.EventListObject;
 import com.team34.model.event.EventManager;
@@ -19,12 +17,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.SplitPane;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
@@ -508,13 +500,11 @@ public class MainView {
         characterChart.updateCharacters(characters, associations, eventListObject);
     }
 
-    public EventListObject returns() {
     public void updateCharacterList(ArrayList<Object[]> characters, Object[][] associations, Chapter c) {
         rightPane.updateListView(characters);
 
         characterChart.updateCharacters(characters, associations, c);
     }
-
 
     public EventListObject returns() {
         return EventList.list();
@@ -560,13 +550,6 @@ public class MainView {
     public long getSelectedEventUID() {
         return leftPane.getEventUID();
     }
-
-    public long getSelectedChapterUID() {
-    /**
-     * ALEX
-     *
-     * @return
-     */
 
     public long getSelectedChapterUID() {
         return leftChapterPane.getChapterUID();
@@ -620,5 +603,121 @@ public class MainView {
 
     public void showDialog(String message) {
         JOptionPane.showMessageDialog(null, message);
+    }
+
+    public BorderPane getRootPane() {
+        return rootPane;
+    }
+
+    public BorderPane getContentBorderPane() {
+        return contentBorderPane;
+    }
+
+    public StackPane getTopPane() {
+        return topPane;
+    }
+
+    public StackPane getBottomPane() {
+        return bottomPane;
+    }
+
+    public SplitPane getFirstLayerSplit() {
+        return firstLayerSplit;
+    }
+
+    public EventList getLeftPane() {
+        return leftPane;
+    }
+
+    public ChapterList getLeftChapterPane() {
+        return leftChapterPane;
+    }
+
+    public StackPane getCenterPane() {
+        return centerPane;
+    }
+
+    public CharacterList getRightPane() {
+        return rightPane;
+    }
+
+    public SplitPane getSecondLayerSplit() {
+        return secondLayerSplit;
+    }
+
+    public CharacterChart getCharacterChart() {
+        return characterChart;
+    }
+
+    public void setCharacterChart(CharacterChart characterChart) {
+        this.characterChart = characterChart;
+    }
+
+    public MenuBar getMenuBar() {
+        return menuBar;
+    }
+
+    public void setMenuBar(MenuBar menuBar) {
+        this.menuBar = menuBar;
+    }
+
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
+    }
+
+    public Scene getMainScene() {
+        return mainScene;
+    }
+
+    public void setMainScene(Scene mainScene) {
+        this.mainScene = mainScene;
+    }
+
+    public String getCssMain() {
+        return cssMain;
+    }
+
+    public void setCssMain(String cssMain) {
+        this.cssMain = cssMain;
+    }
+
+    public Timeline getTimeline() {
+        return timeline;
+    }
+
+    public void setTimeline(Timeline timeline) {
+        this.timeline = timeline;
+    }
+
+    public void setEditEventDialog(EditEventDialog editEventDialog) {
+        this.editEventDialog = editEventDialog;
+    }
+
+    public void setEditCharacterPanel(EditCharacterDialog editCharacterPanel) {
+        this.editCharacterPanel = editCharacterPanel;
+    }
+
+    public void setEditAssociationDialog(EditAssociationDialog editAssociationDialog) {
+        this.editAssociationDialog = editAssociationDialog;
+    }
+
+    public void setEditChapterDialog(EditChapterDialog editChapterDialog) {
+        this.editChapterDialog = editChapterDialog;
+    }
+
+    public void setShowCharacterDialog(ShowCharacterDialog showCharacterDialog) {
+        this.showCharacterDialog = showCharacterDialog;
+    }
+
+    public void setChapterOrderList(int chapterOrderList) {
+        this.chapterOrderList = chapterOrderList;
+    }
+
+    public void setLastChartMouseClickX(double lastChartMouseClickX) {
+        this.lastChartMouseClickX = lastChartMouseClickX;
+    }
+
+    public void setLastChartMouseClickY(double lastChartMouseClickY) {
+        this.lastChartMouseClickY = lastChartMouseClickY;
     }
 }
