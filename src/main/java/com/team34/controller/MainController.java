@@ -110,6 +110,7 @@ public class MainController {
             long newEventUID = model.eventManager.newEvent(
                     view.getEditEventDialog().getEventName(),
                     view.getEditEventDialog().getEventDescription(),
+                    "",
                     view.getEditEventDialog().getChapterList()
             );
 

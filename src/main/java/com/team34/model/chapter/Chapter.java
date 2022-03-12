@@ -1,22 +1,37 @@
 package com.team34.model.chapter;
 
+import com.team34.model.event.Event;
+
+import java.util.HashSet;
+import java.util.Set;
+
 public class Chapter {
 
     private String name = "";
     private String description = "";
+    private Set<Event> events;
     private String color = "";
 
     public Chapter(String name, String description, String color) {
         this.name = name;
         this.description = description;
+        events = new HashSet<>();
         this.color = color;
+    }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getColor(){
+    public String getColor() {
         return color;
     }
 

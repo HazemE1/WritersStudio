@@ -15,9 +15,10 @@ public class ChapterManager {
 
     public ChapterManager() {
         hasChanged = false;
-        chapters = new HashMap<Long, Chapter>();
+        chapters = new HashMap<>();
         chapterOrderLists = new ArrayList<>();
-        chapterOrderLists.add(new LinkedList<Long>());
+        chapterOrderLists.add(new LinkedList<>());
+
     }
 
     public long newChapter(String name, String description, String color) {
@@ -140,5 +141,9 @@ public class ChapterManager {
                 return value;
         }
         return null;
+    }
+
+    public Chapter getChapter(long uid) {
+        return this.chapters.get(uid);
     }
 }

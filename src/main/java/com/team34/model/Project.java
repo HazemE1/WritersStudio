@@ -53,9 +53,9 @@ public class Project {
      * Constructs the project, sets up the working directory, and loads the preferences file.
      */
     public Project() {
-        eventManager = new EventManager();
         characterManager = new CharacterManager();
         chapterManager = new ChapterManager();
+        eventManager = new EventManager(chapterManager);
         userPrefs = new UserPreferences();
 
         workingDir = System.getProperty("user.dir");

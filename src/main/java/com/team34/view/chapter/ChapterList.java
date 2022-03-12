@@ -1,7 +1,7 @@
 package com.team34.view.chapter;
 
-import com.team34.controller.ColorGenerator;
 import com.team34.model.chapter.ChapterListObject;
+import com.team34.view.MainView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,10 +15,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-
-import com.team34.model.event.EventListObject;
-import com.team34.view.MainView;
 
 public class ChapterList extends StackPane {
 
@@ -31,12 +29,12 @@ public class ChapterList extends StackPane {
     BorderPane innerPane;
 
     //CSS
-    private String cssEventlist;
+    private String cssChapterlist;
 
     //Icons
-    private String addEvent;
-    private String editEvent;
-    private String deleteEvent;
+    private String addChapter;
+    private String editChapter;
+    private String deleteChapter;
     private final int ICON_SIZE = 30;
 
     /**
@@ -88,7 +86,6 @@ public class ChapterList extends StackPane {
         aedBox.setAlignment(Pos.CENTER);
 
         eventBox.getChildren().addAll(list);
-
         innerPane.setTop(aedBox);
         innerPane.setCenter(eventBox);
 
@@ -99,7 +96,7 @@ public class ChapterList extends StackPane {
         getChildren().add(outerPane);
 
         //CSS
-        cssEventlist = com.team34.App.class.getResource("/css/characterlist.css").toExternalForm();
+        cssChapterlist = com.team34.App.class.getResource("/css/characterlist.css").toExternalForm();
     }
 
     public void setStyleSheets() {
@@ -110,16 +107,16 @@ public class ChapterList extends StackPane {
      * Sets the icon graphics for the Add-, Edit- and Delete buttons.
      */
     public void installButtonIcons() {
-        addEvent = com.team34.App.class.getResource("/icons/add_event.png").toExternalForm(); //Filestream for icon
-        Image imgAddEvent = new Image(addEvent);
+        addChapter = com.team34.App.class.getResource("/icons/add_event.png").toExternalForm(); //Filestream for icon
+        Image imgAddEvent = new Image(addChapter);
         ImageView imageViewAddEvent = new ImageView(imgAddEvent);
 
-        editEvent = com.team34.App.class.getResource("/icons/edit_event.png").toExternalForm();
-        Image imgEditEvent = new Image(editEvent);
+        editChapter = com.team34.App.class.getResource("/icons/edit_event.png").toExternalForm();
+        Image imgEditEvent = new Image(editChapter);
         ImageView imageViewEditEvent = new ImageView(imgEditEvent);
 
-        deleteEvent = com.team34.App.class.getResource("/icons/delete_event.png").toExternalForm();
-        Image imgDeleteEvent = new Image(deleteEvent);
+        deleteChapter = com.team34.App.class.getResource("/icons/delete_event.png").toExternalForm();
+        Image imgDeleteEvent = new Image(deleteChapter);
         ImageView imageViewDeleteEvent = new ImageView(imgDeleteEvent);
 
         imageViewAddEvent.setFitHeight(ICON_SIZE); // Set size for icon
@@ -183,6 +180,10 @@ public class ChapterList extends StackPane {
             return list.getSelectionModel().getSelectedItem().getUid();
         }
         return -1;
+    }
+
+    public void addMouseClickEventHandler(EventHandler<MouseEvent> e) {
+        list.setOnMouseClicked(e);
     }
 
     public ListView<ChapterListObject> getList() {
