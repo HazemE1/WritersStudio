@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Unit tests for color generator
+ * @author Anton & Eric
+ * created 2022-03-01
+ */
 public class ColorGeneratorTest {
 
     @AfterEach
