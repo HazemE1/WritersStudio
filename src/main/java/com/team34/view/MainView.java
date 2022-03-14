@@ -114,7 +114,6 @@ public class MainView {
     private double lastChartMouseClickX;
     private double lastChartMouseClickY;
 
-    private Label header;
 
     public CharacterChart characterChart;
 

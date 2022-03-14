@@ -19,13 +19,13 @@ public class EditAssociationDialog extends Stage {
     private TextField tfAssocLabel;
 
     public EditAssociationDialog(Stage ownerStage) {
-        setTitle("Edit Association");
+        setTitle("Edit Relationship");
         setOnCloseRequest(e -> windowResult = WindowResult.CANCEL);
 
         // --- GUI elements --- //
 
         //Label
-        Label lblAssocLabel = new Label("Association label:");
+        Label lblAssocLabel = new Label("Relationship:");
 
         //Textfield
         tfAssocLabel = new TextField();
@@ -89,7 +89,7 @@ public class EditAssociationDialog extends Stage {
      * @return how the user closed the window
      */
     public WindowResult showEditAssociation(String label) {
-        setTitle("Edit Association");
+        setTitle("Edit Relationship");
 
         tfAssocLabel.setText(label);
         tfAssocLabel.requestFocus();

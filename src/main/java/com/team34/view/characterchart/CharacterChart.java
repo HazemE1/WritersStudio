@@ -625,7 +625,7 @@ public class CharacterChart {
         contextMenuItem[CONTEXT_MENU_ITEM_EDIT_CHAR].setOnAction(contextEventHandler);
 
         //// New Association
-        contextMenuItem[CONTEXT_MENU_ITEM_NEW_ASSOC] = new MenuItem("New Association");
+        contextMenuItem[CONTEXT_MENU_ITEM_NEW_ASSOC] = new MenuItem("New Relationship");
         contextMenuItem[CONTEXT_MENU_ITEM_NEW_ASSOC].setId(MainView.ID_CHART_NEW_ASSOCIATION);
         contextMenuItem[CONTEXT_MENU_ITEM_NEW_ASSOC].setOnAction(contextEventHandler);
 
@@ -645,12 +645,12 @@ public class CharacterChart {
         contextMenuItem[CONTEXT_MENU_ITEM_EDIT_ASSOC].setOnAction(contextEventHandler);
 
         //// Center text on line
-        contextMenuItem[CONTEXT_MENU_ITEM_CENTER_LABEL] = new MenuItem("Center Text on Association");
+        contextMenuItem[CONTEXT_MENU_ITEM_CENTER_LABEL] = new MenuItem("Center Text on Relationship");
         contextMenuItem[CONTEXT_MENU_ITEM_CENTER_LABEL].setId(MainView.ID_CHART_CENTER_ASSOCIATION_LABEL);
         contextMenuItem[CONTEXT_MENU_ITEM_CENTER_LABEL].setOnAction(contextEventHandler);
 
         //// Remove Association
-        contextMenuItem[CONTEXT_MENU_ITEM_REMOVE_ASSOC] = new MenuItem("Remove Association");
+        contextMenuItem[CONTEXT_MENU_ITEM_REMOVE_ASSOC] = new MenuItem("Remove Relationship");
         contextMenuItem[CONTEXT_MENU_ITEM_REMOVE_ASSOC].setId(MainView.ID_CHART_REMOVE_ASSOCIATION);
         contextMenuItem[CONTEXT_MENU_ITEM_REMOVE_ASSOC].setOnAction(contextEventHandler);
 
