@@ -9,7 +9,7 @@ The application will help you with your writing by structuring your novel on a t
 <ol>
   <li>Go to the menu "File", select "Project Structure" and make sure that the JDK is set to openjdk-17</li>
   <li>Rebuild the project by going to the menu "Build" and selecting "Rebuild Project"</li>
-  <li>Select the run configuration that has the Maven-icon next to it called "run"</li>
+  <li>Run the main method in the class "App" OR select the run configuration that has the Maven-icon next to it called "run"</li>
   <li>Run :man_cartwheeling: </li>
 </ol>
 
