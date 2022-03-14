@@ -59,15 +59,14 @@ public class EditCharacterDialog extends Stage {
         //Buttons
         btnCreate = new Button("Create");
         btnCreate.setOnAction(e -> {
+            Boolean success = true;
             if(tfCharacterAge.getText().equals("")){
                 WarningDialog wr = new WarningDialog();
-                Boolean success = wr.warningDialogYesNo("Are sure you want to create a character without age?", "Are you sure?");
-
-                if(success){
-                    windowResult = EditCharacterDialog.WindowResult.OK;
-                    close();
-                }
-
+                success = wr.warningDialogYesNo("Are sure you want to create a character without age?", "Are you sure?");
+            }
+            if(success){
+                windowResult = EditCharacterDialog.WindowResult.OK;
+                close();
             }
         });
 
@@ -142,8 +141,15 @@ public class EditCharacterDialog extends Stage {
 
         btnCreate.setText("Create");
         btnCreate.setOnAction(e -> {
-            windowResult = EditCharacterDialog.WindowResult.OK;
-            close();
+            Boolean success = true;
+            if(tfCharacterAge.getText().equals("")){
+                WarningDialog wr = new WarningDialog();
+                success = wr.warningDialogYesNo("Are sure you want to create a character without age?", "Are you sure?");
+            }
+            if(success){
+                windowResult = EditCharacterDialog.WindowResult.OK;
+                close();
+            }
         });
 
         tfCharacterName.requestFocus();
