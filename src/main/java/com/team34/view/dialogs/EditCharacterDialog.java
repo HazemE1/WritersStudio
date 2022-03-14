@@ -50,7 +50,7 @@ public class EditCharacterDialog extends Stage {
         tfCharacterAge.setMaxWidth(60);
 
         cbEventGroup = new ComboBox<>();
-        cbEventGroup.setPromptText("Choose event");
+        cbEventGroup.setPromptText("No event chosen");
 
         //TextArea
         taCharacterDescription = new TextArea();

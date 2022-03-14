@@ -40,7 +40,7 @@ public class EditEventDialog extends Stage {
 
         //Label
         Label lblEventName = new Label("Event name:");
-        Label lblEventGroup = new Label("Event group:");
+        Label lblEventGroup = new Label("Chapter:");
         Label lblEventDescription = new Label("Event description:");
 
         //Textfield
@@ -54,7 +54,7 @@ public class EditEventDialog extends Stage {
 
         //Drop down
         cbChapterObject = new ComboBox<>();
-        cbChapterObject.setPromptText("Choose Chapter");
+        cbChapterObject.setPromptText("No chapter chosen");
 
 
         //Button
