@@ -1,10 +1,14 @@
 package com.team34.view.timeline;
 
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.stage.Window;
+
+import javax.swing.*;
 
 /**
  * TimelineLine contains all {@link javafx.scene.shape.Shape}s of the timeline line.
@@ -19,6 +23,7 @@ class TimelineLine {
     private final Line timeline;
     private final Line verticalStart;
     private final Path arrow;
+    private Label header;
 
     /**
      * Creates a new instance of TimelineLine
@@ -30,6 +35,13 @@ class TimelineLine {
         verticalStart.getStyleClass().add("timeline-line");
         arrow = new Path();
         arrow.getStyleClass().add("timeline-line");
+
+        header = new Label();
+        header.setMinSize(150,40);
+        header.setLayoutX(900);
+        header.setLayoutY(70);
+        header.setText("Timeline");
+        header.getStyleClass().add("timeline-line");
 
         // Draw arrow path in local coordinates, then set layout position later.
         arrow.getElements().addAll(
@@ -43,7 +55,7 @@ class TimelineLine {
      * @param pane the Pane to which the Shapes are to be added
      */
     void addToPane(Pane pane) {
-        pane.getChildren().addAll(timeline, verticalStart, arrow);
+        pane.getChildren().addAll(timeline, verticalStart, arrow, header);
     }
 
     /**

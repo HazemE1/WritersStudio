@@ -7,10 +7,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
@@ -53,6 +50,8 @@ public class CharacterChart {
     private EventHandler<MouseEvent> evtRectReleased;
     private EventHandler<MouseEvent> evtLabelReleased;
 
+    private Label header;
+
     public CharacterChart(double width, double height) {
         rectMap = new HashMap<>();
         assocPoints = new HashMap<>();
@@ -66,6 +65,13 @@ public class CharacterChart {
 
         pane = new Pane();
         pane.setOnMouseMoved(evtMouseMoved);
+
+        header = new Label();
+        header.setText("Character Chart");
+        header.setLayoutX(400);
+        header.setLayoutY(0.0);
+
+        pane.getChildren().add(header);
 
         scrollPane = new ScrollPane();
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -90,6 +96,13 @@ public class CharacterChart {
         pane = new Pane();
         pane.setOnMouseMoved(evtMouseMoved);
 
+        header = new Label();
+        header.setText("Character Chart");
+        header.setLayoutX(400);
+        header.setLayoutY(0.0);
+
+        pane.getChildren().add(header);
+
         scrollPane = new ScrollPane();
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -104,7 +117,7 @@ public class CharacterChart {
      * @param parentPane the Pane to which the internal Pane is to be added
      */
     public void addToPane(Pane parentPane) {
-        parentPane.getChildren().add(scrollPane);
+        parentPane.getChildren().addAll(scrollPane);
     }
 
     public void clear() {
@@ -144,8 +157,6 @@ public class CharacterChart {
         CharacterRectangle rect = new CharacterRectangle(name, 0.0, 0.0, "#F2E0D0");
         rect.setStylesheetClasses("characterchart-rect", "characterchart-text", "characterchart-tooltip");
         rectMap.put(uid, rect);
-
-
         pane.getChildren().add(rect.getRect());
         pane.getChildren().add(rect.getText());
 
