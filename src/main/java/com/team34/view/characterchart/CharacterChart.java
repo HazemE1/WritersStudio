@@ -137,6 +137,7 @@ public class CharacterChart {
         associations.clear();
         nextLocalUID = 0L;
         pane.getChildren().clear();
+        pane.getChildren().add(header);
     }
 
     public void addCharacter(long uid, String name) {
