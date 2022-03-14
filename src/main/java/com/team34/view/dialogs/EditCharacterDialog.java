@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 public class EditCharacterDialog extends Stage {
 
-    private Button btnSave;
+    private Button btnCreate;
     private Button btnCancel;
     private TextField tfCharacterName, tfCharacterAge;
     private TextArea taCharacterDescription;
@@ -57,16 +57,21 @@ public class EditCharacterDialog extends Stage {
         taCharacterDescription.setPromptText("");
 
         //Buttons
-        btnSave = new Button("Save");
-        btnSave.setOnAction(e -> {
+        btnCreate = new Button("Create");
+        btnCreate.setOnAction(e -> {
             windowResult = EditCharacterDialog.WindowResult.OK;
             close();
         });
 
         btnCancel = new Button("Cancel");
         btnCancel.setOnAction(e -> {
-            windowResult = EditCharacterDialog.WindowResult.CANCEL;
-            close();
+            WarningDialog wr = new WarningDialog();
+            boolean success = wr.warningDialogYesNo("Are you sure you want to cancel?", "Are you sure?");
+
+            if (success) {
+                windowResult = EditCharacterDialog.WindowResult.CANCEL;
+                close();
+            }
         });
 
         // --- Layouts --- //
@@ -80,7 +85,7 @@ public class EditCharacterDialog extends Stage {
         //Add-Cancel Layout
         HBox buttonLayout = new HBox();
         buttonLayout.setSpacing(10);
-        buttonLayout.getChildren().addAll(btnSave, btnCancel);
+        buttonLayout.getChildren().addAll(btnCreate, btnCancel);
 
         HBox eventGroupLayout = new HBox();
         eventGroupLayout.setSpacing(10);
@@ -146,6 +151,17 @@ public class EditCharacterDialog extends Stage {
 
         tfCharacterName.setText(name);
         taCharacterDescription.setText(description);
+
+        btnCreate.setText("Save");
+        btnCreate.setOnAction(e -> {
+            WarningDialog wr = new WarningDialog();
+            boolean success = wr.warningDialogYesNo("Are you sure you want to save?", "Are you sure?");
+
+            if (success) {
+                windowResult = EditCharacterDialog.WindowResult.OK;
+                close();
+            }
+        });
 
         tfCharacterName.requestFocus();
         showAndWait();

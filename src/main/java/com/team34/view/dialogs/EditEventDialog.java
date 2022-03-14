@@ -1,8 +1,6 @@
 package com.team34.view.dialogs;
 
-import com.team34.controller.ColorGenerator;
 import com.team34.model.chapter.ChapterListObject;
-import com.team34.model.event.EventListObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -28,6 +26,8 @@ public class EditEventDialog extends Stage {
     private TextArea taEventDescription;
     private ComboBox<ChapterListObject> cbChapterObject;
     private ListView<ChapterListObject> list;
+    private Button btnCreate;
+    private Button btnCancel;
 
     public EditEventDialog(Stage ownerStage) {
 
@@ -58,16 +58,21 @@ public class EditEventDialog extends Stage {
 
 
         //Button
-        Button btnAdd = new Button("Ok");
-        btnAdd.setOnAction(e -> {
+        btnCreate = new Button("Create");
+        btnCreate.setOnAction(e -> {
             windowResult = WindowResult.OK;
             close();
         });
 
-        Button btnCancel = new Button("Cancel");
+        btnCancel = new Button("Cancel");
         btnCancel.setOnAction(e -> {
-            windowResult = WindowResult.CANCEL;
-            close();
+            WarningDialog wr = new WarningDialog();
+            boolean success = wr.warningDialogYesNo("Are you sure you want to cancel?", "Are you sure?");
+
+            if (success) {
+                windowResult = WindowResult.CANCEL;
+                close();
+            }
         });
 
         // --- Layouts --- //
@@ -87,7 +92,7 @@ public class EditEventDialog extends Stage {
         //Add-Cancel Layout
         HBox buttonLayout = new HBox();
         buttonLayout.setSpacing(10);
-        buttonLayout.getChildren().addAll(btnAdd, btnCancel);
+        buttonLayout.getChildren().addAll(btnCreate, btnCancel);
 
         //Overall layout
         GridPane layout = new GridPane();
@@ -144,6 +149,17 @@ public class EditEventDialog extends Stage {
 
         tfEventName.setText(name);
         taEventDescription.setText(description);
+
+        btnCreate.setText("Save");
+        btnCreate.setOnAction(e -> {
+            WarningDialog wr = new WarningDialog();
+            boolean success = wr.warningDialogYesNo("Are you sure you want to save?", "Are you sure?");
+
+            if (success) {
+                windowResult = WindowResult.OK;
+                close();
+            }
+        });
 
         tfEventName.requestFocus();
         showAndWait();
