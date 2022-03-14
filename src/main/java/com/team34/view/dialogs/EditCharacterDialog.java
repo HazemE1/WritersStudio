@@ -132,6 +132,12 @@ public class EditCharacterDialog extends Stage {
         tfCharacterAge.setText("");
         taCharacterDescription.setText("");
 
+        btnCreate.setText("Create");
+        btnCreate.setOnAction(e -> {
+            windowResult = EditCharacterDialog.WindowResult.OK;
+            close();
+        });
+
         tfCharacterName.requestFocus();
         showAndWait();
 

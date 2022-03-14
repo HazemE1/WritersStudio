@@ -130,6 +130,12 @@ public class EditEventDialog extends Stage {
         tfEventName.setText("");
         taEventDescription.setText("");
 
+        btnCreate.setText("Create");
+        btnCreate.setOnAction(e -> {
+            windowResult = WindowResult.OK;
+            close();
+        });
+
         tfEventName.requestFocus();
         showAndWait();
 
