@@ -375,10 +375,6 @@ public class MainController {
         } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);
-
-            if (view.getEditCharacterPanel().getCharacterEvent() == null) {
-                WarningDialog.displayWarning("You neeed to pick an event for your character", "Error");
-            }
             if(view.getEditCharacterPanel().getCharacterAge() == -1){
                 WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
             }else {

@@ -170,13 +170,16 @@ public class EditCharacterDialog extends Stage {
      * @return Characters age only if the age is a valid int, otherwise display warning.
      */
     public int getCharacterAge() {
-        int age = Validator.returnStringAsInt(tfCharacterAge.getText());
-        if(Validator.validateValidAge(age)){
-            return age;
+        if(Validator.returnStringAsInt(tfCharacterAge.getText()) != -1){
+            int age = Validator.returnStringAsInt(tfCharacterAge.getText());
+            if(Validator.validateValidAge(age)){
+                return age;
+            }
+            else{
+                return -1;
+            }
         }
-        else{
-            return -1;
-        }
+        return 0;
     }
 
     /**
