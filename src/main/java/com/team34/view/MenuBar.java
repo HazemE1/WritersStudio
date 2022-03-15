@@ -3,11 +3,15 @@ package com.team34.view;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Henrik Einestam
@@ -22,10 +26,20 @@ public class MenuBar extends javafx.scene.control.MenuBar {
     private MenuItem fileSaveAs;
     private MenuItem fileExit;
 
+
+
     public MenuBar(Stage mainStage) {
         super();
 
         Menu menuFile = new Menu("File");
+        Menu helpMenu = new Menu("Help");
+
+        MenuItem aboutApp = new MenuItem("About");
+        MenuItem getStarted = new MenuItem("Get started");
+        helpMenu.getItems().addAll(aboutApp);
+        helpMenu.getItems().addAll(getStarted);
+
+
 
         fileNew = new MenuItem("New");
         fileNew.setId(MainView.ID_MENU_NEW);
@@ -70,6 +84,30 @@ public class MenuBar extends javafx.scene.control.MenuBar {
         menuEdit.getItems().add(editSubMenu);
         editSubMenu.getItems().add(editAddCharacter);
         editSubMenu.getItems().add(editAddEvent);
+
+        getMenus().add(helpMenu);
+        aboutApp.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                aboutApp();
+            }
+        });
+
+        getStarted.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                getStarted();
+            }
+        });
+
+    }
+
+    private void getStarted() {
+        JOptionPane.showMessageDialog(null, "1. Get started by creating a chapture in the left panel.\n2. Add one or two events in your chapter. \n3. Create a couple characters for the different events.");
+    }
+
+    private void aboutApp() {
+        JOptionPane.showMessageDialog(null, "Welcome to Writer's Studio. \nWriter's Studio is a desktop application which purpose is to give writers the right tools to structure their projects\nby letting them model a story along with it's characters. The story is represented by a timeline that can be filled with events and chaptures, \nthe characters are represented by a block diagram where users can specify how characters relate to eachother.\nWriter's Studio gives writers the oppurtunity to structure a story from start to finish with a great overview of their project!");
     }
 
     /**
@@ -87,3 +125,4 @@ public class MenuBar extends javafx.scene.control.MenuBar {
         editAddEvent.setOnAction(menuActionHandler);
     }
 }
+
