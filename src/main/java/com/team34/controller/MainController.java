@@ -419,6 +419,9 @@ public class MainController {
         if (view.getEditCharacterPanel().showEditCharacter((String) characterData[0], (String) characterData[1])
                 == EditCharacterDialog.WindowResult.OK
         ) {
+            if(view.getEditCharacterPanel().getCharacterAge() == -1) {
+                WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
+            } else {
             boolean success = model.characterManager.editCharacter(uid,
                     view.getEditCharacterPanel().getCharacterName(),
                     view.getEditCharacterPanel().getCharacterAge(),
@@ -431,7 +434,7 @@ public class MainController {
             }
 
             refreshTitleBar();
-        }
+        }}
     }
 
     private void showCharacter(long uid) {
