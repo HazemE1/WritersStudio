@@ -241,6 +241,7 @@ public class EditCharacterDialog extends Stage {
         }
 
         ObservableList<EventListObject> ol = FXCollections.observableArrayList();
+        ol.add(new EventListObject("No event",-1));
         Object[] event = null;
         for (int i = 0; i < order.length; i++) {
             for (int j = 0; j < events.length; j++) {
@@ -249,6 +250,7 @@ public class EditCharacterDialog extends Stage {
             }
 
             ol.add(new EventListObject((String) event[1], (Long) event[0]));
+
             event = null;
         }
         cbEventGroup.setItems(ol);

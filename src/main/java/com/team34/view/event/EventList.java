@@ -174,7 +174,6 @@ public class EventList extends StackPane {
 
             event = null;
         }
-
         list.setItems(ol);
     }
 

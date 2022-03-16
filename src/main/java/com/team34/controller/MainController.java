@@ -376,10 +376,6 @@ public class MainController {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);
 
-            if (view.getEditCharacterPanel().getCharacterEvent() == null) {
-                WarningDialog.displayWarning("You neeed to pick an event for your character", "Error");
-                createNewCharacter(view.snapTo(x, 10), view.snapTo(y, 10));
-            }
             if (view.getEditCharacterPanel().getCharacterAge() == -1) {
                 WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
                 createNewCharacter(view.snapTo(x, 10), view.snapTo(y, 10));
@@ -389,6 +385,7 @@ public class MainController {
                     view.showDialog("A character with that name already exists, a character has not been created");
                     return;
                 }
+
                 long newCharacterUID = model.characterManager.newCharacter(
                         view.getEditCharacterPanel().getCharacterName(),
                         view.getEditCharacterPanel().getCharacterDescription(),
