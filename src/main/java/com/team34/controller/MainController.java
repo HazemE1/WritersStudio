@@ -1,13 +1,10 @@
 package com.team34.controller;
 
 import com.team34.model.Project;
-import com.team34.model.Project;
-import com.team34.model.chapter.Chapter;
 import com.team34.model.chapter.Chapter;
 import com.team34.model.event.EventListObject;
 import com.team34.view.MainView;
 import com.team34.view.dialogs.*;
-import com.team34.view.MainView;
 import com.team34.view.dialogs.EditAssociationDialog;
 import com.team34.view.dialogs.EditChapterDialog;
 import com.team34.view.dialogs.EditCharacterDialog;
@@ -234,7 +231,7 @@ public class MainController {
         );
     }
 
-    private void selectchar() {
+    private void selectChar() {
 
     }
 
@@ -392,18 +389,19 @@ public class MainController {
      * @Alexander Olsson
      */
     private void createNewCharacter(double x, double y) {
-        if (!eventsExist()) {
-            WarningDialog.displayWarning("You need to create an event before you can create a character", "Error");
-        } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
+       if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);
 
             if (view.getEditCharacterPanel().getCharacterEvent() == null) {
                 WarningDialog.displayWarning("You neeed to pick an event for your character", "Error");
+                createNewCharacter(view.snapTo(x, 10), view.snapTo(y, 10));
             }
             if (view.getEditCharacterPanel().getCharacterAge() == -1) {
                 WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
-            } else {
+                createNewCharacter(view.snapTo(x, 10), view.snapTo(y, 10));
+            }
+            else {
                 if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) != null) {
                     view.showDialog("A Character with that name already exists, a character has not been created");
                     return;
