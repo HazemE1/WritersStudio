@@ -33,6 +33,8 @@ import com.team34.view.timeline.Timeline;
 import com.team34.view.characterchart.CharacterChart;
 import com.team34.view.character.ShowCharacterDialog;
 
+import javax.swing.*;
+
 /**
  * This class represents the top layer of the view.
  * <p>
@@ -610,5 +612,9 @@ public class MainView {
 
     public ShowChapterDialog getShowChapterDialog(){
         return showChapterDialog;
+    }
+
+    public void showDialog(String s) {
+        JOptionPane.showMessageDialog(null, s);
     }
 }
