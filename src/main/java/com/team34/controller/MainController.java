@@ -138,11 +138,13 @@ public class MainController {
 
         if (view.getEditEventDialog().showEditEvent((String) eventData[0], (String) eventData[1])
                 == EditEventDialog.WindowResult.OK
-        ) {
+        )
+        {
             boolean success = model.eventManager.editEvent(uid,
                     view.getEditEventDialog().getEventName(),
                     view.getEditEventDialog().getEventDescription(),
                     view.getEditEventDialog().getChapterList()
+
             );
 
             if (!success) {
@@ -437,22 +439,41 @@ public class MainController {
         }}
     }
 
+    /**
+     * Update
+     * @Alexander Olsson
+     */
+
     private void showCharacter(long uid) {
         Object[] characterData = model.characterManager.getCharacterData(uid);
         if (view.getShowCharacterDialog().showCharacter(characterData))
             editCharacter(uid);
+            refreshCharacterList();
     }
+
+    /**
+     * Update
+     * @Alexander Olsson
+     */
 
     private void showEvents(long uid){
         Object[] eventData = model.eventManager.getEventData(uid);
         if(view.getShowEventDialog().showEvent(eventData))
             editEvent(uid);
+            refreshViewEvents();
+
     }
+
+    /**
+     * Update
+     * @Alexander Olsson
+     */
 
     private void showChapters(long uid){
         Object[] chapterData = model.chapterManager.getChapterData(uid);
         if(view.getShowChapterDialog().showChapter(chapterData))
             editChapter(uid);
+        refreshViewChapters();
     }
 
     /**

@@ -691,6 +691,12 @@ public class CharacterChart {
         return ((int) value / snapInterval) * snapInterval;
     }
 
+    /**
+     *
+     * Update
+     * Alexander Olsson
+     */
+
     public Long[] getAssociationsByCharacter(Long uid) {
         if (uid == -1L) {
             return null;
