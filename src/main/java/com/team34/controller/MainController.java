@@ -372,19 +372,23 @@ public class MainController {
      * @Alexander Olsson
      */
     private void createNewCharacter(double x, double y) {
-        if (!eventsExist()) {
-            WarningDialog.displayWarning("You need to create an event before you can create a character", "Error");
-        } else if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
+        if (view.getEditCharacterPanel().showCreateCharacter() == EditCharacterDialog.WindowResult.OK) {
             x = view.snapTo(x, 10);
             y = view.snapTo(y, 10);
 
             if (view.getEditCharacterPanel().getCharacterEvent() == null) {
                 WarningDialog.displayWarning("You neeed to pick an event for your character", "Error");
+                createNewCharacter(view.snapTo(x, 10), view.snapTo(y, 10));
             }
-            if(view.getEditCharacterPanel().getCharacterAge() == -1){
+            if (view.getEditCharacterPanel().getCharacterAge() == -1) {
                 WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
-            }else {
-
+                createNewCharacter(view.snapTo(x, 10), view.snapTo(y, 10));
+            }
+            else {
+                if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) != null) {
+                    view.showDialog("A character with that name already exists, a character has not been created");
+                    return;
+                }
                 long newCharacterUID = model.characterManager.newCharacter(
                         view.getEditCharacterPanel().getCharacterName(),
                         view.getEditCharacterPanel().getCharacterDescription(),
@@ -397,6 +401,7 @@ public class MainController {
                         model.characterManager.getAssociationData(),
                         view.returns()
                 );
+
                 if (newCharacterUID == -1L) {
                     // TODO Popup warning dialog, stating that either name or description has unsupported format
                 }
@@ -405,6 +410,7 @@ public class MainController {
             }
         }
     }
+
 
     /**
      * Edits character. Identifies the selected character in the list view and retrieves data from the corresponding
