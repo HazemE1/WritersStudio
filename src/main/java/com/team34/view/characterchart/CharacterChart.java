@@ -692,8 +692,11 @@ public class CharacterChart {
     }
 
     public Long[] getAssociationsByCharacter(Long uid) {
-        if (uid == -1L)
+        if (uid == -1L) {
             return null;
+        }else if(rectMap.isEmpty()){
+            return null;
+        }
 
         return rectMap.get(uid).getAssociations();
     }
