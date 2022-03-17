@@ -2,13 +2,11 @@ package com.team34.controller;
 
 import com.team34.model.Project;
 import com.team34.model.chapter.Chapter;
+import com.team34.model.Project;
+import com.team34.model.Project;
 import com.team34.model.event.EventListObject;
-import com.team34.view.dialogs.*;
 import com.team34.view.MainView;
-import com.team34.view.dialogs.EditAssociationDialog;
-import com.team34.view.dialogs.EditChapterDialog;
-import com.team34.view.dialogs.EditCharacterDialog;
-import com.team34.view.dialogs.EditEventDialog;
+import com.team34.view.dialogs.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -27,8 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
-
-import com.team34.model.Project;
 import com.team34.view.MainView;
 
 /**
@@ -115,9 +111,15 @@ public class MainController {
      */
     private void createNewEvent() {
         if (view.getEditEventDialog().showCreateEvent() == EditEventDialog.WindowResult.OK) {
+            if (model.eventManager.getEvent(view.getEditEventDialog().getEventName()) != null) {
+                view.showDialog("An event with that name already exists, new event was not created!");
+                return;
+            }
+
             long newEventUID = model.eventManager.newEvent(
                     view.getEditEventDialog().getEventName(),
                     view.getEditEventDialog().getEventDescription(),
+                    view.getEditEventDialog().getChapterList().getColor(),
                     view.getEditEventDialog().getChapterList()
             );
 
@@ -144,8 +146,7 @@ public class MainController {
 
         if (view.getEditEventDialog().showEditEvent((String) eventData[0], (String) eventData[1])
                 == EditEventDialog.WindowResult.OK
-        )
-        {
+        ) {
             boolean success = model.eventManager.editEvent(uid,
                     view.getEditEventDialog().getEventName(),
                     view.getEditEventDialog().getEventDescription(),
@@ -162,18 +163,21 @@ public class MainController {
 
     /**
      * @auhtor Alexander Olsson
+     * @Edit Hazem Elkhalil
      */
 
     private void createNewChapter() {
         if (view.getEditChapterDialog().showCreateChapter() == EditChapterDialog.WindowResult.OK) {
-            long newChapterUID = model.chapterManager.newChapter(
+            if (model.chapterManager.getChapter(view.getEditChapterDialog().getChapterName()) != null) {
+                view.showDialog("A chapter with that name already exists, chapter was not created!");
+                return;
+            }
+            model.chapterManager.newChapter(
                     view.getEditChapterDialog().getChapterName(),
                     view.getEditChapterDialog().getChapterDescription(),
                     ColorGenerator.getNewColor()
             );
-            if (newChapterUID == -1L) {
-                // TODO Popup warning dialog, stating that either name or description has unsupported format
-            }
+
         }
         refreshTitleBar();
     }
@@ -185,17 +189,15 @@ public class MainController {
     private void editChapter(long uid) {
         Object[] chapterData = model.chapterManager.getChapterData(uid);
 
-        if (view.getEditChapterDialog().showEditChapter((String) chapterData[0], (String) chapterData[1])
-                == EditChapterDialog.WindowResult.OK
-        ) {
+        if (view.getEditChapterDialog().showEditChapter((String) chapterData[0], (String) chapterData[1]) == EditChapterDialog.WindowResult.OK) {
+            if (model.chapterManager.getChapter(view.getEditChapterDialog().getChapterName()) != null) {
+                view.showDialog("A chapter with that name already exists, chapter was not created!");
+                return;
+            }
             boolean success = model.chapterManager.editChapter(uid,
                     view.getEditChapterDialog().getChapterName(),
                     view.getEditChapterDialog().getChapterDescription()
             );
-
-            if (!success) {
-                // TODO Popup warning dialog, stating that either name or description has unsupported format
-            }
         }
         refreshTitleBar();
     }
@@ -205,9 +207,7 @@ public class MainController {
      */
     private void refreshViewEvents() {
         System.out.println(Arrays.toString(model.eventManager.getEventOrder(view.getEventOrderList())) + " orderEvents");
-        view.updateEvents(
-                model.eventManager.getEvents(),
-                model.eventManager.getEventOrder(view.getEventOrderList())
+        view.updateEvents(model.eventManager.getEvents(), model.eventManager.getEventOrder(view.getEventOrderList())
         );
     }
 
@@ -403,8 +403,7 @@ public class MainController {
             if (view.getEditCharacterPanel().getCharacterAge() == -1) {
                 WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
                 createNewCharacter(view.snapTo(x, 10), view.snapTo(y, 10));
-            }
-            else {
+            } else {
                 if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) != null) {
                     view.showDialog("A character with that name already exists, a character has not been created");
                     return;
@@ -446,26 +445,32 @@ public class MainController {
         if (view.getEditCharacterPanel().showEditCharacter((String) characterData[0], (String) characterData[1])
                 == EditCharacterDialog.WindowResult.OK
         ) {
-            if(view.getEditCharacterPanel().getCharacterAge() == -1) {
+            if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) != null) {
+                view.showDialog("A Character with that name already exists, a character has not been created");
+                return;
+            }
+            if (view.getEditCharacterPanel().getCharacterAge() == -1) {
                 WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
             } else {
-            boolean success = model.characterManager.editCharacter(uid,
-                    view.getEditCharacterPanel().getCharacterName(),
-                    view.getEditCharacterPanel().getCharacterAge(),
-                    view.getEditCharacterPanel().getCharacterDescription(),
-                    view.getEditCharacterPanel().getCharacterEvent()
-            );
+                boolean success = model.characterManager.editCharacter(uid,
+                        view.getEditCharacterPanel().getCharacterName(),
+                        view.getEditCharacterPanel().getCharacterAge(),
+                        view.getEditCharacterPanel().getCharacterDescription(),
+                        view.getEditCharacterPanel().getCharacterEvent()
+                );
 
-            if (!success) {
-                // TODO Popup warning dialog, stating that either name or description has unsupported format
+                if (!success) {
+                    // TODO Popup warning dialog, stating that either name or description has unsupported format
+                }
+
+                refreshTitleBar();
             }
-
-            refreshTitleBar();
-        }}
+        }
     }
 
     /**
      * Update
+     *
      * @Alexander Olsson
      */
 
@@ -473,30 +478,32 @@ public class MainController {
         Object[] characterData = model.characterManager.getCharacterData(uid);
         if (view.getShowCharacterDialog().showCharacter(characterData))
             editCharacter(uid);
-            refreshCharacterList();
+        refreshCharacterList();
     }
 
     /**
      * Update
+     *
      * @Alexander Olsson
      */
 
-    private void showEvents(long uid){
+    private void showEvents(long uid) {
         Object[] eventData = model.eventManager.getEventData(uid);
-        if(view.getShowEventDialog().showEvent(eventData))
+        if (view.getShowEventDialog().showEvent(eventData))
             editEvent(uid);
-            refreshViewEvents();
+        refreshViewEvents();
 
     }
 
     /**
      * Update
+     *
      * @Alexander Olsson
      */
 
-    private void showChapters(long uid){
+    private void showChapters(long uid) {
         Object[] chapterData = model.chapterManager.getChapterData(uid);
-        if(view.getShowChapterDialog().showChapter(chapterData))
+        if (view.getShowChapterDialog().showChapter(chapterData))
             editChapter(uid);
         refreshViewChapters();
     }
@@ -615,22 +622,19 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_EVENT_DELETE:
-                    if(eventUID == -1) return;
+                    if (eventUID == -1) return;
                     model.eventManager.removeEvent(eventUID);
                     refreshViewEvents();
                     refreshTitleBar();
                     break;
 
                 case MainView.ID_BTN_EVENT_EDIT:
-/*
+                    /*
                     if(eventUID == -1) return;
                     editEvent(eventUID);
                     refreshViewEvents();
                     */
-                    if(view.getSelectedEventUID() != -1) {
-                        editEvent(eventUID);
-                        refreshViewEvents();
-                    }
+
                     break;
 
                 case MainView.ID_BTN_CHAPTER_ADD:
@@ -639,7 +643,7 @@ public class MainController {
                     break;
 
                 case MainView.ID_BTN_CHAPTER_DELETE:
-                    if(chapterUID == -1) return;
+                    if (chapterUID == -1) return;
                     model.chapterManager.removeChapter(chapterUID);
                     refreshViewChapters();
                     refreshTitleBar();
@@ -651,7 +655,7 @@ public class MainController {
                     editChapter(chapterUID);
                     refreshViewChapters();
                     */
-                    if(view.getSelectedChapterUID() != -1) {
+                    if (view.getSelectedChapterUID() != -1) {
                         editChapter(chapterUID);
                         refreshViewChapters();
                     }
@@ -995,7 +999,7 @@ public class MainController {
         }
     }
 
-    private class ChapterListMouseEvent implements EventHandler<MouseEvent>{
+    private class ChapterListMouseEvent implements EventHandler<MouseEvent> {
 
         @Override
         public void handle(MouseEvent mouseEvent) {

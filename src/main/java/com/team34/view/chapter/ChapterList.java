@@ -1,6 +1,5 @@
 package com.team34.view.chapter;
 
-import com.team34.controller.ColorGenerator;
 import com.team34.model.chapter.ChapterListObject;
 import com.team34.view.MainView;
 import javafx.collections.FXCollections;

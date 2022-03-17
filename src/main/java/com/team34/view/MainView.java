@@ -1,7 +1,7 @@
 package com.team34.view;
 
-import com.team34.model.chapter.Chapter;
 import com.team34.model.event.EventListObject;
+import com.team34.model.event.EventManager;
 import com.team34.view.chapter.ChapterList;
 import com.team34.view.chapter.ShowChapterDialog;
 import com.team34.view.character.CharacterList;
@@ -92,11 +92,10 @@ public class MainView {
     private final SplitPane secondLayerSplit;
 
     //// CONTROLS //////////////////////////////////////
-
-    private MenuBar menuBar;
+    public CharacterChart characterChart;
 
     ////////////////////////////////////////////////////
-
+    private MenuBar menuBar;
     private Stage mainStage;
     private Scene mainScene;
     private String cssMain;
@@ -279,6 +278,10 @@ public class MainView {
      */
     public void setEventOrderList(int eventOrderList) {
         this.eventOrderList = eventOrderList;
+    }
+
+    public int getChapterOrderList() {
+        return chapterOrderList;
     }
 
     /**
@@ -660,5 +663,9 @@ public class MainView {
 
     public void showDialog(String s) {
         JOptionPane.showMessageDialog(null, s);
+    }
+
+    public void showDialog(String message) {
+        JOptionPane.showMessageDialog(null, message);
     }
 }

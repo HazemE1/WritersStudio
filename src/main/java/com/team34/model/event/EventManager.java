@@ -52,11 +52,13 @@ public class EventManager {
      * @return the UID of the new event
      * @author Hazem Elkhalil
      */
-    public long newEvent(String name, String description, ChapterListObject chapterListObject) {
+    public long newEvent(String name, String description, String color, ChapterListObject chapterListObject) {
         long uid = UIDManager.nextUID();
-        addEvent(uid, name, description, chapterListObject);
+        Event event = new Event(name, description, chapterListObject, color);
+        addEvent(uid, event);
 
         chapterManager.getChapter(chapterListObject.getUid()).getEvents().add(event);
+
 
         if (eventOrderLists.size() < 1)
             eventOrderLists.add(new LinkedList<>());
@@ -78,17 +80,6 @@ public class EventManager {
      */
     public boolean editEvent(long uid, String name, String description, ChapterListObject chapterListObject) {
         if (events.containsKey(uid)) {
-
-            if(chapterListObject!=null){
-                events.replace(uid, new Event(name, description, chapterListObject, chapterListObject.getColor()));
-                hasChanged = true;
-                return true;
-
-            }
-            else{
-                events.replace(uid, new Event(name, description));
-            }
-
             events.get(uid).setName(name);
             events.get(uid).setChapterListObject(chapterListObject);
             events.get(uid).setDescription(description);
@@ -397,5 +388,13 @@ public class EventManager {
      */
     public void resetChanges() {
         hasChanged = false;
+    }
+
+    public Event getEvent(String eventName) {
+        for (Event value : events.values()) {
+            if (value.getName().equalsIgnoreCase(eventName))
+                return value;
+        }
+        return null;
     }
 }

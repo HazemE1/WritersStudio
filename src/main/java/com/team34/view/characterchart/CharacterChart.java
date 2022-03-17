@@ -11,6 +11,14 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -139,7 +147,6 @@ public class CharacterChart {
         associations.clear();
         nextLocalUID = 0L;
         pane.getChildren().clear();
-        pane.getChildren().add(header);
     }
 
     public void addCharacter(long uid, String name) {
@@ -160,6 +167,8 @@ public class CharacterChart {
         CharacterRectangle rect = new CharacterRectangle(name, 0.0, 0.0, "#F2E0D0");
         rect.setStylesheetClasses("characterchart-rect", "characterchart-text", "characterchart-tooltip");
         rectMap.put(uid, rect);
+
+
         pane.getChildren().add(rect.getRect());
         pane.getChildren().add(rect.getText());
 
