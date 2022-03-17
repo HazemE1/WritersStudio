@@ -127,8 +127,9 @@ public class MainController {
                     // TODO Popup warning dialog, stating that either name or description has unsupported format
                 }
             }else{
-                view.warningDialog("You have to create a chapter before creating an event", "Error");
+                view.warningDialog("You have to create a chapter before creating an event, you can change chapter later", "Error");
                 createNewChapter();
+                refreshViewChapters();
             }
         }
         refreshTitleBar();
