@@ -116,15 +116,19 @@ public class MainController {
                 return;
             }
 
-            long newEventUID = model.eventManager.newEvent(
-                    view.getEditEventDialog().getEventName(),
-                    view.getEditEventDialog().getEventDescription(),
-                    view.getEditEventDialog().getChapterList().getColor(),
-                    view.getEditEventDialog().getChapterList()
-            );
-
-            if (newEventUID == -1L) {
-                // TODO Popup warning dialog, stating that either name or description has unsupported format
+            if(model.chapterManager.getChapters() != null){
+                long newEventUID = model.eventManager.newEvent(
+                        view.getEditEventDialog().getEventName(),
+                        view.getEditEventDialog().getEventDescription(),
+                        view.getEditEventDialog().getChapterList().getColor(),
+                        view.getEditEventDialog().getChapterList()
+                );
+                if (newEventUID == -1L) {
+                    // TODO Popup warning dialog, stating that either name or description has unsupported format
+                }
+            }else{
+                view.warningDialog("You have to create a chapter before creating an event", "Error");
+                createNewChapter();
             }
         }
         refreshTitleBar();
