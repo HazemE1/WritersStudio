@@ -17,7 +17,7 @@ public class ChapterManager {
         hasChanged = false;
         chapters = new HashMap<>();
         chapterOrderLists = new ArrayList<>();
-        chapterOrderLists.add(new LinkedList<>());
+        //chapterOrderLists.add(new LinkedList<>());
 
     }
 

@@ -116,7 +116,7 @@ public class MainController {
                 return;
             }
 
-            if(model.chapterManager.getChapters() != null){
+            if(model.chapterManager.getChapters() != null && view.getEditEventDialog().getChapterList() != null){
                 long newEventUID = model.eventManager.newEvent(
                         view.getEditEventDialog().getEventName(),
                         view.getEditEventDialog().getEventDescription(),
@@ -127,9 +127,14 @@ public class MainController {
                     // TODO Popup warning dialog, stating that either name or description has unsupported format
                 }
             }else{
-                view.warningDialog("You have to create a chapter before creating an event, you can change chapter later", "Error");
-                createNewChapter();
-                refreshViewChapters();
+                if(model.chapterManager.getChapters() == null){
+                    view.warningDialog("You have to create a chapter before creating an event, you can change chapter later", "Error");
+                    createNewChapter();
+                    refreshViewChapters();
+                }else {
+                    view.warningDialog("You have to choose a event", "Error");
+                }
+
             }
         }
         refreshTitleBar();
