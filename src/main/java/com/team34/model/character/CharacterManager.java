@@ -1,13 +1,13 @@
 package com.team34.model.character;
 
+import com.team34.model.UIDManager;
+import com.team34.model.event.EventListObject;
+import com.team34.view.character.CharacterListObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import com.team34.model.UIDManager;
-import com.team34.model.event.EventListObject;
-import com.team34.view.character.CharacterListObject;
 
 /**
  * Manages the characters in the application. All character objects are stored as values in a HashMap and can be
@@ -49,8 +49,13 @@ public class CharacterManager {
     }
 
     public void addCharacter(long uid, String name, String description, int age, EventListObject event, double posX, double posY) {
-        characterMap.put(uid, new Character(name, description, age, event, posX, posY));
-        hasChanged = true;
+        if (event!=null) {
+            characterMap.put(uid, new Character(name, description, age, event, posX, posY));
+            hasChanged = true;
+        }else {
+            characterMap.put(uid, new Character(name, description, age, posX, posY));
+        }
+
     }
 
     /**
@@ -64,13 +69,16 @@ public class CharacterManager {
     public boolean editCharacter(long uid, String name, int age, String description, EventListObject event) {
         if (characterMap.containsKey(uid)) {
             Character existing = characterMap.get(uid);
-            characterMap.replace(uid,
-                    new Character(name, description, age, event, existing.getChartPositionX(), existing.getChartPositionY())
-            );
-            hasChanged = true;
-            return true;
+            if (event!=null) {
+                characterMap.replace(uid,
+                        new Character(name, description, age, event, existing.getChartPositionX(), existing.getChartPositionY()));
+                hasChanged = true;
+                return true;
+            } else {
+                characterMap.replace(uid,
+                        new Character(name, description, age, existing.getChartPositionX(), existing.getChartPositionY()));
+            }
         }
-
         return false;
     }
 
@@ -156,16 +164,27 @@ public class CharacterManager {
         for (Map.Entry character : characterMap.entrySet()) {
             Character ch = (Character) character.getValue();
             Object[] chListObj = new Object[9];
-            chListObj[0] = ch.getName();
-            chListObj[1] = character.getKey();
-            chListObj[2] = ch.getChartPositionX();
-            chListObj[3] = ch.getChartPositionY();
-            chListObj[4] = ch.getDescription();
-            chListObj[5] = ch.getEvent();
-            chListObj[6] = ch.getEvent().getTitle();
-            chListObj[7] = ch.getEvent().getUid();
-            chListObj[8] = ch.getAge();
-
+            if (ch.getEvent() != null) {
+                chListObj[0] = ch.getName();
+                chListObj[1] = character.getKey();
+                chListObj[2] = ch.getChartPositionX();
+                chListObj[3] = ch.getChartPositionY();
+                chListObj[4] = ch.getDescription();
+                chListObj[5] = ch.getEvent();
+                chListObj[6] = ch.getEvent().getTitle();
+                chListObj[7] = ch.getEvent().getUid();
+                chListObj[8] = ch.getAge();
+            } else {
+                chListObj[0] = ch.getName();
+                chListObj[1] = character.getKey();
+                chListObj[2] = ch.getChartPositionX();
+                chListObj[3] = ch.getChartPositionY();
+                chListObj[4] = ch.getDescription();
+                chListObj[5] = "";
+                chListObj[6] = "";
+                chListObj[7] = "";
+                chListObj[8] = ch.getAge();
+            }
             characterArrayList.add(chListObj);
         }
         return characterArrayList;
@@ -179,10 +198,19 @@ public class CharacterManager {
      */
     public String[] getCharacterData(long uid) {
         String[] data = new String[4];
-        data[0] = characterMap.get(uid).getName();
-        data[1] = characterMap.get(uid).getDescription();
-        data[2] = characterMap.get(uid).getEvent().getTitle();
-        data[3] = String.valueOf(characterMap.get(uid).getAge());
+        Character character = characterMap.get(uid);
+
+        if (character.getEvent() != null) {
+            data[0] = character.getName();
+            data[1] = character.getDescription();
+            data[2] = character.getEvent().getTitle();
+            data[3] = String.valueOf(character.getAge());
+        } else {
+            data[0] = character.getName();
+            data[1] = character.getDescription();
+            data[2] = "";
+            data[3] = String.valueOf(character.getAge());
+        }
 
         return data;
     }

@@ -103,7 +103,7 @@ public class MenuBar extends javafx.scene.control.MenuBar {
     }
 
     private void getStarted() {
-        JOptionPane.showMessageDialog(null, "1. Get started by creating a chapture in the left panel.\n2. Add one or two events in your chapter. \n3. Create a couple characters for the different events.");
+        JOptionPane.showMessageDialog(null, "1. Get started by creating a chapter in the left panel.\n2. Add one or two events in your chapter. \n3. Create a couple characters for the different events.");
     }
 
     private void aboutApp() {

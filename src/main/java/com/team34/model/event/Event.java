@@ -34,10 +34,6 @@ public class Event {
         this.description = description;
     }
 
-    public String getColor(){
-        return color;
-    }
-
     public String getName() {
         return name;
     }
@@ -56,5 +52,17 @@ public class Event {
 
     public ChapterListObject getChapterListObject() {
         return chapterListObject;
+    }
+
+    public void setChapterListObject(ChapterListObject chapterListObject) {
+        this.chapterListObject = chapterListObject;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

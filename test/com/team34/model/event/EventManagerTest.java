@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class EventManagerTest {
 
 
-    private EventManager em;
+    /*private EventManager em;
 
     @BeforeEach
     public void setup(){
@@ -49,7 +49,7 @@ public class EventManagerTest {
         long evtID = em.newEvent("Event","EventDesc",null);
         em.removeEvent(evtID);
         assertNull(em.getEvents());
-    }
+    }*/
 
 
 }
