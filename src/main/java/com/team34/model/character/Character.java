@@ -25,6 +25,14 @@ public class Character {
         chartPositionY = posY;
     }
 
+    public Character(String name, String description, int age, double posX, double posY) {
+        this.name = name;
+        this.description = description;
+        this.age = age;
+        chartPositionX = posX;
+        chartPositionY = posY;
+    }
+
     public EventListObject getEvent() {
         return event;
     }

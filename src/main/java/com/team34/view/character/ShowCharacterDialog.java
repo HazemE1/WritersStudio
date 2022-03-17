@@ -1,6 +1,7 @@
 package com.team34.view.character;
 
 import com.team34.model.event.EventManager;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -54,6 +55,7 @@ public class ShowCharacterDialog extends Stage {
 
         charEventGroup = new ComboBox<>();
         charEventGroup.setPromptText("No event group chosen");
+
         //charEventGroup.setItems(eventManager.EventListChar());
 
         lblDescription = new Label("Description:");

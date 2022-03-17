@@ -166,7 +166,7 @@ public class CharacterList extends StackPane {
     public void updateListView(ArrayList<Object[]> characters) {
         chListObjArray.clear();
         for (Object[] ch : characters) {
-            CharacterListObject chObj = new CharacterListObject((String) ch[0], (long) ch[1], (EventListObject) ch[5]);
+            CharacterListObject chObj = new CharacterListObject((String) ch[0], (long) ch[1]);
             chListObjArray.add(chObj);
         }
         ObservableList<CharacterListObject> ol = FXCollections.observableArrayList(chListObjArray);
