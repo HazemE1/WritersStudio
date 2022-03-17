@@ -7,10 +7,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
@@ -53,6 +50,8 @@ public class CharacterChart {
     private EventHandler<MouseEvent> evtRectReleased;
     private EventHandler<MouseEvent> evtLabelReleased;
 
+    private Label header;
+
     public CharacterChart(double width, double height) {
         rectMap = new HashMap<>();
         assocPoints = new HashMap<>();
@@ -66,6 +65,13 @@ public class CharacterChart {
 
         pane = new Pane();
         pane.setOnMouseMoved(evtMouseMoved);
+
+        header = new Label();
+        header.setText("Character Chart");
+        header.setLayoutX(400);
+        header.setLayoutY(0.0);
+
+        pane.getChildren().add(header);
 
         scrollPane = new ScrollPane();
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -90,6 +96,13 @@ public class CharacterChart {
         pane = new Pane();
         pane.setOnMouseMoved(evtMouseMoved);
 
+        header = new Label();
+        header.setText("Character Chart");
+        header.setLayoutX(400);
+        header.setLayoutY(0.0);
+
+        pane.getChildren().add(header);
+
         scrollPane = new ScrollPane();
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -104,7 +117,7 @@ public class CharacterChart {
      * @param parentPane the Pane to which the internal Pane is to be added
      */
     public void addToPane(Pane parentPane) {
-        parentPane.getChildren().add(scrollPane);
+        parentPane.getChildren().addAll(scrollPane);
     }
 
     public void clear() {
@@ -124,6 +137,7 @@ public class CharacterChart {
         associations.clear();
         nextLocalUID = 0L;
         pane.getChildren().clear();
+        pane.getChildren().add(header);
     }
 
     public void addCharacter(long uid, String name) {
@@ -144,8 +158,6 @@ public class CharacterChart {
         CharacterRectangle rect = new CharacterRectangle(name, 0.0, 0.0, "#F2E0D0");
         rect.setStylesheetClasses("characterchart-rect", "characterchart-text", "characterchart-tooltip");
         rectMap.put(uid, rect);
-
-
         pane.getChildren().add(rect.getRect());
         pane.getChildren().add(rect.getText());
 
@@ -614,7 +626,7 @@ public class CharacterChart {
         contextMenuItem[CONTEXT_MENU_ITEM_EDIT_CHAR].setOnAction(contextEventHandler);
 
         //// New Association
-        contextMenuItem[CONTEXT_MENU_ITEM_NEW_ASSOC] = new MenuItem("New Association");
+        contextMenuItem[CONTEXT_MENU_ITEM_NEW_ASSOC] = new MenuItem("New Relationship");
         contextMenuItem[CONTEXT_MENU_ITEM_NEW_ASSOC].setId(MainView.ID_CHART_NEW_ASSOCIATION);
         contextMenuItem[CONTEXT_MENU_ITEM_NEW_ASSOC].setOnAction(contextEventHandler);
 
@@ -634,12 +646,12 @@ public class CharacterChart {
         contextMenuItem[CONTEXT_MENU_ITEM_EDIT_ASSOC].setOnAction(contextEventHandler);
 
         //// Center text on line
-        contextMenuItem[CONTEXT_MENU_ITEM_CENTER_LABEL] = new MenuItem("Center Text on Association");
+        contextMenuItem[CONTEXT_MENU_ITEM_CENTER_LABEL] = new MenuItem("Center Text on Relationship");
         contextMenuItem[CONTEXT_MENU_ITEM_CENTER_LABEL].setId(MainView.ID_CHART_CENTER_ASSOCIATION_LABEL);
         contextMenuItem[CONTEXT_MENU_ITEM_CENTER_LABEL].setOnAction(contextEventHandler);
 
         //// Remove Association
-        contextMenuItem[CONTEXT_MENU_ITEM_REMOVE_ASSOC] = new MenuItem("Remove Association");
+        contextMenuItem[CONTEXT_MENU_ITEM_REMOVE_ASSOC] = new MenuItem("Remove Relationship");
         contextMenuItem[CONTEXT_MENU_ITEM_REMOVE_ASSOC].setId(MainView.ID_CHART_REMOVE_ASSOCIATION);
         contextMenuItem[CONTEXT_MENU_ITEM_REMOVE_ASSOC].setOnAction(contextEventHandler);
 
@@ -679,9 +691,18 @@ public class CharacterChart {
         return ((int) value / snapInterval) * snapInterval;
     }
 
+    /**
+     *
+     * Update
+     * Alexander Olsson
+     */
+
     public Long[] getAssociationsByCharacter(Long uid) {
-        if (uid == -1L)
+        if (uid == -1L) {
             return null;
+        }else if(rectMap.isEmpty()){
+            return null;
+        }
 
         return rectMap.get(uid).getAssociations();
     }

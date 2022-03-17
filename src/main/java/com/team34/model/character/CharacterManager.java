@@ -43,13 +43,13 @@ public class CharacterManager {
     }
 
     public long newCharacter(String name, String description, int age, EventListObject event, double posX, double posY) {
-            long uid = UIDManager.nextUID();
-            addCharacter(uid, name, description, age, event, posX, posY);
-            return uid;
+        long uid = UIDManager.nextUID();
+        addCharacter(uid, name, description, age, event, posX, posY);
+        return uid;
     }
 
     public void addCharacter(long uid, String name, String description, int age, EventListObject event, double posX, double posY) {
-        characterMap.put(uid, new Character(name, description, age, event,  posX, posY));
+        characterMap.put(uid, new Character(name, description, age, event, posX, posY));
         hasChanged = true;
     }
 
@@ -155,7 +155,7 @@ public class CharacterManager {
 
         for (Map.Entry character : characterMap.entrySet()) {
             Character ch = (Character) character.getValue();
-            Object[] chListObj = new Object[8];
+            Object[] chListObj = new Object[9];
             chListObj[0] = ch.getName();
             chListObj[1] = character.getKey();
             chListObj[2] = ch.getChartPositionX();
@@ -164,6 +164,7 @@ public class CharacterManager {
             chListObj[5] = ch.getEvent();
             chListObj[6] = ch.getEvent().getTitle();
             chListObj[7] = ch.getEvent().getUid();
+            chListObj[8] = ch.getAge();
 
             characterArrayList.add(chListObj);
         }
@@ -255,5 +256,14 @@ public class CharacterManager {
      */
     public void resetChanges() {
         hasChanged = false;
+    }
+
+    public Character getCharacter(String characterName) {
+        for (Character value : characterMap.values()) {
+            if (value.getName().equalsIgnoreCase(characterName))
+                return value;
+
+        }
+        return null;
     }
 }

@@ -160,14 +160,18 @@ public class EventList extends StackPane {
         }
 
         ObservableList<EventListObject> ol = FXCollections.observableArrayList();
+
         Object[] event = null;
         for (int i = 0; i < order.length; i++) {
+            System.out.println(order[i] + " order[i]");
             for (int j = 0; j < events.length; j++) {
                 if (((Long) events[j][0]).equals(order[i]))
                     event = events[j];
             }
 
             ol.add(new EventListObject((String) event[1], (Long) event[0]));
+            System.out.println(ol + " __________________");
+
             event = null;
         }
 
@@ -207,4 +211,10 @@ public class EventList extends StackPane {
     public void setList(ListView<EventListObject> list) {
         this.list = list;
     }
+
+    public boolean eventItemSelected() {
+        return list.getSelectionModel().getSelectedIndex() >= 0;
+    }
+
+
 }

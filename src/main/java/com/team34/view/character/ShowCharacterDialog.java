@@ -53,7 +53,7 @@ public class ShowCharacterDialog extends Stage {
         lblEvent.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
 
         charEventGroup = new ComboBox<>();
-        charEventGroup.setPromptText("Choose event group");
+        charEventGroup.setPromptText("No event group chosen");
         //charEventGroup.setItems(eventManager.EventListChar());
 
         lblDescription = new Label("Description:");
@@ -133,9 +133,8 @@ public class ShowCharacterDialog extends Stage {
         layout.add(eventLayout, 0 , 3);
         layout.add(lblDescription, 0, 1);
         layout.add(txtDescription, 0, 2);
-        layout.add(lblAge, 0, 4);
-        layout.add(lblCharacterAge, 0, 5);
-        layout.add(buttonLayout, 0, 6);
+        layout.add(ageLayout, 0, 4);
+        layout.add(buttonLayout, 0, 5);
 
         // --- Set Scene --- //
         Scene scene = new Scene(layout);

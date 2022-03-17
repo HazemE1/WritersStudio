@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 public class EditCharacterDialog extends Stage {
 
-    private Button btnSave;
+    private Button btnCreate;
     private Button btnCancel;
     private TextField tfCharacterName, tfCharacterAge;
     private TextArea taCharacterDescription;
@@ -50,23 +50,35 @@ public class EditCharacterDialog extends Stage {
         tfCharacterAge.setMaxWidth(60);
 
         cbEventGroup = new ComboBox<>();
-        cbEventGroup.setPromptText("Choose event");
+        cbEventGroup.setPromptText("No event chosen");
 
         //TextArea
         taCharacterDescription = new TextArea();
         taCharacterDescription.setPromptText("");
 
         //Buttons
-        btnSave = new Button("Save");
-        btnSave.setOnAction(e -> {
-            windowResult = EditCharacterDialog.WindowResult.OK;
-            close();
+        btnCreate = new Button("Create");
+        btnCreate.setOnAction(e -> {
+            Boolean success = true;
+            if(tfCharacterAge.getText().equals("")){
+                WarningDialog wr = new WarningDialog();
+                success = wr.warningDialogYesNo("Are sure you want to create a character without age?", "Are you sure?");
+            }
+            if(success){
+                windowResult = EditCharacterDialog.WindowResult.OK;
+                close();
+            }
         });
 
         btnCancel = new Button("Cancel");
         btnCancel.setOnAction(e -> {
-            windowResult = EditCharacterDialog.WindowResult.CANCEL;
-            close();
+            WarningDialog wr = new WarningDialog();
+            boolean success = wr.warningDialogYesNo("Are you sure you want to cancel?", "Are you sure?");
+
+            if (success) {
+                windowResult = EditCharacterDialog.WindowResult.CANCEL;
+                close();
+            }
         });
 
         // --- Layouts --- //
@@ -80,11 +92,15 @@ public class EditCharacterDialog extends Stage {
         //Add-Cancel Layout
         HBox buttonLayout = new HBox();
         buttonLayout.setSpacing(10);
-        buttonLayout.getChildren().addAll(btnSave, btnCancel);
+        buttonLayout.getChildren().addAll(btnCreate, btnCancel);
 
         HBox eventGroupLayout = new HBox();
         eventGroupLayout.setSpacing(10);
         eventGroupLayout.getChildren().addAll(lblEventGroup, cbEventGroup);
+
+        HBox ageLayout = new HBox();
+        ageLayout.setSpacing(10);
+        ageLayout.getChildren().addAll(lblCharacterAge, tfCharacterAge);
 
         //Overall Layout
         GridPane layout = new GridPane();
@@ -95,15 +111,11 @@ public class EditCharacterDialog extends Stage {
         layout.setPadding(new Insets(10, 10, 10, 10));
 
         layout.add(nameLayout, 0, 0);
-
-        layout.add(lblCharacterAge, 0, 2);
-        layout.add(tfCharacterAge, 0, 3);
-
-        layout.add(eventGroupLayout, 0, 4);
-
-        layout.add(lblCharacterDescription, 0, 5);
-        layout.add(taCharacterDescription, 0, 6);
-        layout.add(buttonLayout, 0, 7);
+        layout.add(ageLayout, 0, 1);
+        layout.add(eventGroupLayout, 0, 2);
+        layout.add(lblCharacterDescription, 0, 3);
+        layout.add(taCharacterDescription, 0, 4);
+        layout.add(buttonLayout, 0, 5);
 
         // --- Set Scene --- //
         Scene scene = new Scene(layout);
@@ -127,6 +139,19 @@ public class EditCharacterDialog extends Stage {
         tfCharacterAge.setText("");
         taCharacterDescription.setText("");
 
+        btnCreate.setText("Create");
+        btnCreate.setOnAction(e -> {
+            Boolean success = true;
+            if(tfCharacterAge.getText().equals("")){
+                WarningDialog wr = new WarningDialog();
+                success = wr.warningDialogYesNo("Are sure you want to create a character without age?", "Are you sure?");
+            }
+            if(success){
+                windowResult = EditCharacterDialog.WindowResult.OK;
+                close();
+            }
+        });
+
         tfCharacterName.requestFocus();
         showAndWait();
 
@@ -146,6 +171,17 @@ public class EditCharacterDialog extends Stage {
 
         tfCharacterName.setText(name);
         taCharacterDescription.setText(description);
+
+        btnCreate.setText("Save");
+        btnCreate.setOnAction(e -> {
+            WarningDialog wr = new WarningDialog();
+            boolean success = wr.warningDialogYesNo("Are you sure you want to save?", "Are you sure?");
+
+            if (success) {
+                windowResult = EditCharacterDialog.WindowResult.OK;
+                close();
+            }
+        });
 
         tfCharacterName.requestFocus();
         showAndWait();
@@ -170,13 +206,21 @@ public class EditCharacterDialog extends Stage {
      * @return Characters age only if the age is a valid int, otherwise display warning.
      */
     public int getCharacterAge() {
-        int age = Validator.returnStringAsInt(tfCharacterAge.getText());
-        if(Validator.validateValidAge(age)){
-            return age;
+        if(tfCharacterAge.getText().equals("")){
+            return 0;
         }
-        else{
+        if(Validator.returnStringAsInt(tfCharacterAge.getText()) != -1){
+            int age = Validator.returnStringAsInt(tfCharacterAge.getText());
+            if(Validator.validateValidAge(age)){
+                return age;
+            }
+            else{
+                return -1;
+            }
+        }else{
             return -1;
         }
+
     }
 
     /**

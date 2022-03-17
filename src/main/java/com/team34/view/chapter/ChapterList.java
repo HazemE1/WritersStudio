@@ -15,10 +15,13 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import com.team34.model.event.EventListObject;
 import com.team34.view.MainView;
+
+import java.util.Arrays;
 
 public class ChapterList extends StackPane {
 
@@ -153,14 +156,18 @@ public class ChapterList extends StackPane {
         }
 
         ObservableList<ChapterListObject> ol = FXCollections.observableArrayList();
+
         Object[] objects = null;
         for (int i = 0; i < order.length; i++) {
+            System.out.println(order[i] + " order[i], Chapters");
+
             for (int j = 0; j < chapters.length; j++) {
                 if (((Long) chapters[j][0]).equals(order[i]))
                     objects = chapters[j];
             }
-            ChapterListObject as;
-            ol.add(as = new ChapterListObject((String) objects[1], (Long) objects[0], (String) objects[3]));
+            ol.add(new ChapterListObject((String) objects[1], (Long) objects[0], (String) objects[3]));
+            System.out.println(ol + " _______*****_____");
+
             objects = null;
         }
         list.setItems(ol);
@@ -191,5 +198,13 @@ public class ChapterList extends StackPane {
 
     public void setList(ListView<ChapterListObject> list) {
         this.list = list;
+    }
+
+    public boolean ChapterItemSelected() {
+        return list.getSelectionModel().getSelectedIndex() >= 0;
+    }
+
+    public void registerMouseEvents(EventHandler<MouseEvent> listEventHandler) {
+        list.setOnMouseClicked(listEventHandler);
     }
 }

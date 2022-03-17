@@ -32,4 +32,24 @@ public class WarningDialog {
         alert.getResult();
         return false;
     }
+
+    /**
+     * Warning dialog with options yes and no
+     * @author Anton
+     *
+     * @param text To be displayed in the message, description of the warning
+     * @param title Title of the warning dialog window
+     * @return True if yes and false if no
+     */
+    public Boolean warningDialogYesNo(String text, String title) {
+        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.YES, ButtonType.NO);
+        alert.setTitle(title);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            return true;
+        }
+        alert.getResult();
+        return false;
+    }
 }
