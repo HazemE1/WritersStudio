@@ -1,10 +1,15 @@
 package com.team34.view.timeline;
 
+import com.team34.view.LabeledRectangle;
+import com.team34.view.MainView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -12,9 +17,6 @@ import javafx.scene.shape.Rectangle;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import com.team34.view.LabeledRectangle;
-import com.team34.view.MainView;
 
 /**
  * Timeline is the main com.team34.view class of the timeline feature.
@@ -273,8 +275,7 @@ public class Timeline {
                 // Modification added in order to make task F.Tid.1.4 work
                 if (eventPosition.containsKey(eventUIDOrder[i])) {
                     rect.setX(eventPosition.get(eventUIDOrder[i]));
-                }
-                else {
+                } else {
                     rect.setX(nextX);
                     eventPosition.put(eventUIDOrder[i], nextX);
                 }
@@ -318,12 +319,16 @@ public class Timeline {
      * Much of the original code is left untouched, might need some adjustment or refactoring to fix future bugs
      * idEvent is the specific event rectangle on the timeline that the user wishes to move
      * xMouse is the absolute x position of the mouse relative to the screen
+     *
      * @author Erik Hedåker
      */
     public void moveEventToMouseTimeline(int idEvent, int xMouse) {
         if (eventUIDOrder != null)
             setEventOrder(eventUIDOrder);
-
+        System.out.println(idEvent + "-" + xMouse);
+        if (xMouse < 80) {
+            xMouse = 100;
+        }
         // Recalculate position
         posX = LAYOUT_SPACING;
         posY = pane.getMinHeight() / 2.0;
@@ -340,8 +345,7 @@ public class Timeline {
 
                 if (eventPosition.containsKey(eventUIDOrder[i])) {
                     rect.setX(eventPosition.get(eventUIDOrder[i]));
-                }
-                else {
+                } else {
                     rect.setX(nextX);
                     eventPosition.put(eventUIDOrder[i], nextX);
                 }
@@ -381,6 +385,7 @@ public class Timeline {
     /**
      * Function used in the implementation of task F.Tid.1.4
      * Swaps the position values of a dragged and target event rectangle
+     *
      * @author Erik Hedåker
      */
     public void swapEventPositionsTimeline(int dragged, int target) {

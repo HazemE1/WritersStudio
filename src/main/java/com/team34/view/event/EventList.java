@@ -1,6 +1,7 @@
 package com.team34.view.event;
 
-import com.team34.view.characterchart.CharacterChart;
+import com.team34.model.event.EventListObject;
+import com.team34.view.MainView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,10 +16,10 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-
-import com.team34.model.event.EventListObject;
-import com.team34.view.MainView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class EventList extends StackPane {
 
@@ -45,7 +46,7 @@ public class EventList extends StackPane {
      */
     public EventList(MainView view) {
 //        window = new Stage();
-
+        this.view = view;
         //Panes
         outerPane = new BorderPane();
         innerPane = new BorderPane();
@@ -105,7 +106,7 @@ public class EventList extends StackPane {
         cssEventlist = com.team34.App.class.getResource("/css/characterlist.css").toExternalForm();
     }
 
-    public static EventListObject list(){
+    public static EventListObject list() {
         return list.getSelectionModel().getSelectedItem();
     }
 

@@ -36,6 +36,11 @@ public class Event {
 
     public String getColor(){
         return color;
+
+    }
+
+    public void setChapterListObject(ChapterListObject chapterListObject) {
+        this.chapterListObject = chapterListObject;
     }
 
     public String getName() {
