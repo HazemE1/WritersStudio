@@ -1,5 +1,6 @@
 package com.team34.view;
 
+import com.team34.model.chapter.Chapter;
 import com.team34.model.event.EventListObject;
 import com.team34.model.event.EventManager;
 import com.team34.view.chapter.ChapterList;
@@ -113,7 +114,6 @@ public class MainView {
     private double lastChartMouseClickY;
 
 
-    public CharacterChart characterChart;
 
 ////////////////////////////////////////////////////
 
@@ -280,9 +280,6 @@ public class MainView {
         this.eventOrderList = eventOrderList;
     }
 
-    public int getChapterOrderList() {
-        return chapterOrderList;
-    }
 
     /**
      * Returns a reference to the {@link EditCharacterDialog}, to be accessed directly
@@ -665,7 +662,4 @@ public class MainView {
         JOptionPane.showMessageDialog(null, s);
     }
 
-    public void showDialog(String message) {
-        JOptionPane.showMessageDialog(null, message);
-    }
 }

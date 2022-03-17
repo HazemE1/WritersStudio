@@ -57,6 +57,7 @@ public class EventManager {
         Event event = new Event(name, description, chapterListObject, color);
         addEvent(uid, event);
 
+
         chapterManager.getChapter(chapterListObject.getUid()).getEvents().add(event);
 
 
@@ -83,6 +84,7 @@ public class EventManager {
             events.get(uid).setName(name);
             events.get(uid).setChapterListObject(chapterListObject);
             events.get(uid).setDescription(description);
+            events.get(uid).setColor(chapterListObject.getColor());
             hasChanged = true;
             return true;
         }

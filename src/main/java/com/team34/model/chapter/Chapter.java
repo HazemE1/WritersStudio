@@ -11,7 +11,6 @@ public class Chapter {
     private String description = "";
     private Set<Event> events;
     private String color = "";
-    private Set<Event> events;
 
     public Chapter(String name, String description, String color) {
         this.name = name;
@@ -21,13 +20,6 @@ public class Chapter {
         events = new HashSet<>();
     }
 
-    public Set<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(Set<Event> events) {
-        this.events = events;
-    }
 
     public Set<Event> getEvents() {
         return events;
@@ -43,6 +35,10 @@ public class Chapter {
 
     public String getColor() {
         return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public void setName(String name) {

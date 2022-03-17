@@ -82,7 +82,6 @@ public class ChapterManager {
             eventArray[i][2] = chapterRef.getDescription();
             eventArray[i][3] = chapterRef.getColor();
         }
-        System.out.println(Arrays.deepToString(eventArray) + "Chapters");
         return eventArray;
     }
 
