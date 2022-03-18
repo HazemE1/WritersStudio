@@ -91,13 +91,19 @@ public class MainController {
         view.registerDragEventDragComplete(evtDragComplete);
         view.registerMouseEvents(evtMouseCharacterList);
         view.registerMouseEventsList(mouseEventEventHandler);
-        view.registerMouseChapterList(mouseEventChapterHandler);
+        //view.registerMouseChapterList(mouseEventChapterHandler);
         view.registerCharacterChartEvents(
                 new EventCharacterRectReleased(),
                 new EventChartClick(),
                 new EventAssociationLabelReleased()
 
         );
+
+        view.registerChapterPressEvent(
+                new EventChapterPressed()
+                //new ChapterListMouseEvent()
+        );
+
 
     }
 
@@ -873,15 +879,27 @@ public class MainController {
     private class EventChapterPressed implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent e) {
-            if (e.getButton() != MouseButton.PRIMARY)
+            if (e.getButton() != MouseButton.PRIMARY) {
+                return;
+            }
+
+            if (view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem() == null){
                 return;
 
-            if (view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem() == null)
+            }
+
+
+            if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2
+                    && view.chapterListItemSelected()) {
+                showChapters(view.getSelectedChapterUID());
                 return;
+            }
 
-            Chapter c = model.chapterManager.getChapter(view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem().getUid());
 
-            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), c);
+
+                Chapter c = model.chapterManager.getChapter(view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem().getUid());
+                view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), c);
+
 
         }
     }

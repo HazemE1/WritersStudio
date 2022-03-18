@@ -196,6 +196,8 @@ public class ChapterList extends StackPane {
 
     public void addMouseClickEventHandler(EventHandler<MouseEvent> e) {
         list.setOnMouseClicked(e);
+        //list.setOnMouseClicked(listEventHandler);
+
     }
 
 
