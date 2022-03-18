@@ -125,8 +125,8 @@ public class MainController {
                 view.showDialog("An event with that name already exists, new event was not created!");
                 return;
             }
-            if (model.eventManager.getEvent(view.getEditEventDialog().getEventName()) == null) {
-                view.showDialog("The event must have a name, new event was not created");
+            else if (view.getEditEventDialog().getEventName().equals("")) {
+                view.showDialog("The event must have a name, a new event was not created.");
                 return;
             }
 
@@ -199,6 +199,11 @@ public class MainController {
                 view.showDialog("A chapter with that name already exists, chapter was not created!");
                 return;
             }
+            else if (view.getEditChapterDialog().getChapterName().equals("")) {
+                view.showDialog("The chapter must have a name, a new chapter was not created.");
+                return;
+            }
+
             model.chapterManager.newChapter(
                     view.getEditChapterDialog().getChapterName(),
                     view.getEditChapterDialog().getChapterDescription(),
@@ -472,6 +477,10 @@ public class MainController {
             } else {
                 if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) != null) {
                     view.showDialog("A character with that name already exists, a character has not been created");
+                    return;
+                }
+                else if (view.getEditCharacterPanel().getCharacterName().equals("")) {
+                    view.showDialog("The character must have a name, a new character was not created.");
                     return;
                 }
 
