@@ -125,8 +125,14 @@ public class MainController {
                 view.showDialog("An event with that name already exists, new event was not created!");
                 return;
             }
+            if (model.eventManager.getEvent(view.getEditEventDialog().getEventName()) == null) {
+                view.showDialog("The event must have a name, new event was not created");
+                return;
+            }
+
 
             if(model.chapterManager.getChapters() != null && view.getEditEventDialog().getChapterList() != null){
+
                 long newEventUID = model.eventManager.newEvent(
                         view.getEditEventDialog().getEventName(),
                         view.getEditEventDialog().getEventDescription(),
@@ -141,8 +147,9 @@ public class MainController {
                     view.warningDialog("You have to create a chapter before creating an event, you can change chapter later", "Error");
                     createNewChapter();
                     refreshViewChapters();
+
                 }else {
-                    view.warningDialog("You have to choose a event", "Error");
+                    view.warningDialog("You have to choose a chapter", "Error");
                 }
 
             }
