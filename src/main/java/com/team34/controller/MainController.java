@@ -517,14 +517,45 @@ public class MainController {
     private void editCharacter(long uid) {
         Object[] characterData = model.characterManager.getCharacterData(uid);
 
-
         if (view.getEditCharacterPanel().showEditCharacter((String) characterData[0], (String) characterData[1])
                 == EditCharacterDialog.WindowResult.OK
         ) {
-            if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) != null) {
-                view.showDialog("A Character with that name already exists, a character has not been created");
-                return;
+
+
+            if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) == null) {
+                if (characterData[0] != view.getEditCharacterPanel().getCharacterName()) {
+                    model.characterManager.editCharacter(uid,
+                            view.getEditCharacterPanel().getCharacterName(),
+                            view.getEditCharacterPanel().getCharacterAge(),
+                            view.getEditCharacterPanel().getCharacterDescription(),
+                            view.getEditCharacterPanel().getCharacterEvent()
+                    );
+                } else {
+                    view.showDialog("A character with that name already exists, the character has not been edited");
+                    return;
+                }
             }
+
+
+
+             /*
+            if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) == null) {
+                if (characterData[0] != view.getEditCharacterPanel().getCharacterName()) {
+                    model.characterManager.editCharacter(uid,
+                            view.getEditCharacterPanel().getCharacterName(),
+                            view.getEditCharacterPanel().getCharacterAge(),
+                            view.getEditCharacterPanel().getCharacterDescription(),
+                            view.getEditCharacterPanel().getCharacterEvent()
+                    );
+                }else {
+                    view.showDialog("A character with that name already exists, the character has not been edited");
+                    return;
+                }
+
+            }
+
+              */
+
             if (view.getEditCharacterPanel().getCharacterAge() == -1) {
                 WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
             } else {
