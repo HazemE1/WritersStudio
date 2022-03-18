@@ -535,7 +535,6 @@ public class MainView {
      */
     public void updateCharacterList(ArrayList<Object[]> characters, Object[][] associations, Chapter c) {
         rightPane.updateListView(characters);
-
         characterChart.updateCharacters(characters, associations, c);
     }
 

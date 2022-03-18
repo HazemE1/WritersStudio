@@ -4,6 +4,7 @@ import com.team34.model.Project;
 import com.team34.model.chapter.Chapter;
 import com.team34.model.Project;
 import com.team34.model.Project;
+import com.team34.model.chapter.ChapterListObject;
 import com.team34.model.event.EventListObject;
 import com.team34.view.MainView;
 import com.team34.view.dialogs.*;
@@ -213,12 +214,55 @@ public class MainController {
                 view.showDialog("A chapter with that name already exists, chapter was not created!");
                 return;
             }
+            String chapterNew = view.getEditChapterDialog().getChapterName();
             boolean success = model.chapterManager.editChapter(uid,
                     view.getEditChapterDialog().getChapterName(),
                     view.getEditChapterDialog().getChapterDescription()
             );
+            changeEventChapter(chapterNew, chapterData[0].toString());
+            //model.eventManager.
         }
         refreshTitleBar();
+    }
+
+    /**
+     *
+     * @param newChapter
+     * @param oldChapter
+     *
+     * @Author
+     * Alexander Olsson
+     */
+
+    private void changeEventChapter(String newChapter, String oldChapter) {
+        if(model.eventManager.getEvents() != null) {
+
+
+            System.out.println(oldChapter + ", " + newChapter);
+            Object[][] data = model.eventManager.getEvents();
+            Object[][] dataChapter = model.chapterManager.getChapters();
+            long chapterUID = 0;
+            String color = null;
+
+            for (int i = 0; i < model.eventManager.getEvents().length; i++) {
+                if (dataChapter[i][1].toString().equals(newChapter)) {
+                    System.out.println("Hello");
+                    chapterUID = (long) dataChapter[i][0];
+                    color = dataChapter[i][2].toString();
+                }
+
+            }
+            for (int i = 0; i < model.eventManager.getEvents().length; i++) {
+                System.out.println(data[i][4].toString());
+                if (data[i][4].toString().equals(oldChapter)) {
+                    System.out.println("Hello2");
+                    model.eventManager.editEvent((long) data[i][0], data[i][1].toString(), data[i][2].toString(), new ChapterListObject(newChapter, chapterUID, color));
+                    //model.chapterManager.getChapter();
+                    //model.eventManager.getEvent().getChapterListObject().getUid(chapter)
+                    refreshViewChapters();
+                }
+            }
+        }
     }
 
     /**
@@ -896,8 +940,10 @@ public class MainController {
             }
 
 
+            model.chapterManager.getChapter(view.getSelectedChapterUID());
 
                 Chapter c = model.chapterManager.getChapter(view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem().getUid());
+                System.out.println(c);
                 view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), c);
 
 

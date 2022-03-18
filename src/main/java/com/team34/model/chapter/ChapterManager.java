@@ -34,9 +34,26 @@ public class ChapterManager {
         return uid;
     }
 
+    /**
+     *
+     *
+     * @param uid
+     * @param name
+     * @param description
+     * @return
+     *
+     * Update
+     * @Autor
+     * Alexander Olsson
+     */
+
     public boolean editChapter(long uid, String name, String description) {
         if (chapters.containsKey(uid)) {
-            chapters.replace(uid, new Chapter(name, description, "#F28220"));
+            Chapter chapter = getChapter(uid);
+            chapter.setName(name);
+            chapter.setColor("#F28220");
+            chapter.setDescription(description);
+            chapters.replace(uid, chapter);
             hasChanged = true;
             return true;
         }
