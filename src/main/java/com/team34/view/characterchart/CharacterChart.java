@@ -487,6 +487,7 @@ public class CharacterChart {
     public void updateCharacters(ArrayList<Object[]> characters, Object[][] _associations, Chapter c) {
         clear();
 
+
         for (Event e : c.getEvents()) {
             System.out.println(e.getName());
             if (e != null) {

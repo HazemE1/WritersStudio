@@ -4,6 +4,7 @@ import com.team34.model.Project;
 import com.team34.model.chapter.Chapter;
 import com.team34.model.Project;
 import com.team34.model.Project;
+import com.team34.model.chapter.ChapterListObject;
 import com.team34.model.event.EventListObject;
 import com.team34.view.MainView;
 import com.team34.view.dialogs.*;
@@ -78,6 +79,9 @@ public class MainController {
     /**
      * Registers events {@link MainController#evtButtonAction} and
      * {@link MainController#evtContextMenuAction} on the view
+     *
+     * update
+     * @author Alexander Olsson
      */
     private void registerEventsOnView() {
         view.registerButtonEvents(evtButtonAction);
@@ -88,14 +92,20 @@ public class MainController {
         view.registerDragEventDragComplete(evtDragComplete);
         view.registerMouseEvents(evtMouseCharacterList);
         view.registerMouseEventsList(mouseEventEventHandler);
-        view.registerMouseChapterList(mouseEventChapterHandler);
+        //view.registerMouseChapterList(mouseEventChapterHandler);
         view.registerCharacterChartEvents(
                 new EventCharacterRectReleased(),
                 new EventChartClick(),
                 new EventAssociationLabelReleased()
 
         );
-        view.registerChapterPressEvent(new EventChapterPressed());
+
+        view.registerChapterPressEvent(
+                new EventChapterPressed()
+                //new ChapterListMouseEvent()
+        );
+
+
     }
 
     /**
@@ -115,6 +125,13 @@ public class MainController {
                 view.showDialog("An event with that name already exists, new event was not created!");
                 return;
             }
+
+            else if (view.getEditEventDialog().getEventName().equals("")) {
+                view.showDialog("The event must have a name, a new event was not created.");
+                return;
+            }
+
+
 
             if(model.chapterManager.getChapters() != null && view.getEditEventDialog().getChapterList() != null){
                 long newEventUID = model.eventManager.newEvent(
@@ -182,6 +199,11 @@ public class MainController {
                 view.showDialog("A chapter with that name already exists, chapter was not created!");
                 return;
             }
+            else if (view.getEditChapterDialog().getChapterName().equals("")) {
+                view.showDialog("The chapter must have a name, a new chapter was not created.");
+                return;
+            }
+
             model.chapterManager.newChapter(
                     view.getEditChapterDialog().getChapterName(),
                     view.getEditChapterDialog().getChapterDescription(),
@@ -204,12 +226,55 @@ public class MainController {
                 view.showDialog("A chapter with that name already exists, chapter was not created!");
                 return;
             }
+            String chapterNew = view.getEditChapterDialog().getChapterName();
             boolean success = model.chapterManager.editChapter(uid,
                     view.getEditChapterDialog().getChapterName(),
                     view.getEditChapterDialog().getChapterDescription()
             );
+            changeEventChapter(chapterNew, chapterData[0].toString());
+            //model.eventManager.
         }
         refreshTitleBar();
+    }
+
+    /**
+     *
+     * @param newChapter
+     * @param oldChapter
+     *
+     * @Author
+     * Alexander Olsson
+     */
+
+    private void changeEventChapter(String newChapter, String oldChapter) {
+        if(model.eventManager.getEvents() != null) {
+
+
+            System.out.println(oldChapter + ", " + newChapter);
+            Object[][] data = model.eventManager.getEvents();
+            Object[][] dataChapter = model.chapterManager.getChapters();
+            long chapterUID = 0;
+            String color = null;
+
+            for (int i = 0; i < model.eventManager.getEvents().length; i++) {
+                if (dataChapter[i][1].toString().equals(newChapter)) {
+                    System.out.println("Hello");
+                    chapterUID = (long) dataChapter[i][0];
+                    color = dataChapter[i][2].toString();
+                }
+
+            }
+            for (int i = 0; i < model.eventManager.getEvents().length; i++) {
+                System.out.println(data[i][4].toString());
+                if (data[i][4].toString().equals(oldChapter)) {
+                    System.out.println("Hello2");
+                    model.eventManager.editEvent((long) data[i][0], data[i][1].toString(), data[i][2].toString(), new ChapterListObject(newChapter, chapterUID, color));
+                    //model.chapterManager.getChapter();
+                    //model.eventManager.getEvent().getChapterListObject().getUid(chapter)
+                    refreshViewChapters();
+                }
+            }
+        }
     }
 
     /**
@@ -414,6 +479,10 @@ public class MainController {
                     view.showDialog("A character with that name already exists, a character has not been created");
                     return;
                 }
+                else if (view.getEditCharacterPanel().getCharacterName().equals("")) {
+                    view.showDialog("The character must have a name, a new character was not created.");
+                    return;
+                }
 
                 long newCharacterUID = model.characterManager.newCharacter(
                         view.getEditCharacterPanel().getCharacterName(),
@@ -448,14 +517,45 @@ public class MainController {
     private void editCharacter(long uid) {
         Object[] characterData = model.characterManager.getCharacterData(uid);
 
-
         if (view.getEditCharacterPanel().showEditCharacter((String) characterData[0], (String) characterData[1])
                 == EditCharacterDialog.WindowResult.OK
         ) {
-            if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) != null) {
-                view.showDialog("A Character with that name already exists, a character has not been created");
-                return;
+
+
+            if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) == null) {
+                if (characterData[0] != view.getEditCharacterPanel().getCharacterName()) {
+                    model.characterManager.editCharacter(uid,
+                            view.getEditCharacterPanel().getCharacterName(),
+                            view.getEditCharacterPanel().getCharacterAge(),
+                            view.getEditCharacterPanel().getCharacterDescription(),
+                            view.getEditCharacterPanel().getCharacterEvent()
+                    );
+                } else {
+                    view.showDialog("A character with that name already exists, the character has not been edited");
+                    return;
+                }
             }
+
+
+
+             /*
+            if (model.characterManager.getCharacter(view.getEditCharacterPanel().getCharacterName()) == null) {
+                if (characterData[0] != view.getEditCharacterPanel().getCharacterName()) {
+                    model.characterManager.editCharacter(uid,
+                            view.getEditCharacterPanel().getCharacterName(),
+                            view.getEditCharacterPanel().getCharacterAge(),
+                            view.getEditCharacterPanel().getCharacterDescription(),
+                            view.getEditCharacterPanel().getCharacterEvent()
+                    );
+                }else {
+                    view.showDialog("A character with that name already exists, the character has not been edited");
+                    return;
+                }
+
+            }
+
+              */
+
             if (view.getEditCharacterPanel().getCharacterAge() == -1) {
                 WarningDialog.displayWarning("Character's age needs to be a positive digit", "Invalid age");
             } else {
@@ -812,6 +912,9 @@ public class MainController {
 
     /**
      * This event is fired from the user clicking items in the menu bar.
+     *
+     * Update
+     * @Author Alexander Olsson
      */
     private class EventMenuBarAction implements EventHandler<ActionEvent> {
         @Override
@@ -825,6 +928,7 @@ public class MainController {
                         model.clearProject();
                         refreshViewEvents();
                         refreshCharacterList();
+                        refreshViewChapters();
                     }
                     refreshTitleBar();
                     break;
@@ -866,15 +970,29 @@ public class MainController {
     private class EventChapterPressed implements EventHandler<MouseEvent> {
         @Override
         public void handle(MouseEvent e) {
-            if (e.getButton() != MouseButton.PRIMARY)
+            if (e.getButton() != MouseButton.PRIMARY) {
+                return;
+            }
+
+            if (view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem() == null){
                 return;
 
-            if (view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem() == null)
+            }
+
+
+            if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2
+                    && view.chapterListItemSelected()) {
+                showChapters(view.getSelectedChapterUID());
                 return;
+            }
 
-            Chapter c = model.chapterManager.getChapter(view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem().getUid());
 
-            view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), c);
+            model.chapterManager.getChapter(view.getSelectedChapterUID());
+
+                Chapter c = model.chapterManager.getChapter(view.getLeftChapterPane().getList().getSelectionModel().getSelectedItem().getUid());
+                System.out.println(c);
+                view.updateCharacterList(model.characterManager.getCharacterList(), model.characterManager.getAssociationData(), c);
+
 
         }
     }

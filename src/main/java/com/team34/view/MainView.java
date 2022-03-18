@@ -535,7 +535,6 @@ public class MainView {
      */
     public void updateCharacterList(ArrayList<Object[]> characters, Object[][] associations, Chapter c) {
         rightPane.updateListView(characters);
-
         characterChart.updateCharacters(characters, associations, c);
     }
 
@@ -602,9 +601,12 @@ public class MainView {
         characterChart.registerEvents(evtCharacterReleased, evtMouseClicked, evtLabelReleased);
     }
 
+    /*
     public void registerChapterEvents(EventHandler<MouseEvent> evtChapterClicked) {
         leftChapterPane.addMouseClickEventHandler(evtChapterClicked);
     }
+
+     */
 
     public Object[] getChartCharacterData(long uid) {
         return characterChart.getChartCharacterData(uid);
@@ -643,7 +645,10 @@ public class MainView {
     }
 
     public void registerChapterPressEvent(EventHandler<MouseEvent> eventChapterPressed) {
+
+
         leftChapterPane.addMouseClickEventHandler(eventChapterPressed);
+        //leftChapterPane.registerMouseEvents(listEventHandler);
     }
 
     public ChapterList getLeftChapterPane() {
