@@ -78,6 +78,9 @@ public class MainController {
     /**
      * Registers events {@link MainController#evtButtonAction} and
      * {@link MainController#evtContextMenuAction} on the view
+     *
+     * update
+     * @author Alexander Olsson
      */
     private void registerEventsOnView() {
         view.registerButtonEvents(evtButtonAction);
@@ -95,7 +98,7 @@ public class MainController {
                 new EventAssociationLabelReleased()
 
         );
-        view.registerChapterPressEvent(new EventChapterPressed());
+
     }
 
     /**
@@ -812,6 +815,9 @@ public class MainController {
 
     /**
      * This event is fired from the user clicking items in the menu bar.
+     *
+     * Update
+     * @Author Alexander Olsson
      */
     private class EventMenuBarAction implements EventHandler<ActionEvent> {
         @Override
@@ -825,6 +831,7 @@ public class MainController {
                         model.clearProject();
                         refreshViewEvents();
                         refreshCharacterList();
+                        refreshViewChapters();
                     }
                     refreshTitleBar();
                     break;

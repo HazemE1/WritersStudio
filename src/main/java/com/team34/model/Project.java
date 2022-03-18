@@ -944,10 +944,14 @@ public class Project {
     /**
      * Discards all data currently loaded. Does not overwrite or erase any file.
      * This only affects the data currently loaded in the application.
+     *
+     * Update
+     * @Author Alexander Olsson
      */
     public void clearProject() {
         eventManager.clear();
         characterManager.clear();
+        chapterManager.clear();
         UIDManager.clear();
         currProjectName = "";
         currProjectFile = null;

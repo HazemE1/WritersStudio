@@ -198,6 +198,8 @@ public class ChapterList extends StackPane {
         list.setOnMouseClicked(e);
     }
 
+
+
     public ListView<ChapterListObject> getList() {
         return list;
     }
