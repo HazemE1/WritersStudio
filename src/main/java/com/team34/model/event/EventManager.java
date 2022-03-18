@@ -91,6 +91,12 @@ public class EventManager {
         return false;
     }
 
+    public void editEventChapterListObject(long uid){
+        if(events.containsKey(uid)){
+            events.get(uid).setChapterListObject(null);
+        }
+    }
+
 
 
     /**
@@ -99,10 +105,18 @@ public class EventManager {
      * This will set {@link EventManager#hasChanged} to true, as data has been changed.
      *
      * @param uid the UID of the event to remove
+     *
+     * Update
+     * @Author Alexander Olsson
      */
     public void removeEvent(long uid) {
         Event event = events.get(uid);
-        chapterManager.getChapter(event.getChapterListObject().getUid()).getEvents().remove(event);
+        if(chapterManager.getChapters() != null){
+            if(chapterManager.getChapters().equals(events.get(uid).getChapterListObject())){
+                chapterManager.getChapter(event.getChapterListObject().getUid()).getEvents().remove(event);
+            }
+        }
+
         events.remove(uid);
         UIDManager.removeUID(uid);
         for (LinkedList<Long> e : eventOrderLists)
